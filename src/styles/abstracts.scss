@@ -1,0 +1,75 @@
+////////////////////////////////////////////////
+// VARIABLES
+///////////////////////////////////////////////////
+//COLORS
+:root {
+  --color-primary: #e83822;
+  --color-primary-tint: #e8b4a3;
+  --color-primary-shade: #b99391;
+
+  --color-accent: #b3f0c3;
+  --color-background: #fff;
+
+  --color-grey-1: #f3f3f3;
+  --color-grey-2: #f9f8f8;
+  --color-grey-3: #c9c7cd;
+  --color-grey-4: #9696a0;
+
+  --color-text-primary: #302422;
+  --color-text-secondary: #646060;
+  --color-text-tertiary: #5f6161;
+}
+
+//BREAKPOINTS
+$bp-big-desktop: 112.5em; //1800px
+$bp-tab-land: 75em; //1200px
+$bp-tab-port: 56.25em; //900px
+$bp-phone: 37.5em; //600px
+$bp-phone-small: 31.25em; //500px
+
+//MIXINS
+@mixin respond($breakpoint) {
+  @if $breakpoint==tab-land {
+    @media only screen and (max-width: $bp-tab-land) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-port {
+    @media only screen and (max-width: $bp-tab-port) {
+      @content;
+    }
+  }
+  @if $breakpoint==phone {
+    @media only screen and (max-width: $bp-phone) {
+      @content;
+    }
+  }
+  @if $breakpoint==phone-small {
+    @media only screen and (max-width: $bp-phone-small) {
+      @content;
+    }
+  }
+  @if $breakpoint==big-desktop {
+    @media only screen and (min-width: $bp-big-desktop) {
+      @content;
+    }
+  }
+}
+
+@mixin default-button-reset {
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+// ANIMATIONS
+@keyframes progressLeft {
+  100% {
+    transform: rotate(-180deg);
+  }
+}
+@keyframes progressRight {
+  100% {
+    transform: rotate(-180deg);
+  }
+}

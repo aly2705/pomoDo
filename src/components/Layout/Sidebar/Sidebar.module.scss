@@ -1,0 +1,34 @@
+@import "../../../styles/abstracts.scss";
+
+.sidebar {
+  grid-column: sidebar-start / sidebar-end;
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__list {
+    list-style: none;
+    margin-top: 3.5rem;
+    width: 100%;
+
+    @include respond(phone) {
+      margin-top: 11.5rem;
+    }
+  }
+
+  @include respond(phone) {
+    position: absolute;
+    z-index: 500;
+    background-color: var(--color-grey-2);
+    height: 100%;
+    width: 65%;
+    box-shadow: 2rem 0 3rem rgba(#000, 0.2);
+    transition: all 0.5s ease;
+    left: -100%;
+    // left: 0; -> animation
+  }
+  @include respond(phone-small) {
+    width: 75%;
+  }
+}
