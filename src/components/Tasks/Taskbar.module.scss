@@ -1,0 +1,38 @@
+.taskbar {
+  align-self: center;
+  padding: 2rem 2rem;
+  min-width: 45rem;
+  display: grid;
+  grid-template-columns: auto max-content;
+  //   grid-template-rows: 7rem auto;
+  row-gap: 2rem;
+  align-items: center;
+  background-color: var(--color-background);
+  border-radius: 2rem;
+
+  h2 {
+    font-size: 2.4rem;
+  }
+
+  &__btn {
+    width: fit-content;
+    justify-self: end;
+    font-family: inherit;
+    padding: 0.8rem 2.2rem;
+    border-radius: 10rem;
+    text-transform: capitalize;
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid var(--color-grey-4);
+    color: var(--color-grey-4);
+    font-weight: 600;
+  }
+
+  ul {
+    grid-column: 1 / -1;
+    list-style: none;
+    display: grid;
+    row-gap: 1rem;
+  }
+}

@@ -1,0 +1,61 @@
+@import '../../styles/abstracts.scss';
+
+.task {
+  padding: 1.2rem 1.5rem;
+  background-color: var(--color-grey-2);
+
+  display: grid;
+  grid-template-columns: min-content 1fr 3rem;
+  column-gap: 2rem;
+  align-items: center;
+
+  border-radius: 1rem;
+  &__icon {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 0.8rem;
+    background-color: var(--color-primary-tint);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    svg {
+      width: 2.5rem;
+      height: 2.5rem;
+      fill: var(--color-primary-shade-2);
+    }
+  }
+  &__details {
+    display: flex;
+    flex-direction: column;
+  }
+  &__category {
+    color: var(--color-primary);
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  &__checkbtn {
+    @include default-button-reset;
+    font-size: inherit;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    border: 3px solid var(--color-grey-3);
+    background-color: transparent;
+
+    border-radius: 0.8rem;
+    margin-right: 1rem;
+
+    color: transparent;
+  }
+
+  &--done {
+    .task__title {
+      text-decoration-line: line-through;
+    }
+    .task__checkbtn {
+      border-color: #397054;
+      color: #397054;
+    }
+  }
+}

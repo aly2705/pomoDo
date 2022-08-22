@@ -2,7 +2,7 @@ import classes from './Sidebar.module.scss';
 import { useSelector } from 'react-redux/es/exports';
 import SidebarItem from './SidebarItem';
 
-const Sidebar = props => {
+const Sidebar = () => {
   const isOpened = useSelector(state => state.mobileMenu.isOpened);
   const CSSclasses = isOpened
     ? `${classes.sidebar} ${classes.shown}`
