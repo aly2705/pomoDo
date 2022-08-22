@@ -1,15 +1,16 @@
 import classes from './MobileMenu.module.scss';
-import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { mobileMenuActions } from '../../../store/mobile-menu';
 
 const MobileMenu = props => {
-  const [isOpened, setIsOpened] = useState(false);
+  const dispatch = useDispatch();
+  const isOpened = useSelector(state => state.mobileMenu.isOpened);
   const CSSclasses = isOpened
     ? `${classes['mobile-menu']} ${classes['shown']}`
     : classes['mobile-menu'];
 
   const toggleMenuHandler = () => {
-    props.onToggleSidebar(!isOpened);
-    setIsOpened(prevValue => !prevValue);
+    dispatch(mobileMenuActions.toggleMenu());
   };
 
   return (

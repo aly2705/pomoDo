@@ -7,7 +7,7 @@ import ProfileOptions from './ProfileOptions';
 const Header = props => {
   return (
     <header className={classes.header}>
-      <MobileMenu onToggleSidebar={props.onToggleSidebar} />
+      <MobileMenu />
       <Logo />
       <ProfileOptions />
     </header>

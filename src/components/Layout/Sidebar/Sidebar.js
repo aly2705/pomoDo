@@ -1,9 +1,10 @@
 import classes from './Sidebar.module.scss';
-
+import { useSelector } from 'react-redux/es/exports';
 import SidebarItem from './SidebarItem';
 
 const Sidebar = props => {
-  const CSSclasses = props.opened
+  const isOpened = useSelector(state => state.mobileMenu.isOpened);
+  const CSSclasses = isOpened
     ? `${classes.sidebar} ${classes.shown}`
     : classes.sidebar;
   return (
@@ -13,7 +14,6 @@ const Sidebar = props => {
           label="Pomodoro"
           route="/pomodoro"
           icon="#icon-stopwatch"
-          active={true}
         />
         <SidebarItem label="Dashboard" route="/dashboard" icon="#icon-home" />
         <SidebarItem
