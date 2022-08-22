@@ -1,13 +1,13 @@
-import classes from "./Header.module.scss";
+import classes from './Header.module.scss';
 
-import Logo from "./Logo";
-import MobileMenu from "./MobileMenu";
-import ProfileOptions from "./ProfileOptions";
+import Logo from './Logo';
+import MobileMenu from './MobileMenu';
+import ProfileOptions from './ProfileOptions';
 
-const Header = () => {
+const Header = props => {
   return (
     <header className={classes.header}>
-      <MobileMenu />
+      <MobileMenu onToggleSidebar={props.onToggleSidebar} />
       <Logo />
       <ProfileOptions />
     </header>

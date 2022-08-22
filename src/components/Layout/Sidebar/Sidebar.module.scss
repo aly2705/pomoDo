@@ -1,4 +1,4 @@
-@import "../../../styles/abstracts.scss";
+@import '../../../styles/abstracts.scss';
 
 .sidebar {
   grid-column: sidebar-start / sidebar-end;
@@ -30,5 +30,11 @@
   }
   @include respond(phone-small) {
     width: 75%;
+  }
+}
+
+.shown {
+  @include respond(phone) {
+    left: 0; //-> animation
   }
 }

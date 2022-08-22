@@ -1,10 +1,13 @@
-import classes from "./Sidebar.module.scss";
+import classes from './Sidebar.module.scss';
 
-import SidebarItem from "./SidebarItem";
+import SidebarItem from './SidebarItem';
 
-const Sidebar = () => {
+const Sidebar = props => {
+  const CSSclasses = props.opened
+    ? `${classes.sidebar} ${classes.shown}`
+    : classes.sidebar;
   return (
-    <nav className={classes.sidebar}>
+    <nav className={CSSclasses}>
       <ul className={classes.sidebar__list}>
         <SidebarItem
           label="Pomodoro"

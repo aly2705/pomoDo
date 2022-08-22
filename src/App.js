@@ -1,9 +1,9 @@
-import Layout from "./components/Layout/Layout";
-import { Routes, Route, Navigate } from "react-router-dom";
-import PomodoroPage from "./pages/PomodoroPage";
-import DashboardPage from "./pages/DashboardPage";
-import StatisticsPage from "./pages/StatisticsPage";
-import RewardsPage from "./pages/RewardsPage";
+import Layout from './components/Layout/Layout';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import PomodoroPage from './pages/PomodoroPage';
+import DashboardPage from './pages/DashboardPage';
+import StatisticsPage from './pages/StatisticsPage';
+import RewardsPage from './pages/RewardsPage';
 
 function App() {
   return (
