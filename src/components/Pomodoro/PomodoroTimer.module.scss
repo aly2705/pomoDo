@@ -9,10 +9,19 @@
     0 0.4rem 0.4rem rgba(#000, 0.25);
   transition: all 0.3s;
 
+  @include respond(phone) {
+    margin-top: 3rem;
+  }
+
   &__circular {
     height: 32rem;
     width: 32rem;
     position: relative;
+
+    @include respond(tab-land-small) {
+      height: 30rem;
+      width: 30rem;
+    }
   }
   &__inner-circle {
     position: absolute;
@@ -24,6 +33,11 @@
     transform: translate(-50%, -50%);
     background-color: var(--color-background);
     border-radius: 50%;
+
+    @include respond(tab-land-small) {
+      height: 27rem;
+      width: 27rem;
+    }
   }
   &__bar {
     position: absolute;
@@ -32,6 +46,10 @@
     background-color: var(--color-primary-tint);
     border-radius: 100%;
     clip: rect(0, 32rem, 32rem, 16rem);
+
+    @include respond(tab-land-small) {
+      clip: rect(0, 30rem, 30rem, 15rem);
+    }
 
     &--right {
       transform: rotate(180deg);
@@ -45,6 +63,10 @@
     border-radius: 100%;
     clip: rect(0, 16rem, 32rem, 0);
     background-color: var(--color-grey-1);
+
+    @include respond(tab-land-small) {
+      clip: rect(0, 15rem, 30rem, 0);
+    }
 
     &--left {
       z-index: 1;
@@ -71,6 +93,10 @@
     font-size: 7.2rem;
     font-weight: 700;
     line-height: 1;
+
+    @include respond(tab-land-small) {
+      font-size: 6.4rem;
+    }
   }
   &__btn {
     @include default-button-reset;

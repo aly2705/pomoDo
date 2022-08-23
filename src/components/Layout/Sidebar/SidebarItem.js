@@ -16,7 +16,7 @@ const SidebarItem = props => {
         <svg>
           <use href={`${icons}${props.icon}`}></use>
         </svg>
-        {props.label}
+        <span>{props.label}</span>
       </NavLink>
     </li>
   );

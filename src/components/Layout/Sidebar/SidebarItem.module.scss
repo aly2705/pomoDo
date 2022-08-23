@@ -1,3 +1,5 @@
+@import '../../../styles/abstracts.scss';
+
 .sidebar__item {
   position: relative;
 
@@ -53,11 +55,27 @@
     padding: 1.4rem 4rem;
     transition: all 0.3s;
 
+    span {
+      @include respond(laptop-small) {
+        display: none;
+      }
+      @include respond(phone) {
+        display: initial;
+      }
+    }
+
     svg {
       width: 3.5rem;
       height: 3.5rem;
       fill: var(--color-text-tertiary);
       margin-right: 1.5rem;
+
+      @include respond(laptop-small) {
+        margin-right: 0;
+      }
+      @include respond(phone) {
+        margin-right: 1.5rem;
+      }
     }
   }
 }

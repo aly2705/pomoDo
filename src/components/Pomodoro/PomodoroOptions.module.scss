@@ -1,3 +1,5 @@
+@import '../../styles/abstracts.scss';
+
 .options {
   list-style: none;
   display: flex;
@@ -14,6 +16,27 @@
   cursor: pointer;
   border-radius: 10rem;
   transition: all 0.3s;
+  white-space: nowrap;
+  font-size: 1.6rem;
+
+  @include respond(laptop) {
+    padding: 1rem 3rem;
+  }
+  @include respond(tab-land) {
+    padding: 1rem 2rem;
+  }
+  @include respond(tab-land-small) {
+    padding: 1rem 1.5rem;
+  }
+  @include respond(tab-port-large) {
+    padding: 1.1rem 3.2rem;
+  }
+  @include respond(phone) {
+    padding: 1rem 1.5rem;
+  }
+  @include respond(phone-v-small) {
+    font-size: 1.4rem;
+  }
 
   &--active {
     background-color: var(--color-primary);

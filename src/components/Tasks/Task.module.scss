@@ -8,8 +8,8 @@
   grid-template-columns: min-content 1fr 3rem;
   column-gap: 2rem;
   align-items: center;
-
   border-radius: 1rem;
+
   &__icon {
     width: 4.5rem;
     height: 4.5rem;
@@ -18,16 +18,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    grid-column: 1 / 2;
 
     svg {
       width: 2.5rem;
       height: 2.5rem;
       fill: var(--color-primary-shade-2);
     }
+
+    @include respond(phone-v-small) {
+      display: none;
+    }
   }
   &__details {
     display: flex;
     flex-direction: column;
+    grid-column: 2 / 3;
+    justify-self: start;
+    max-width: 34rem;
+
+    @include respond(laptop) {
+      max-width: 30rem;
+    }
+    @include respond(tab-land-small) {
+      max-width: 25rem;
+    }
+    @include respond(tab-port-large) {
+      max-width: 45rem;
+    }
+    @include respond(tab-port) {
+      max-width: 30rem;
+    }
+    @include respond(phone) {
+      max-width: 25rem;
+    }
+    @include respond(phone-v-small) {
+      max-width: 22rem;
+    }
+  }
+  &__title {
+    line-height: normal;
+    // overflow-wrap: break-word;
   }
   &__category {
     color: var(--color-primary);
@@ -45,6 +76,7 @@
 
     border-radius: 0.8rem;
     margin-right: 1rem;
+    grid-column: 3 / 4;
 
     color: transparent;
   }

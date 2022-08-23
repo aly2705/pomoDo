@@ -6,10 +6,14 @@
   min-height: 100vh;
   width: 100%;
   grid-template-rows: [header-start] 9rem [header-end] auto;
-  grid-template-columns: [sidebar-start] 30rem [sidebar-end main-start] 1fr[main-end];
+  grid-template-columns: [sidebar-start] 28rem [sidebar-end main-start] 1fr[main-end];
   grid-template-areas:
     'header header'
     'sidebar main';
+
+  @include respond(laptop-small) {
+    grid-template-columns: [sidebar-start] 12rem [sidebar-end main-start] 1fr[main-end];
+  }
 
   @include respond(phone) {
     grid-template-rows: [header-start] 9rem [header-end] auto;
@@ -17,6 +21,10 @@
     grid-template-areas:
       'header'
       'main';
+  }
+
+  @include respond(phone-small) {
+    height: 100vh;
   }
 }
 
@@ -27,4 +35,21 @@
   display: flex;
   justify-content: space-between;
   padding: 4rem 6rem;
+
+  @include respond(laptop) {
+    padding: 4rem;
+  }
+
+  @include respond(tab-port-large) {
+    flex-direction: column;
+  }
+
+  @include respond(tab-port-large) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  @include respond(phone-v-small) {
+    padding: 3rem 2rem;
+  }
 }

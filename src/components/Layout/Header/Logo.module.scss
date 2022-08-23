@@ -1,11 +1,15 @@
-@import "../../../styles/abstracts.scss";
-@import url("https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap");
+@import '../../../styles/abstracts.scss';
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap');
 
 .logo {
   padding: 0.5rem 0;
   width: fit-content;
   display: flex;
   align-items: center;
+
+  @include respond(laptop-small) {
+    margin-left: -1rem;
+  }
 
   img {
     height: 7.5rem;
@@ -18,12 +22,19 @@
   }
 
   figcaption {
-    font-family: "Akaya Kanadaka", cursive;
+    font-family: 'Akaya Kanadaka', cursive;
     font-size: 3.8rem;
     transform: translateY(3px);
 
     @include respond(phone-small) {
       font-size: 3rem;
+    }
+
+    @include respond(laptop-small) {
+      display: none;
+    }
+    @include respond(phone) {
+      display: initial;
     }
   }
 }

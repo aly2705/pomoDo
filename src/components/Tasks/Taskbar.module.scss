@@ -1,21 +1,42 @@
+@import '../../styles/abstracts.scss';
+
 .taskbar {
-  align-self: center;
+  align-self: flex-start;
+  margin-top: 7rem;
+  margin-left: 6.5rem;
   padding: 2rem 2rem;
-  min-width: 45rem;
+  width: 100%;
   display: grid;
-  grid-template-columns: auto max-content;
-  //   grid-template-rows: 7rem auto;
+  grid-template-columns: max-content auto;
   row-gap: 2rem;
   align-items: center;
   background-color: var(--color-background);
   border-radius: 2rem;
 
+  @include respond(laptop) {
+    width: fit-content;
+    margin-left: 4rem;
+    margin-top: 6.5rem;
+  }
+  @include respond(laptop) {
+    margin-top: 5.5rem;
+  }
+  @include respond(tab-port-large) {
+    align-self: center;
+    margin-left: 0;
+  }
+  // @include respond(phone-v-small) {
+  //   display: none;
+  // }
+
   h2 {
     font-size: 2.4rem;
+    width: fit-content;
   }
 
   &__btn {
     width: fit-content;
+    white-space: nowrap;
     justify-self: end;
     font-family: inherit;
     padding: 0.8rem 2.2rem;
