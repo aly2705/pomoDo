@@ -120,3 +120,17 @@
     }
   }
 }
+
+@keyframes press {
+  0% {
+    box-shadow: inset -1rem -1rem 3rem rgba(#000, 0.25),
+      0 0.4rem 0.4rem rgba(#000, 0.25);
+  }
+  100% {
+    box-shadow: 0 10rem 0.4rem rgba(#000, 0.3);
+  }
+}
+
+.clicked {
+  animation: press 0.3s ease-in;
+}

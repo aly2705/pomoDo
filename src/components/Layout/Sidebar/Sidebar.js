@@ -7,6 +7,7 @@ const Sidebar = () => {
   const CSSclasses = isOpened
     ? `${classes.sidebar} ${classes.shown}`
     : classes.sidebar;
+
   return (
     <nav className={CSSclasses}>
       <ul className={classes.sidebar__list}>

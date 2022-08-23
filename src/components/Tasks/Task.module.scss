@@ -36,6 +36,7 @@
     grid-column: 2 / 3;
     justify-self: start;
     max-width: 34rem;
+    row-gap: 0.2rem;
 
     @include respond(laptop) {
       max-width: 30rem;
@@ -53,12 +54,12 @@
       max-width: 25rem;
     }
     @include respond(phone-v-small) {
+      margin-left: -2rem;
       max-width: 22rem;
     }
   }
   &__title {
     line-height: normal;
-    // overflow-wrap: break-word;
   }
   &__category {
     color: var(--color-primary);
@@ -67,18 +68,25 @@
   }
   &__checkbtn {
     @include default-button-reset;
-    font-size: inherit;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1.8rem;
     width: 3rem;
     height: 3rem;
     text-align: center;
     border: 3px solid var(--color-grey-3);
     background-color: transparent;
+    transition: all 0.2s;
 
     border-radius: 0.8rem;
     margin-right: 1rem;
     grid-column: 3 / 4;
 
     color: transparent;
+
+    @include respond(phone) {
+      font-size: 1.4rem;
+    }
   }
 
   &--done {
