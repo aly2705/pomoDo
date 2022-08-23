@@ -18,9 +18,9 @@
   @include respond(phone) {
     grid-template-rows: [header-start] 9rem [header-end] auto;
     grid-template-columns: [main-start] 1fr[main-end];
-    grid-template-areas:
-      'header'
-      'main';
+    // grid-template-areas:
+    //   'header'
+    //   'main';
   }
 
   @include respond(phone-small) {
