@@ -1,12 +1,41 @@
 @import '../../styles/abstracts.scss';
 
+.circle-container {
+  width: 32rem;
+  height: 32rem;
+  transform: rotate(-90deg);
+
+  @include respond(tab-land-small) {
+    height: 30rem;
+    width: 30rem;
+  }
+}
+
+.circle-container__background {
+  fill: none;
+  stroke: var(--color-grey-1);
+  stroke-width: 2px;
+}
+
+.circle-container__progress {
+  fill: none;
+  stroke-linecap: round;
+  stroke: var(--color-primary-tint);
+  stroke-dasharray: 100 100;
+  stroke-linecap: round;
+  stroke-width: 2px;
+  // For animations...
+  transition: stroke-dashoffset 1s;
+  will-change: transform;
+}
+
 .timer {
   margin-top: 5rem;
   padding: 2rem;
   background-color: var(--color-background);
   border-radius: 50%;
   box-shadow: inset -1rem -1rem 3rem rgba(#000, 0.25),
-    0 0.4rem 0.4rem rgba(#000, 0.25);
+    0 0.6rem 0.4rem rgba(#000, 0.25);
   transition: all 0.3s;
 
   @include respond(phone) {
@@ -23,62 +52,9 @@
       width: 30rem;
     }
   }
-  &__inner-circle {
-    position: absolute;
-    z-index: 6;
-    top: 50%;
-    left: 50%;
-    height: 29rem;
-    width: 29rem;
-    transform: translate(-50%, -50%);
-    background-color: var(--color-background);
-    border-radius: 50%;
-
-    @include respond(tab-land-small) {
-      height: 27rem;
-      width: 27rem;
-    }
-  }
-  &__bar {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: var(--color-primary-tint);
-    border-radius: 100%;
-    clip: rect(0, 32rem, 32rem, 16rem);
-
-    @include respond(tab-land-small) {
-      clip: rect(0, 30rem, 30rem, 15rem);
-    }
-
-    &--right {
-      transform: rotate(180deg);
-      z-index: 3;
-    }
-  }
-  &__progress {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border-radius: 100%;
-    clip: rect(0, 16rem, 32rem, 0);
-    background-color: var(--color-grey-1);
-
-    @include respond(tab-land-small) {
-      clip: rect(0, 15rem, 30rem, 0);
-    }
-
-    &--left {
-      z-index: 1;
-      // animation: progressLeft 30s linear both;
-      // animation-delay: 30s;
-    }
-    &--right {
-      z-index: 1;
-      // animation: progressRight 30s linear both;
-    }
-  }
   &__center {
+    position: absolute;
+    top: 0;
     width: 100%;
     height: 100%;
     z-index: 10;
@@ -90,12 +66,12 @@
   }
   &__countdown {
     margin-top: 3rem;
-    font-size: 7.2rem;
+    font-size: 6.8rem;
     font-weight: 700;
     line-height: 1;
 
     @include respond(tab-land-small) {
-      font-size: 6.4rem;
+      font-size: 6.2rem;
     }
   }
   &__btn {
@@ -119,18 +95,4 @@
         0 0.2rem 0.4rem rgba(#000, 0.3);
     }
   }
-}
-
-@keyframes press {
-  0% {
-    box-shadow: inset -1rem -1rem 3rem rgba(#000, 0.25),
-      0 0.4rem 0.4rem rgba(#000, 0.25);
-  }
-  100% {
-    box-shadow: 0 10rem 0.4rem rgba(#000, 0.3);
-  }
-}
-
-.clicked {
-  animation: press 0.3s ease-in;
 }
