@@ -1,20 +1,29 @@
 import classes from './PomodoroOptions.module.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { timerActions } from '../../store/timer';
+import { useEffect } from 'react';
 
 const PomodoroOptions = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
   const queryParams = new URLSearchParams(location.search);
-  const activeTimer = queryParams.get('timer') || 'pomodoro';
+  const initialTimer = queryParams.get('timer') || 'pomodoro';
+  const activeTimer = useSelector(state => state.timer.type);
+  const dispatch = useDispatch();
 
   const changeTimerHandler = event => {
     const clickedListItem = event.target.closest('li');
     if (!clickedListItem) return;
 
     const timer = clickedListItem.dataset.timer;
+    dispatch(timerActions.changeTimer(timer));
     navigate(`?timer=${timer}`);
   };
+
+  useEffect(() => {
+    dispatch(timerActions.changeTimer(initialTimer));
+  }, [dispatch, initialTimer]);
 
   const defaultClass = classes.option;
   const activeClasses = `${classes.option} ${classes['option--active']}`;

@@ -1,30 +1,34 @@
 import classes from './PomodoroTimer.module.scss';
 import '../../styles/abstracts.scss';
-import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { timerActions } from '../../store/timer';
 
-const findNumberOfMinutes = timerType => {
-  if (!timerType) return { minutes: 0, seconds: 30 };
-  return timerType === 'pomodoro'
-    ? { minutes: 25, seconds: 0 }
-    : timerType === 'shortBR'
-    ? { minutes: 5, seconds: 0 }
-    : { minutes: 10, seconds: 0 };
-};
+// const findNumberOfMinutes = timerType => {
+//   if (!timerType) return { minutes: 0, seconds: 30 };
+//   return timerType === 'pomodoro'
+//     ? { minutes: 25, seconds: 0 }
+//     : timerType === 'shortBR'
+//     ? { minutes: 5, seconds: 0 }
+//     : { minutes: 10, seconds: 0 };
+// };
 
 const PomodoroTimer = () => {
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const isActive = useSelector(state => state.timer.isActive);
+  const countdown = useSelector(state => state.timer.countdown);
+  const totalSeconds = useSelector(state => state.timer.totalSeconds);
   const [wasClicked, setWasClicked] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-
-  const queryParams = new URLSearchParams(location.search);
-  const activeTimer = queryParams.get('timer');
-  const initialTimer = findNumberOfMinutes(activeTimer);
-
-  const [timer, setTimer] = useState(initialTimer);
   const [percentage, setPercentage] = useState(0);
-  const totalSeconds = initialTimer.minutes * 60 + initialTimer.seconds;
-  console.log(totalSeconds);
+
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const activeTimer = queryParams.get('timer');
+  // const initialTimer = findNumberOfMinutes(activeTimer);
+
+  // const [timer, setTimer] = useState(initialTimer);
+
+  //const totalSeconds = initialTimer.minutes * 60 + initialTimer.seconds;
 
   const clickTimerHandler = () => {
     // Animation
@@ -32,43 +36,26 @@ const PomodoroTimer = () => {
     setTimeout(() => {
       setWasClicked(false);
     }, 300);
-    setIsActive(prevState => !prevState);
+    dispatch(timerActions.toggleIsActive());
   };
 
   useEffect(() => {
     if (isActive) {
       const interval = setInterval(() => {
-        setTimer(prevTimer => {
-          if (prevTimer.minutes === 0 && prevTimer.seconds === 0) {
-            clearInterval(interval);
-            return {
-              minutes: 0,
-              seconds: 0,
-            };
-          }
-          if (prevTimer.seconds === 0) {
-            return {
-              minutes: prevTimer.minutes - 1,
-              seconds: 59,
-            };
-          }
-          return {
-            minutes: prevTimer.minutes,
-            seconds: prevTimer.seconds - 1,
-          };
-        });
+        dispatch(timerActions.countdown(interval));
       }, 1000);
 
       return () => {
         clearInterval(interval);
       };
     }
-  }, [isActive]);
+  }, [isActive, dispatch]);
 
   useEffect(() => {
-    const secondsCompleted = totalSeconds - timer.minutes * 60 - timer.seconds;
+    const secondsCompleted =
+      totalSeconds - countdown.minutes * 60 - countdown.seconds;
     setPercentage((secondsCompleted / totalSeconds) * 100);
-  }, [timer, totalSeconds]);
+  }, [countdown, totalSeconds]);
 
   return (
     <div className={`${classes.timer} ${wasClicked ? 'clicked' : ''}`}>
@@ -94,41 +81,17 @@ const PomodoroTimer = () => {
         </svg>
         <div className={classes.timer__center}>
           <div className={classes.timer__countdown}>
-            <span className={classes.timer__min}>{timer.minutes}</span>:
+            <span className={classes.timer__min}>{countdown.minutes}</span>:
             <span className={classes.timer__sec}>
-              {timer.seconds < 10 ? `0${timer.seconds}` : timer.seconds}
+              {countdown.seconds < 10
+                ? `0${countdown.seconds}`
+                : countdown.seconds}
             </span>
           </div>
           <button className={classes.timer__btn} onClick={clickTimerHandler}>
             {isActive ? 'Pause' : 'Start'}
           </button>
         </div>
-        {/* <div className={classes['timer__inner-circle']}>
-          <div className={classes.timer__center}>
-            <div className={classes.timer__countdown}>
-              <span className={classes.timer__min}>{timerMin}</span>:
-              <span className={classes.timer__sec}>00</span>
-            </div>
-            <button className={classes.timer__btn}>Pause</button>
-          </div>
-        </div>
-
-        <div className={classes['timer__progress-bar']}>
-          <div
-            className={`${classes.timer__bar} ${classes['timer__bar--left']}`}
-          >
-            <div
-              className={`${classes.timer__progress} ${classes['timer__progress--left']}`}
-            ></div>
-          </div>
-          <div
-            className={`${classes.timer__bar} ${classes['timer__bar--right']}`}
-          >
-            <div
-              className={`${classes.timer__progress} ${classes['timer__progress--right']}`}
-            ></div>
-          </div>
-        </div> */}
       </div>
     </div>
   );
