@@ -10,9 +10,13 @@ import { useEffect } from 'react';
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(timerActions.getTimerData());
+    if (localStorage.getItem('timer')) {
+      dispatch(timerActions.getTimerData());
+    }
   }, [dispatch]);
+
   return (
     <Layout>
       <Routes>
