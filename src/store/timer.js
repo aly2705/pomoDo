@@ -5,8 +5,13 @@ const timerSlice = createSlice({
   initialState: {
     countdown: { minutes: 25, seconds: 0 },
     isActive: false,
-    type: 'pomodoro',
+    type: undefined, //avoid setting active class on pomodoro when init
     totalSeconds: 25 * 60,
+    config: {
+      pomodoro: 25,
+      short: 5,
+      long: 10,
+    },
   },
   reducers: {
     toggleIsActive(state) {
@@ -27,26 +32,30 @@ const timerSlice = createSlice({
       state.isActive = false;
       switch (timerType) {
         case 'pomodoro':
-          state.countdown = { minutes: 25, seconds: 0 };
+          state.countdown = { minutes: state.config.pomodoro, seconds: 0 };
           state.type = 'pomodoro';
-          state.totalSeconds = 25 * 60;
+          state.totalSeconds = state.config.pomodoro * 60;
           break;
         case 'shortBR':
-          state.countdown = { minutes: 5, seconds: 0 };
+          state.countdown = { minutes: state.config.short, seconds: 0 };
           state.type = 'shortBR';
-          state.totalSeconds = 5 * 60;
+          state.totalSeconds = state.config.short * 60;
           break;
         case 'longBR':
-          state.countdown = { minutes: 10, seconds: 0 };
+          state.countdown = { minutes: state.config.long, seconds: 0 };
           state.type = 'longBR';
-          state.totalSeconds = 10 * 60;
+          state.totalSeconds = state.config.long * 60;
           break;
         default:
-          state.countdown = { minutes: 25, seconds: 0 };
+          state.countdown = { minutes: state.config.pomodoro, seconds: 0 };
           state.type = 'pomodoro';
-          state.totalSeconds = 25 * 60;
+          state.totalSeconds = state.config.pomodoro * 60;
           break;
       }
+    },
+    updateConfig(state, action) {
+      state.config = action.payload;
+      // const newShort = action.payload.short;
     },
   },
 });

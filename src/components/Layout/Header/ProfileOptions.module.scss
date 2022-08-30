@@ -1,4 +1,4 @@
-@import "../../../styles/abstracts.scss";
+@import '../../../styles/abstracts.scss';
 
 .profile_options {
   display: flex;
@@ -10,41 +10,40 @@
 .option {
   height: 100%;
 
-  &__link {
-    &,
-    &:link,
-    &:visited {
-      position: relative;
-      align-self: stretch;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      font-weight: 500;
-      color: var(--color-text-primary);
-      padding: 0 1.8rem;
-      height: 100%;
-      transition: all 0.3s;
+  &__btn {
+    @include default-button-reset;
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: transparent;
+    color: var(--color-text-primary);
+    padding: 0 1.8rem;
+    height: 100%;
+    transition: all 0.3s;
+
+    @include respond(tab-port) {
+      padding: 0 1.5rem;
+    }
+    @include respond(phone-small) {
+      padding: 0 1rem;
+    }
+
+    svg {
+      width: 3rem;
+      height: 3rem;
+      fill: var(--color-text-secondary);
+      margin-right: 0.8rem;
 
       @include respond(tab-port) {
-        padding: 0 1.5rem;
+        margin-right: 0;
       }
-      @include respond(phone-small) {
-        padding: 0 1rem;
-      }
-
-      svg {
-        width: 3rem;
-        height: 3rem;
-        fill: var(--color-text-secondary);
-        margin-right: 0.8rem;
-
-        @include respond(tab-port) {
-          margin-right: 0;
-        }
-        @include respond(tab-port) {
-          width: 2.8rem;
-          height: 2.8rem;
-        }
+      @include respond(tab-port) {
+        width: 2.8rem;
+        height: 2.8rem;
       }
     }
     &:hover,

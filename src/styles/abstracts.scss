@@ -118,6 +118,16 @@ $bp-phone-v-small: 25em; //400px
       0 0.2rem 0.4rem rgba(#000, 0.3);
   }
 }
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .clicked {
   animation: press 0.3s ease-in;

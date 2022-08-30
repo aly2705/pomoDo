@@ -1,0 +1,91 @@
+@import '../../styles/abstracts.scss';
+
+.settings {
+  padding: 2.5rem 3.5rem;
+
+  @include respond(phone-small) {
+    padding: 2.5rem 2.5rem;
+  }
+
+  &__btn-close {
+    @include default-button-reset;
+    background-color: transparent;
+    font-size: 2.4rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--color-text-secondary);
+    position: absolute;
+    top: 2rem;
+    right: 2.5rem;
+  }
+}
+
+.form {
+  padding: 1.5rem 0 3rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 4rem;
+  row-gap: 1.5rem;
+
+  @include respond(phone-v-small) {
+    grid-template-columns: 1fr;
+  }
+
+  h3 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    grid-column: 1 / -1;
+  }
+
+  &__group {
+    display: grid;
+    row-gap: 0.5rem;
+
+    @include respond(phone-v-small) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    label {
+      color: var(--color-text-tertiary);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    input {
+      font-family: inherit;
+      background-color: var(--color-grey-1);
+      outline: none;
+      border: 2px solid var(--color-grey-4);
+      width: 85%;
+      padding: 0.8rem 1rem;
+      font-size: 1.8rem;
+      border-radius: 1rem;
+      font-weight: 600;
+
+      @include respond(phone-v-small) {
+        width: 100%;
+      }
+    }
+    input[type='number']::-webkit-inner-spin-button {
+      opacity: 1;
+    }
+  }
+
+  button {
+    @include default-button-reset;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: 1.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 10rem;
+    padding: 1.25rem 5rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    // grid-column: 1 / -1;
+    // justify-self: center;
+  }
+}

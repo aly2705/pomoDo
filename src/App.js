@@ -10,10 +10,11 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Navigate to="/pomodoro" replace />} />
-        <Route path="/pomodoro" element={<PomodoroPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/statistics" element={<StatisticsPage />} />
-        <Route path="/rewards" element={<RewardsPage />} />
+        <Route path="/pomodoro/*" element={<PomodoroPage />} />
+        <Route path="/dashboard/*" element={<DashboardPage />} />
+        <Route path="/statistics/*" element={<StatisticsPage />} />
+        <Route path="/rewards/*" element={<RewardsPage />} />
+        {/* <Route path={`/${pomodoro}/settings`} element={<Settings />} /> */}
       </Routes>
     </Layout>
   );
