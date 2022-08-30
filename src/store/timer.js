@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getData, persistData } from '../helpers/helpers';
 
 const timerSlice = createSlice({
   name: 'timer',
   initialState: {
     countdown: { minutes: 25, seconds: 0 },
     isActive: false,
-    type: undefined, //avoid setting active class on pomodoro when init
+    type: 'pomodoro',
     totalSeconds: 25 * 60,
     config: {
       pomodoro: 25,
@@ -16,6 +17,7 @@ const timerSlice = createSlice({
   reducers: {
     toggleIsActive(state) {
       state.isActive = !state.isActive;
+      persistData('timer', state);
     },
     countdown(state, action) {
       if (state.countdown.minutes === 0 && state.countdown.seconds === 0) {
@@ -26,9 +28,11 @@ const timerSlice = createSlice({
         state.countdown.minutes = state.countdown.minutes - 1;
         state.countdown.seconds = 59;
       } else state.countdown.seconds = state.countdown.seconds - 1;
+      persistData('timer', state);
     },
     changeTimer(state, action) {
       const timerType = action.payload;
+      console.log('changed');
       state.isActive = false;
       switch (timerType) {
         case 'pomodoro':
@@ -52,10 +56,19 @@ const timerSlice = createSlice({
           state.totalSeconds = state.config.pomodoro * 60;
           break;
       }
+      persistData('timer', state);
     },
     updateConfig(state, action) {
       state.config = action.payload;
-      // const newShort = action.payload.short;
+      persistData('timer', state);
+    },
+    getTimerData(state) {
+      const storedData = getData('timer');
+      state.isActive = storedData.isActive;
+      state.countdown = storedData.countdown;
+      state.type = storedData.type;
+      state.totalSeconds = storedData.totalSeconds;
+      state.config = storedData.config;
     },
   },
 });

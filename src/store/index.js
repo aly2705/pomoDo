@@ -5,5 +5,4 @@ import timerReducer from './timer';
 const store = configureStore({
   reducer: { mobileMenu: mobileMenuReducer, timer: timerReducer },
 });
-
 export default store;

@@ -4,8 +4,15 @@ import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
 import RewardsPage from './pages/RewardsPage';
+import { timerActions } from './store/timer';
+import { useDispatch } from 'react-redux/es/exports';
+import { useEffect } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(timerActions.getTimerData());
+  }, [dispatch]);
   return (
     <Layout>
       <Routes>
@@ -14,7 +21,6 @@ function App() {
         <Route path="/dashboard/*" element={<DashboardPage />} />
         <Route path="/statistics/*" element={<StatisticsPage />} />
         <Route path="/rewards/*" element={<RewardsPage />} />
-        {/* <Route path={`/${pomodoro}/settings`} element={<Settings />} /> */}
       </Routes>
     </Layout>
   );
