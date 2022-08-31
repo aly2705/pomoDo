@@ -1,21 +1,58 @@
 import Layout from './components/Layout/Layout';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Navigate,
+  matchPath,
+  useLocation,
+} from 'react-router-dom';
 import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
 import RewardsPage from './pages/RewardsPage';
 import { timerActions } from './store/timer';
-import { useDispatch } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
+
+let secondsOutsidePomodoro = 0;
 
 function App() {
   const dispatch = useDispatch();
+  const timerIsActive = useSelector(state => state.timer.isActive);
+  const location = useLocation();
+
+  const match = matchPath(
+    {
+      path: '/pomodoro',
+      exact: true,
+      strict: false,
+    },
+    location.pathname
+  );
 
   useEffect(() => {
     if (localStorage.getItem('timer')) {
       dispatch(timerActions.getTimerData());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!timerIsActive) return;
+    if (!match) {
+      const interval = setInterval(() => {
+        secondsOutsidePomodoro++;
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
+    if (match) {
+      // console.log(secondsOutsidePomodoro);
+      dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
+      secondsOutsidePomodoro = 0;
+    }
+  }, [match, timerIsActive, dispatch]);
 
   return (
     <Layout>

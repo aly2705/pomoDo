@@ -24,6 +24,9 @@ const timerSlice = createSlice({
         clearInterval(action.payload);
         state.countdown.minutes = 0;
         state.countdown.seconds = 0;
+        state.isActive = false;
+        persistData('timer', state);
+        return;
       } else if (state.countdown.seconds === 0) {
         state.countdown.minutes = state.countdown.minutes - 1;
         state.countdown.seconds = 59;
@@ -32,7 +35,6 @@ const timerSlice = createSlice({
     },
     changeTimer(state, action) {
       const timerType = action.payload;
-      console.log('changed');
       state.isActive = false;
       switch (timerType) {
         case 'pomodoro':
@@ -69,6 +71,33 @@ const timerSlice = createSlice({
       state.type = storedData.type;
       state.totalSeconds = storedData.totalSeconds;
       state.config = storedData.config;
+    },
+    subtractOutsideSeconds(state, action) {
+      const totalSeconds = action.payload;
+      const minutes = Math.trunc(totalSeconds / 60);
+      const seconds = totalSeconds - minutes * 60;
+      console.log(minutes, seconds);
+
+      const newSeconds = state.countdown.seconds - seconds;
+      const newMinutes = state.countdown.minutes - minutes;
+      console.log(newMinutes, newSeconds);
+
+      if (newMinutes < 0) {
+        state.countdown.minutes = 0;
+        state.countdown.seconds = 0;
+        state.isActive = false;
+        persistData('timer', state);
+        return;
+      } else state.countdown.minutes = newMinutes;
+      if (newSeconds < 0 && newMinutes > 0) {
+        state.countdown.seconds = 60 - Math.abs(newSeconds);
+        state.countdown.minutes--;
+      } else if (newSeconds < 0) {
+        state.countdown.minutes = 0;
+        state.countdown.seconds = 0;
+        state.isActive = false;
+      } else state.countdown.seconds = newSeconds;
+      persistData('timer', state);
     },
   },
 });
