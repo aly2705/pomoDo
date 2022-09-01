@@ -76,11 +76,9 @@ const timerSlice = createSlice({
       const totalSeconds = action.payload;
       const minutes = Math.trunc(totalSeconds / 60);
       const seconds = totalSeconds - minutes * 60;
-      console.log(minutes, seconds);
 
       const newSeconds = state.countdown.seconds - seconds;
       const newMinutes = state.countdown.minutes - minutes;
-      console.log(newMinutes, newSeconds);
 
       if (newMinutes < 0) {
         state.countdown.minutes = 0;

@@ -4,15 +4,11 @@
   align-self: flex-start;
   margin-top: 7rem;
   margin-left: 6.5rem;
-  padding: 2rem 2rem;
   width: 100%;
   display: grid;
   grid-template-columns: max-content auto;
   row-gap: 2rem;
   align-items: center;
-  background-color: var(--color-background);
-  border-radius: 2rem;
-  box-shadow: 0 0.2rem 1rem rgba(#000, 0.1);
 
   @include respond(laptop) {
     width: fit-content;
@@ -26,9 +22,6 @@
     align-self: center;
     margin-left: 0;
   }
-  // @include respond(phone-v-small) {
-  //   display: none;
-  // }
 
   h2 {
     font-size: 2.4rem;
@@ -36,20 +29,31 @@
   }
 
   &__btn {
-    width: fit-content;
-    white-space: nowrap;
-    justify-self: end;
-    font-family: inherit;
-    padding: 0.8rem 2.2rem;
-    border-radius: 10rem;
-    text-transform: capitalize;
-    outline: none;
-    cursor: pointer;
-    background-color: transparent;
-    border: 2px solid var(--color-grey-4);
-    color: var(--color-grey-4);
-    font-weight: 600;
-    transition: all 0.2s ease-out;
+    &,
+    &:link,
+    &:visited {
+      display: block;
+      text-decoration: none;
+      width: fit-content;
+      white-space: nowrap;
+      justify-self: end;
+      font-family: inherit;
+      font-size: 1.4rem;
+      padding: 0.6rem 2.2rem;
+      border-radius: 10rem;
+      text-transform: capitalize;
+      outline: none;
+      cursor: pointer;
+      background-color: transparent;
+      border: 2px solid var(--color-grey-4);
+      color: var(--color-grey-4);
+      font-weight: 600;
+      transition: all 0.2s ease-out;
+
+      @include respond(phone) {
+        padding: 0.4rem 1.5rem;
+      }
+    }
 
     &:hover {
       background-color: var(--color-grey-1);

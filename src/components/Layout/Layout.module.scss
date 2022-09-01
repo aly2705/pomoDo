@@ -34,6 +34,7 @@
   background-color: var(--color-grey-1);
   display: flex;
   justify-content: space-evenly;
+
   padding: 4rem 6rem;
 
   @include respond(laptop) {

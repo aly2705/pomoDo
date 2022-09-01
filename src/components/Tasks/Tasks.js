@@ -1,15 +1,11 @@
-import classes from './Taskbar.module.scss';
 import Task from './Task';
+import classes from './Tasks.module.scss';
 import Card from '../UI/Card';
-import { Link } from 'react-router-dom';
 
-const Taskbar = () => {
+const Tasks = () => {
   return (
-    <Card className={classes.taskbar}>
-      <h2>My tasks</h2>
-      <Link to="/tasks" className={classes.taskbar__btn}>
-        View all
-      </Link>
+    <Card className={classes.tasks}>
+      <h2>Tasks</h2>
       <ul>
         <Task category={{ name: 'Study', icon: '#icon-book' }}>
           Finish at least one chapter in the course book
@@ -28,4 +24,4 @@ const Taskbar = () => {
   );
 };
 
-export default Taskbar;
+export default Tasks;

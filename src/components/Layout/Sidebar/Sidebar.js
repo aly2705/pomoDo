@@ -16,6 +16,7 @@ const Sidebar = () => {
           route="/pomodoro"
           icon="#icon-stopwatch"
         />
+        <SidebarItem label="Tasks" route="/tasks" icon="#icon-list-alt" />
         <SidebarItem label="Dashboard" route="/dashboard" icon="#icon-home" />
         <SidebarItem
           label="Statistics"

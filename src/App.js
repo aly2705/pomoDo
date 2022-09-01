@@ -10,6 +10,7 @@ import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
 import RewardsPage from './pages/RewardsPage';
+import TasksPage from './pages/TasksPage';
 import { timerActions } from './store/timer';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
@@ -48,7 +49,6 @@ function App() {
       };
     }
     if (match) {
-      // console.log(secondsOutsidePomodoro);
       dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
       secondsOutsidePomodoro = 0;
     }
@@ -58,10 +58,11 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Navigate to="/pomodoro" replace />} />
-        <Route path="/pomodoro/*" element={<PomodoroPage />} />
-        <Route path="/dashboard/*" element={<DashboardPage />} />
-        <Route path="/statistics/*" element={<StatisticsPage />} />
-        <Route path="/rewards/*" element={<RewardsPage />} />
+        <Route path="/pomodoro" element={<PomodoroPage />} />
+        <Route path="/tasks" element={<TasksPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
+        <Route path="/rewards" element={<RewardsPage />} />
       </Routes>
     </Layout>
   );

@@ -22,7 +22,15 @@ const Modal = props => {
         portalElement
       )}
       {ReactDOM.createPortal(
-        <ModalWindow className={props.className}>{props.children}</ModalWindow>,
+        <ModalWindow className={props.className}>
+          <button
+            className={classes['modal__btn-close']}
+            onClick={props.onClose}
+          >
+            &#10006;
+          </button>
+          {props.children}
+        </ModalWindow>,
         portalElement
       )}
     </React.Fragment>

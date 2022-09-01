@@ -1,24 +1,18 @@
 @import '../../styles/abstracts.scss';
 
-.settings {
-  padding: 2.5rem 3.5rem;
-
-  @include respond(phone-small) {
-    padding: 2.5rem 2.5rem;
-  }
-
-  &__btn-close {
-    @include default-button-reset;
-    background-color: transparent;
-    font-size: 2.4rem;
-    font-weight: 600;
-    font-family: inherit;
-    color: var(--color-text-secondary);
-    position: absolute;
-    top: 2rem;
-    right: 2.5rem;
-  }
-}
+// .settings {
+//   &__btn-close {
+//     @include default-button-reset;
+//     background-color: transparent;
+//     font-size: 2.4rem;
+//     font-weight: 600;
+//     font-family: inherit;
+//     color: var(--color-text-secondary);
+//     position: absolute;
+//     top: 2rem;
+//     right: 2.5rem;
+//   }
+// }
 
 .form {
   padding: 1.5rem 0 3rem 0;
@@ -73,14 +67,6 @@
   }
 
   button {
-    @include default-button-reset;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    font-size: 1.8rem;
-    font-weight: 600;
-    font-family: inherit;
-    border-radius: 10rem;
-    padding: 1.25rem 5rem;
     position: absolute;
     bottom: 0;
     left: 50%;

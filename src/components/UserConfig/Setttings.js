@@ -32,12 +32,6 @@ const Settings = props => {
   return (
     <Modal onClose={props.onClose} className={classes.settings}>
       <h2>Settings</h2>
-      <button
-        className={classes['settings__btn-close']}
-        onClick={props.onClose}
-      >
-        &#10006;
-      </button>
       <form className={classes.form} onSubmit={applySettingsHandler}>
         <h3>Time (minutes)</h3>
         <div className={classes.form__group}>
@@ -70,7 +64,9 @@ const Settings = props => {
             placeholder="10"
           />
         </div>
-        <button type="submit">Apply</button>
+        <button type="submit" className="btn">
+          Apply
+        </button>
       </form>
     </Modal>
   );
