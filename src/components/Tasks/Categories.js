@@ -5,14 +5,18 @@ import Category from './Category';
 const Categories = () => {
   return (
     <Card className={classes.categories}>
-      <h2>Categories</h2>
+      <h2>Filter by category</h2>
       <ul>
-        <Category icon="#icon-briefcase" label="Work" />
-        <Category icon="#icon-book" label="Study" />
-        <Category icon="#icon-dumbell" label="Exercise" />
-        <Category icon="#icon-aid-kit" label="Health" />
-        <Category icon="#icon-lotus" label="Wellness" />
-        <Category icon="#icon-broom" label="Chores" />
+        <Category name="Work" />
+        <Category name="Study" />
+        <Category name="Exercise" />
+        <Category name="Health" />
+        <Category name="Wellness" />
+        <Category name="Chores" />
+      </ul>
+      <ul>
+        <Category name="Completed" />
+        <Category name="Ongoing" />
       </ul>
     </Card>
   );
