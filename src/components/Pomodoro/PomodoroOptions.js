@@ -24,6 +24,10 @@ const PomodoroOptions = () => {
       dispatch(timerActions.changeTimer(timer));
       return;
     }
+    if (countdown.seconds + countdown.minutes * 60 === 0) {
+      dispatch(timerActions.changeTimer(timer));
+      return;
+    }
     setConfirmModalIsActive(true);
   };
   const confirmActionHandler = () => {

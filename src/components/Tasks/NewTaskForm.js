@@ -3,11 +3,14 @@ import icons from '../../img/icons.svg';
 import { Fragment } from 'react';
 import { useState } from 'react';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { tasksActions } from '../../store/tasks';
 
 const NewTaskForm = () => {
   const [isEditing, setIsEditing] = useState(false);
   const categoryRef = useRef();
   const taskRef = useRef();
+  const dispatch = useDispatch();
 
   const enterFormHandler = () => {
     setIsEditing(true);
@@ -36,11 +39,13 @@ const NewTaskForm = () => {
     }
 
     const task = {
+      id: Date.now(),
       text: enteredTaskText,
       category: selectedCategory,
+      completed: false,
     };
-    console.log(task);
 
+    dispatch(tasksActions.addTask(task));
     setIsEditing(false);
   };
 

@@ -1,17 +1,18 @@
 import classes from './Task.module.scss';
 import icons from '../../img/icons.svg';
-import { useState } from 'react';
 import { taskCategories as categories } from '../../helpers/config';
+import { useDispatch } from 'react-redux';
+import { tasksActions } from '../../store/tasks';
 
 const Task = props => {
-  const [isDone, setIsDone] = useState(false);
+  const dispatch = useDispatch();
 
-  const CSSclasses = isDone
+  const CSSclasses = props.completed
     ? `${classes.task} ${classes['task--done']}`
     : classes.task;
 
   const checkTaskHandler = () => {
-    setIsDone(prevVal => !prevVal);
+    dispatch(tasksActions.markAsCompleted(props.id));
   };
 
   const category = categories.find(

@@ -3,17 +3,18 @@
 .categories {
   width: 30%;
   align-self: flex-start;
-  margin-top: 1rem;
   margin-left: 4rem;
+  margin-bottom: 3rem;
 
   @include respond(tab-port-large) {
     width: 90%;
     align-self: center;
     margin-left: 0;
+    order: 1;
   }
 
   h2 {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   ul {

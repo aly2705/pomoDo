@@ -4,12 +4,13 @@
   //   flex: 1 auto;
   width: 60%;
   align-self: flex-start;
-  margin-top: 1rem;
-  margin-bottom: 3rem;
+  transition: all 0.3s;
+  position: relative;
 
   @include respond(tab-port-large) {
     width: 90%;
     align-self: center;
+    order: 2;
   }
   ul {
     margin-top: 1.5rem;
@@ -24,5 +25,14 @@
       height: 2px;
       background-color: var(--color-grey-1);
     }
+  }
+  p {
+    font-weight: 600;
+    justify-self: center;
+  }
+  &__btn {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
   }
 }

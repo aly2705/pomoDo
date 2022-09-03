@@ -28,39 +28,6 @@
     width: fit-content;
   }
 
-  &__btn {
-    &,
-    &:link,
-    &:visited {
-      display: block;
-      text-decoration: none;
-      width: fit-content;
-      white-space: nowrap;
-      justify-self: end;
-      font-family: inherit;
-      font-size: 1.4rem;
-      padding: 0.6rem 2.2rem;
-      border-radius: 10rem;
-      text-transform: capitalize;
-      outline: none;
-      cursor: pointer;
-      background-color: transparent;
-      border: 2px solid var(--color-grey-4);
-      color: var(--color-grey-4);
-      font-weight: 600;
-      transition: all 0.2s ease-out;
-
-      @include respond(phone) {
-        padding: 0.4rem 1.5rem;
-      }
-    }
-
-    &:hover {
-      background-color: var(--color-grey-1);
-      color: var(--color-text-secondary);
-    }
-  }
-
   ul {
     grid-column: 1 / -1;
     list-style: none;

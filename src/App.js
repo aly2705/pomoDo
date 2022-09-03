@@ -12,6 +12,7 @@ import StatisticsPage from './pages/StatisticsPage';
 import RewardsPage from './pages/RewardsPage';
 import TasksPage from './pages/TasksPage';
 import { timerActions } from './store/timer';
+import { tasksActions } from './store/tasks';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
 
@@ -34,6 +35,9 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem('timer')) {
       dispatch(timerActions.getTimerData());
+    }
+    if (localStorage.getItem('tasks')) {
+      dispatch(tasksActions.getTasksData());
     }
   }, [dispatch]);
 
