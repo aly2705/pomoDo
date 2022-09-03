@@ -15,6 +15,7 @@ import { timerActions } from './store/timer';
 import { tasksActions } from './store/tasks';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
+import useUnload from './hooks/useUnload';
 
 let secondsOutsidePomodoro = 0;
 
@@ -57,6 +58,12 @@ function App() {
       secondsOutsidePomodoro = 0;
     }
   }, [match, timerIsActive, dispatch]);
+
+  useUnload(event => {
+    event.preventDefault();
+    dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
+    secondsOutsidePomodoro = 0;
+  });
 
   return (
     <Layout>
