@@ -34,6 +34,19 @@
     position: absolute;
     right: 2rem;
     top: 2rem;
+
+    &--delete {
+      position: absolute;
+      right: 14.5rem;
+      top: 2rem;
+      font-family: inherit;
+      padding: 0.81rem 2.2rem;
+
+      @include respond(phone) {
+        right: 11.5rem;
+        padding: 0.55rem 1.2rem;
+      }
+    }
   }
 }
 

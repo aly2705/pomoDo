@@ -48,17 +48,16 @@ const tasksSlice = createSlice({
       //   console.log()
       state.tasks = storedData.tasks;
     },
-    replaceList(state, action) {
-      const newList = action.payload;
-      state.tasks = newList;
-      persistData('tasks', state);
-    },
     replaceListOnDrop(state, action) {
       const { dragItemIndex, dragOverIndex } = action.payload;
       const dragItemContent = state.tasks[dragItemIndex]; // saves content of draggedItem
       state.tasks.splice(dragItemIndex, 1); //cuts from tasks the dragged element
       state.tasks.splice(dragOverIndex, 0, dragItemContent); //inserts at dragOverIndex the content of dragged item
 
+      persistData('tasks', state);
+    },
+    deleteAllCompleted(state) {
+      state.tasks = state.tasks.filter(task => !task.completed);
       persistData('tasks', state);
     },
   },

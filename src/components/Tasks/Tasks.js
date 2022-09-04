@@ -37,6 +37,9 @@ const Tasks = () => {
   const toggleInfoCardHandler = () => {
     setInfoCardIsShown(prevState => !prevState);
   };
+  const deleteCompletedHandler = () => {
+    dispatch(tasksActions.deleteAllCompleted());
+  };
 
   const queryParams = new URLSearchParams(location.search);
   const sortCriteria = queryParams.get('sort');
@@ -80,6 +83,14 @@ const Tasks = () => {
   return (
     <Card className={classes.tasks}>
       <h2>Tasks</h2>
+      {sortCriteria === 'Completed' && tasksList.length !== 0 && (
+        <button
+          onClick={deleteCompletedHandler}
+          className={`btn-link ${classes['tasks__btn--delete']}`}
+        >
+          Delete all
+        </button>
+      )}
       {sortCriteria && (
         <Link to="/tasks" className={`btn-link ${classes.tasks__btn}`}>
           Show all
