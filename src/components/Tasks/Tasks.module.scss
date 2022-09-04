@@ -36,3 +36,35 @@
     top: 2rem;
   }
 }
+
+.info {
+  @include default-button-reset;
+  border: 2px solid var(--color-grey-4);
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-family: inherit;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 50%;
+  color: var(--color-grey-4);
+
+  &__message {
+    position: absolute;
+    top: 5rem;
+    right: 2rem;
+    font-size: 1.4rem;
+    background-color: var(--color-grey-2);
+    color: var(--color-text-secondary);
+    box-shadow: 1rem 1rem 3rem rgba(#000, 0.2);
+    padding: 2rem;
+    border-radius: 0.5rem;
+
+    @include respond(phone) {
+      max-width: 20rem;
+    }
+  }
+}

@@ -20,7 +20,14 @@ const Task = props => {
   );
 
   return (
-    <li className={CSSclasses}>
+    <li
+      className={CSSclasses}
+      draggable={props.draggable}
+      onDragStart={props.onDragStart || null}
+      onDragEnter={props.onDragEnter || null}
+      onDragEnd={props.onDragEnd || null}
+      onDragOver={e => e.preventDefault()}
+    >
       <div className={classes.task__icon}>
         <svg>
           <use href={`${icons}${category.icon}`}></use>
