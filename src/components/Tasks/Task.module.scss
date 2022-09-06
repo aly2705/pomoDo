@@ -88,6 +88,18 @@
       font-size: 1.4rem;
     }
   }
+  &__delete-btn {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    svg {
+      width: 2.5rem;
+      height: 2.5rem;
+      fill: var(--color-primary-shade);
+    }
+  }
 
   &--done {
     .task__title {

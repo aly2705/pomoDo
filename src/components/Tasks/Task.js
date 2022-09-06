@@ -1,11 +1,15 @@
 import classes from './Task.module.scss';
 import icons from '../../img/icons.svg';
 import { taskCategories as categories } from '../../helpers/config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { tasksActions } from '../../store/tasks';
+import { useState } from 'react';
+import ConfirmAction from '../UserFeedback/ConfirmAction';
 
 const Task = props => {
   const dispatch = useDispatch();
+  const isEditing = useSelector(state => state.tasks.isEditing);
+  const [isConfirming, setIsConfirming] = useState(false);
 
   const CSSclasses = props.completed
     ? `${classes.task} ${classes['task--done']}`
@@ -13,6 +17,17 @@ const Task = props => {
 
   const checkTaskHandler = () => {
     dispatch(tasksActions.markAsCompleted(props.id));
+  };
+  const abortDeletionHandler = () => {
+    setIsConfirming(false);
+  };
+  const deleteTaskHandler = () => {
+    setIsConfirming(true);
+  };
+
+  const confirmDeletionHandler = () => {
+    dispatch(tasksActions.deleteTask(props.id));
+    setIsConfirming(false);
   };
 
   const category = categories.find(
@@ -37,9 +52,29 @@ const Task = props => {
         <span className={classes.task__title}>{props.children}</span>
         <span className={classes.task__category}>{category.name}</span>
       </div>
-      <button className={classes.task__checkbtn} onClick={checkTaskHandler}>
-        &#10003;
-      </button>
+      {isEditing && (
+        <button
+          className={classes['task__delete-btn']}
+          onClick={deleteTaskHandler}
+        >
+          <svg>
+            <use href={`${icons}#icon-bin`}></use>
+          </svg>
+        </button>
+      )}
+      {isConfirming && (
+        <ConfirmAction
+          onClose={abortDeletionHandler}
+          onConfirm={confirmDeletionHandler}
+        >
+          Your task will be deleted
+        </ConfirmAction>
+      )}
+      {!isEditing && (
+        <button className={classes.task__checkbtn} onClick={checkTaskHandler}>
+          &#10003;
+        </button>
+      )}
     </li>
   );
 };

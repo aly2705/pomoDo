@@ -1,22 +1,22 @@
 import classes from './NewTaskForm.module.scss';
 import icons from '../../img/icons.svg';
 import { Fragment } from 'react';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { tasksActions } from '../../store/tasks';
 
 const NewTaskForm = () => {
-  const [isEditing, setIsEditing] = useState(false);
+  const isEditing = useSelector(state => state.tasks.isEditing);
   const categoryRef = useRef();
   const taskRef = useRef();
   const dispatch = useDispatch();
 
   const enterFormHandler = () => {
-    setIsEditing(true);
+    dispatch(tasksActions.setIsEditing(true));
   };
   const exitFormHandler = () => {
-    setIsEditing(false);
+    dispatch(tasksActions.setIsEditing(false));
   };
 
   const submitTaskHandler = event => {
@@ -46,8 +46,14 @@ const NewTaskForm = () => {
     };
 
     dispatch(tasksActions.addTask(task));
-    setIsEditing(false);
+    dispatch(tasksActions.setIsEditing(false));
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(tasksActions.setIsEditing(false));
+    };
+  }, [dispatch]);
 
   let content;
   if (!isEditing)
@@ -63,7 +69,7 @@ const NewTaskForm = () => {
           className={classes['new-task__add-btn']}
           type="button"
         >
-          <span>&#43;</span> Add new task
+          Add or delete tasks
         </button>
       </Fragment>
     );

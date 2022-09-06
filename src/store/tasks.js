@@ -4,6 +4,7 @@ import { getData, persistData } from '../helpers/helpers';
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
+    isEditing: false,
     tasks: [
       {
         id: 'task1',
@@ -59,6 +60,14 @@ const tasksSlice = createSlice({
     deleteAllCompleted(state) {
       state.tasks = state.tasks.filter(task => !task.completed);
       persistData('tasks', state);
+    },
+    deleteTask(state, action) {
+      const taskId = action.payload;
+      state.tasks = state.tasks.filter(task => task.id !== taskId);
+      persistData('tasks', state);
+    },
+    setIsEditing(state, action) {
+      state.isEditing = action.payload;
     },
   },
 });
