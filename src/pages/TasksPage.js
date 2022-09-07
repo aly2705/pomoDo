@@ -1,13 +1,13 @@
 import Tasks from '../components/Tasks/Tasks';
 import Categories from '../components/Tasks/Categories';
-import React from 'react';
+import { Fragment } from 'react';
 
 const TasksPage = () => {
   return (
-    <React.Fragment>
+    <Fragment>
       <Tasks />
       <Categories />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

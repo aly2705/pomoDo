@@ -1,0 +1,100 @@
+@import '../../styles/abstracts.scss';
+
+.overview {
+  width: 100%;
+  padding: 3rem;
+  display: grid;
+  row-gap: 2rem;
+
+  ul {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2rem;
+    justify-content: space-between;
+    list-style: none;
+  }
+
+  li {
+    width: 25rem;
+    padding: 2rem;
+    border-radius: 2rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    column-gap: 1rem;
+    background-color: var(--color-primary-tint);
+    filter: brightness(115%);
+
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+
+    @include respond(laptop) {
+      width: 23rem;
+      padding: 2rem 4rem;
+    }
+    @include respond(tab-land) {
+      width: 19rem;
+      padding: 2rem;
+    }
+    @include respond(tab-port-large) {
+      width: 17rem;
+      padding: 2rem;
+      justify-content: center;
+    }
+    @include respond(phone-v-small) {
+      width: 15rem;
+      padding: 1rem;
+    }
+  }
+
+  &__icon {
+    grid-column: 1 / 2;
+    border-radius: 3px;
+    // border: 1px solid var(--color-primary-shade-2);
+    background-color: #d1a293;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+
+    @include respond(laptop) {
+      margin-right: 1rem;
+    }
+    @include respond(tab-port-large) {
+      display: none;
+    }
+
+    svg {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--color-text-secondary);
+    }
+  }
+
+  &__metric {
+    grid-column: 2 / 3;
+    font-size: 4rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+
+    @include respond(phone-v-small) {
+      font-size: 3.2rem;
+    }
+  }
+  &__description {
+    display: block;
+    grid-column: 1 / -1;
+    justify-self: center;
+    word-wrap: break-word;
+
+    @include respond(phone-small) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}

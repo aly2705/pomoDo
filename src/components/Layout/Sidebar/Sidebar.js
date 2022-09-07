@@ -11,13 +11,14 @@ const Sidebar = () => {
   return (
     <nav className={CSSclasses}>
       <ul className={classes.sidebar__list}>
+        <SidebarItem label="Dashboard" route="/dashboard" icon="#icon-home" />
         <SidebarItem
           label="Pomodoro"
           route="/pomodoro"
           icon="#icon-stopwatch"
         />
         <SidebarItem label="Tasks" route="/tasks" icon="#icon-list-alt" />
-        <SidebarItem label="Dashboard" route="/dashboard" icon="#icon-home" />
+
         <SidebarItem
           label="Statistics"
           route="/statistics"

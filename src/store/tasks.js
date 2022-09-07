@@ -38,10 +38,11 @@ const tasksSlice = createSlice({
       state.tasks.push(task);
       persistData('tasks', state);
     },
-    markAsCompleted(state, action) {
+    toggleCompleted(state, action) {
       const taskId = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
-      state.tasks.at(taskIndex).completed = true;
+      state.tasks.at(taskIndex).completed =
+        !state.tasks.at(taskIndex).completed;
       persistData('tasks', state);
     },
     getTasksData(state) {

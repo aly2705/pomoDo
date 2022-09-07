@@ -1,13 +1,13 @@
-import React from 'react';
+import { Fragment } from 'react';
 import Pomodoro from '../components/Pomodoro/Pomodoro';
 import Taskbar from '../components/Tasks/Taskbar';
 
 const PomodoroPage = () => {
   return (
-    <React.Fragment>
+    <Fragment>
       <Pomodoro />
       <Taskbar />
-    </React.Fragment>
+    </Fragment>
   );
 };
 

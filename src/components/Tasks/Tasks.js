@@ -7,10 +7,12 @@ import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Fragment, useRef, useState } from 'react';
 import { tasksActions } from '../../store/tasks';
+import ConfirmAction from '../UserFeedback/ConfirmAction';
 
 const Tasks = () => {
   const tasks = useSelector(state => state.tasks.tasks);
   const [infoCardIsShown, setInfoCardIsShown] = useState(false);
+  const [isConfirming, setIsConfirming] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
   const dragItem = useRef();
@@ -37,7 +39,13 @@ const Tasks = () => {
   const toggleInfoCardHandler = () => {
     setInfoCardIsShown(prevState => !prevState);
   };
+  const cancelDeletionHandler = () => {
+    setIsConfirming(false);
+  };
   const deleteCompletedHandler = () => {
+    setIsConfirming(true);
+  };
+  const confirmDeletionHandler = () => {
     dispatch(tasksActions.deleteAllCompleted());
   };
 
@@ -84,12 +92,22 @@ const Tasks = () => {
     <Card className={classes.tasks}>
       <h2>Tasks</h2>
       {sortCriteria === 'Completed' && tasksList.length !== 0 && (
-        <button
-          onClick={deleteCompletedHandler}
-          className={`btn-link ${classes['tasks__btn--delete']}`}
-        >
-          Delete all
-        </button>
+        <Fragment>
+          <button
+            onClick={deleteCompletedHandler}
+            className={`btn-link ${classes['tasks__btn--delete']}`}
+          >
+            Delete all
+          </button>
+          {isConfirming && (
+            <ConfirmAction
+              onClose={cancelDeletionHandler}
+              onConfirm={confirmDeletionHandler}
+            >
+              All the completed tasks will be deleted
+            </ConfirmAction>
+          )}
+        </Fragment>
       )}
       {sortCriteria && (
         <Link to="/tasks" className={`btn-link ${classes.tasks__btn}`}>

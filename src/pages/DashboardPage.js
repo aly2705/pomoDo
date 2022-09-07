@@ -1,5 +1,11 @@
+import Overview from '../components/Dashboard/Overview';
+
 const DashboardPage = () => {
-  return <div>Here is the DashboardPage</div>;
+  return (
+    <div className="main-flex-column">
+      <Overview />
+    </div>
+  );
 };
 
 export default DashboardPage;

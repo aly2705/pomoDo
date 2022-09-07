@@ -16,7 +16,7 @@ const Task = props => {
     : classes.task;
 
   const checkTaskHandler = () => {
-    dispatch(tasksActions.markAsCompleted(props.id));
+    dispatch(tasksActions.toggleCompleted(props.id));
   };
   const abortDeletionHandler = () => {
     setIsConfirming(false);
