@@ -2,7 +2,7 @@
 
 .overview {
   width: 100%;
-  padding: 3rem;
+  padding: 2.5rem;
   display: grid;
   row-gap: 2rem;
 
@@ -16,24 +16,18 @@
   }
 
   li {
-    width: 25rem;
+    width: 20rem;
     padding: 2rem;
-    border-radius: 2rem;
+    border-radius: 1rem;
 
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-
-    column-gap: 1rem;
-    background-color: var(--color-primary-tint);
-    filter: brightness(115%);
-
-    font-size: 2rem;
+    display: grid;
+    justify-items: center;
+    background-color: var(--color-grey-1);
+    font-size: 1.8rem;
     font-weight: 600;
-    color: var(--color-text-primary);
+    color: var(--color-primary-shade-2);
 
     @include respond(laptop) {
-      width: 23rem;
       padding: 2rem 4rem;
     }
     @include respond(tab-land) {
@@ -43,7 +37,6 @@
     @include respond(tab-port-large) {
       width: 17rem;
       padding: 2rem;
-      justify-content: center;
     }
     @include respond(phone-v-small) {
       width: 15rem;
@@ -51,44 +44,17 @@
     }
   }
 
-  &__icon {
-    grid-column: 1 / 2;
-    border-radius: 3px;
-    // border: 1px solid var(--color-primary-shade-2);
-    background-color: #d1a293;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-
-    @include respond(laptop) {
-      margin-right: 1rem;
-    }
-    @include respond(tab-port-large) {
-      display: none;
-    }
-
-    svg {
-      width: 2rem;
-      height: 2rem;
-      fill: var(--color-text-secondary);
-    }
-  }
-
   &__metric {
-    grid-column: 2 / 3;
-    font-size: 4rem;
-    font-family: 'Courier New', Courier, monospace;
+    font-size: 3.2rem;
+    line-height: 1.2;
     font-weight: 700;
 
-    @include respond(phone-v-small) {
-      font-size: 3.2rem;
-    }
+    // @include respond(phone-v-small) {
+    //   font-size: 3.2rem;
+    // }
   }
   &__description {
     display: block;
-    grid-column: 1 / -1;
     justify-self: center;
     word-wrap: break-word;
 

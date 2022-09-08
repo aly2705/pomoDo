@@ -68,7 +68,7 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<Navigate to="/pomodoro" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/pomodoro" element={<PomodoroPage />} />
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
