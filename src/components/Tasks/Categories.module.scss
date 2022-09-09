@@ -12,6 +12,9 @@
     margin-left: 0;
     order: 1;
   }
+  @include respond(phone) {
+    width: 95%;
+  }
 
   h2 {
     margin-bottom: 1.5rem;
