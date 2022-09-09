@@ -1,7 +1,14 @@
+@import '../../styles/abstracts.scss';
+
 .pie {
   width: 20rem;
   height: 20rem;
   border-radius: 50%;
+
+  @include respond(phone-v-small) {
+    width: 18rem;
+    height: 18rem;
+  }
 }
 
 .legend {

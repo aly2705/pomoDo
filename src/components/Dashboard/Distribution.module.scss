@@ -13,5 +13,9 @@
     @include respond(tab-port-large) {
       justify-content: space-evenly;
     }
+
+    @include respond(phone-v-small) {
+      padding: 0;
+    }
   }
 }

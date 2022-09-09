@@ -1,3 +1,5 @@
+@import '../../styles/abstracts.scss';
+
 .chart-wrap {
   --width: 90%;
   --height: 20rem;
@@ -8,6 +10,11 @@
   width: var(--width);
   height: var(--height);
   font-family: sans-serif;
+
+  @include respond(phone-v-small) {
+    --width: 90%;
+    --bar-size: 1rem;
+  }
 }
 
 .grid {
