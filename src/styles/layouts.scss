@@ -1,13 +1,22 @@
-.main-flex-column {
+.main-grid {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  gap: 3rem;
+  align-content: start;
+  grid-template-columns: 1.5fr 1fr;
+  position: relative;
 
   .greeting {
-    margin-bottom: 2rem;
+    grid-column: 1 / -1;
+    margin-bottom: -1rem;
+
     @include respond(phone-v-small) {
       text-align: center;
     }
+  }
+
+  @include respond(tab-port-large) {
+    grid-template-columns: 1fr;
   }
 }

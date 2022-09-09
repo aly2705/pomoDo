@@ -1,0 +1,17 @@
+@import '../../styles/abstracts.scss';
+
+.distribution {
+  padding: 2.5rem;
+
+  &__chart {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+
+    @include respond(tab-port-large) {
+      justify-content: space-evenly;
+    }
+  }
+}
