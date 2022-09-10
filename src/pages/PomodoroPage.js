@@ -1,13 +1,14 @@
-import { Fragment } from 'react';
 import Pomodoro from '../components/Pomodoro/Pomodoro';
 import Taskbar from '../components/Tasks/Taskbar';
+import ManualLog from '../components/Pomodoro/ManualLog';
 
 const PomodoroPage = () => {
   return (
-    <Fragment>
+    <div className="main-pomodoro">
       <Pomodoro />
+      <ManualLog />
       <Taskbar />
-    </Fragment>
+    </div>
   );
 };
 

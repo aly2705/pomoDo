@@ -1,10 +1,28 @@
 @import '../../styles/abstracts.scss';
 
+.manual {
+  grid-column: 2 / 3;
+
+  @include respond(tab-port-large) {
+    grid-column: 1 / 2;
+    width: 90%;
+    justify-self: center;
+  }
+  @include respond(tab-port) {
+    width: 100%;
+  }
+
+  h3 {
+    font-size: 2.2rem;
+  }
+}
+
 .form {
-  padding: 1.5rem 0 3rem 0;
+  margin-top: 1rem;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 4rem;
+  grid-template-columns: 1fr 1fr 13rem;
+  align-items: end;
+  column-gap: 1rem;
   row-gap: 1.5rem;
 
   @include respond(phone-v-small) {
@@ -28,17 +46,25 @@
 
     label {
       color: var(--color-text-tertiary);
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
       letter-spacing: 0.5px;
+
+      @include respond(tab-land-small) {
+        font-size: 1.2rem;
+      }
+      @include respond(phone-small) {
+        font-size: 1.4rem;
+        align-self: center;
+      }
     }
     input {
       font-family: inherit;
       background-color: var(--color-grey-1);
       outline: none;
       border: 2px solid var(--color-grey-4);
-      width: 85%;
-      padding: 0.8rem 1rem;
+      width: 90%;
+      padding: 0.5rem 1rem;
       font-size: 1.8rem;
       border-radius: 1rem;
       font-weight: 600;
@@ -51,13 +77,20 @@
       opacity: 1;
     }
   }
-
   button {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 50%);
-    // grid-column: 1 / -1;
-    // justify-self: center;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.6rem;
+
+    @include respond(phone-small) {
+      justify-self: center;
+      padding: 1.25rem 3.5rem;
+    }
   }
+
+  //   button {
+  //     position: absolute;
+  //     bottom: 0;
+  //     left: 50%;
+  //     transform: translate(-50%, 50%);
+  //   }
 }

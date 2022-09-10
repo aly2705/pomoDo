@@ -35,10 +35,10 @@
   display: flex;
   justify-content: space-evenly;
 
-  padding: 4rem 6rem;
+  padding: 3rem 5rem;
 
   @include respond(laptop) {
-    padding: 4rem;
+    padding: 3rem;
   }
 
   @include respond(tab-port-large) {

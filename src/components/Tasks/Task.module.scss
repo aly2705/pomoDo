@@ -45,10 +45,10 @@
       max-width: 25rem;
     }
     @include respond(tab-port-large) {
-      max-width: 45rem;
+      max-width: 40rem;
     }
     @include respond(tab-port) {
-      max-width: 30rem;
+      max-width: 28rem;
     }
     @include respond(phone) {
       max-width: 25rem;

@@ -19,7 +19,7 @@ const Taskbar = () => {
   ));
   return (
     <Card className={classes.taskbar}>
-      <h2>My tasks</h2>
+      <h3>My tasks</h3>
       <Link to="/tasks" className="btn-link">
         View all
       </Link>

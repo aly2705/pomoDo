@@ -20,3 +20,21 @@
     grid-template-columns: 1fr;
   }
 }
+
+.main-pomodoro {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  gap: 2rem;
+  align-content: start;
+  grid-template-columns: 1fr 1fr;
+
+  @include respond(tab-land) {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 3rem;
+  }
+
+  @include respond(tab-port-large) {
+    grid-template-columns: 1fr;
+  }
+}

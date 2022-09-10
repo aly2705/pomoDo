@@ -1,20 +1,17 @@
 @import '../../styles/abstracts.scss';
 
 .tasks {
-  //   flex: 1 auto;
-  width: 60%;
-  align-self: flex-start;
+  align-self: start;
   transition: all 0.3s;
   position: relative;
 
   @include respond(tab-port-large) {
-    width: 90%;
     align-self: center;
     order: 2;
   }
   @include respond(phone) {
-    width: 95%;
   }
+
   ul {
     margin-top: 1.5rem;
     display: grid;

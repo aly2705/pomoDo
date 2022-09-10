@@ -1,19 +1,14 @@
 @import '../../styles/abstracts.scss';
 
 .categories {
-  width: 30%;
-  align-self: flex-start;
-  margin-left: 4rem;
   margin-bottom: 3rem;
+  margin-left: 2rem;
 
   @include respond(tab-port-large) {
-    width: 90%;
     align-self: center;
     margin-left: 0;
     order: 1;
-  }
-  @include respond(phone) {
-    width: 95%;
+    margin-bottom: 0;
   }
 
   h2 {
@@ -23,7 +18,7 @@
   ul {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
     column-gap: 3.5rem;
     row-gap: 2rem;
     list-style: none;

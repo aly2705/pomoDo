@@ -1,32 +1,24 @@
 @import '../../styles/abstracts.scss';
 
 .taskbar {
-  align-self: flex-start;
-  margin-top: 7rem;
-  margin-left: 6.5rem;
+  align-self: start;
   width: 100%;
   display: grid;
   grid-template-columns: max-content auto;
-  row-gap: 2rem;
+  row-gap: 1rem;
   align-items: center;
 
-  @include respond(laptop) {
-    width: fit-content;
-    margin-left: 4rem;
-    margin-top: 6.5rem;
-  }
-  @include respond(laptop) {
-    margin-top: 5.5rem;
-  }
   @include respond(tab-port-large) {
-    align-self: center;
-    margin-left: 0;
+    grid-column: 1 / 2;
+    width: 90%;
+    justify-self: center;
   }
-  @include respond(phone-small) {
+  @include respond(tab-port) {
     width: 100%;
+    justify-self: center;
   }
 
-  h2 {
+  h3 {
     font-size: 2.4rem;
     width: fit-content;
   }
