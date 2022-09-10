@@ -32,22 +32,11 @@
   grid-column: main-start / main-end;
   grid-area: main;
   background-color: var(--color-grey-1);
-  display: flex;
-  justify-content: space-evenly;
 
   padding: 3rem 5rem;
 
   @include respond(laptop) {
     padding: 3rem;
-  }
-
-  @include respond(tab-port-large) {
-    flex-direction: column;
-  }
-
-  @include respond(tab-port-large) {
-    flex-direction: column;
-    justify-content: flex-start;
   }
 
   @include respond(phone-v-small) {
