@@ -3,6 +3,7 @@
 .categories {
   margin-bottom: 3rem;
   margin-left: 2rem;
+  align-self: start;
 
   @include respond(tab-port-large) {
     align-self: center;
