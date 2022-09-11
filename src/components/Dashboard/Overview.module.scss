@@ -28,16 +28,11 @@
     font-weight: 600;
     color: var(--color-primary-shade-2);
 
-    @include respond(laptop) {
-      padding: 2rem 4rem;
-    }
     @include respond(tab-land) {
       width: 19rem;
-      padding: 2rem;
     }
     @include respond(tab-port-large) {
       width: 17rem;
-      padding: 2rem;
     }
     @include respond(phone-v-small) {
       width: 15rem;
