@@ -43,6 +43,7 @@ const NewTaskForm = () => {
       text: enteredTaskText,
       category: selectedCategory,
       completed: false,
+      dateCompleted: null,
     };
 
     dispatch(tasksActions.addTask(task));

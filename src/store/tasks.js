@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getData, persistData } from '../helpers/helpers';
+import { dateIsToday } from '../helpers/helpers';
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -11,24 +12,28 @@ const tasksSlice = createSlice({
         completed: true,
         category: 'Study',
         text: 'Finish at least one chapter in the course book',
+        dateCompleted: new Date(2022, 4, 27).toISOString(),
       },
       {
         id: 'task2',
         completed: false,
         category: 'Exercise',
         text: 'Workout 3 times this week',
+        dateCompleted: null,
       },
       {
         id: 'task3',
         completed: false,
         category: 'Wellness',
         text: 'Dine out with old friends',
+        dateCompleted: null,
       },
       {
         id: 'task4',
         completed: false,
         category: 'Chores',
         text: 'Clean the bathroom thoroughly',
+        dateCompleted: null,
       },
     ],
   },
@@ -38,16 +43,25 @@ const tasksSlice = createSlice({
       state.tasks.push(task);
       persistData('tasks', state);
     },
-    toggleCompleted(state, action) {
+    markAsCompleted(state, action) {
       const taskId = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
-      state.tasks.at(taskIndex).completed =
-        !state.tasks.at(taskIndex).completed;
+      state.tasks.at(taskIndex).completed = true;
+      state.tasks.at(taskIndex).dateCompleted = new Date().toISOString();
+      persistData('tasks', state);
+    },
+    cancelCompletion(state, action) {
+      const taskId = action.payload;
+      const taskIndex = state.tasks.findIndex(task => task.id === taskId);
+      const task = state.tasks.at(taskIndex);
+      if (dateIsToday(task.dateCompleted)) {
+        task.completed = false;
+        task.dateCompleted = null;
+      } else return;
       persistData('tasks', state);
     },
     getTasksData(state) {
       const storedData = getData('tasks');
-      //   console.log()
       state.tasks = storedData.tasks;
     },
     replaceListOnDrop(state, action) {

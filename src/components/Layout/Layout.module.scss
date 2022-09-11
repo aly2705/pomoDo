@@ -33,10 +33,10 @@
   grid-area: main;
   background-color: var(--color-grey-1);
 
-  padding: 4rem 6rem;
+  padding: 5rem 6rem;
 
   @include respond(laptop) {
-    padding: 4rem;
+    padding: 5rem 4rem;
   }
 
   @include respond(phone-v-small) {

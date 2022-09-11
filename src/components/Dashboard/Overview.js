@@ -1,5 +1,7 @@
 import classes from './Overview.module.scss';
 import Card from '../UI/Card';
+import { useSelector } from 'react-redux';
+import { dateIsToday } from '../../helpers/helpers';
 
 const OverviewCard = ({ metric, label }) => {
   return (
@@ -11,12 +13,24 @@ const OverviewCard = ({ metric, label }) => {
 };
 
 const Overview = () => {
+  const tasks = useSelector(state => state.tasks.tasks);
+  const numOfActiveTasks = tasks.filter(task => !task.completed).length;
+  const numTasksDoneToday = tasks.filter(task =>
+    dateIsToday(task.dateCompleted)
+  ).length;
+
   return (
     <Card className={classes.overview}>
       <h3>Today's Overview</h3>
       <ul>
-        <OverviewCard metric={5} label="active tasks" />
-        <OverviewCard metric={3} label="tasks done" />
+        <OverviewCard
+          metric={numOfActiveTasks}
+          label={`active ${numOfActiveTasks === 1 ? 'task' : 'tasks'}`}
+        />
+        <OverviewCard
+          metric={numTasksDoneToday}
+          label={`${numTasksDoneToday === 1 ? 'task' : 'tasks'} done`}
+        />
         <OverviewCard metric={5} label="pomodoros" />
         <OverviewCard metric={`${3}h`} label="of activity" />
       </ul>

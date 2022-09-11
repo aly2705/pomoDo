@@ -3,6 +3,20 @@
 .distribution {
   padding: 2.5rem;
 
+  p {
+    text-align: center;
+    margin-top: 6rem;
+    font-weight: 600;
+
+    @include respond(tab-port-large) {
+      margin-top: 0;
+    }
+    @include respond(phone-v-small) {
+      margin-top: 1.5rem;
+      font-size: 1.6rem;
+    }
+  }
+
   &__chart {
     padding: 2rem;
     display: flex;
