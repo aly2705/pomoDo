@@ -6,6 +6,7 @@ const timerSlice = createSlice({
   initialState: {
     countdown: { minutes: 25, seconds: 0 },
     isActive: false,
+    wasCompleted: false,
     type: 'pomodoro',
     totalSeconds: 25 * 60,
     config: {
@@ -22,6 +23,7 @@ const timerSlice = createSlice({
     countdown(state, action) {
       if (state.countdown.minutes === 0 && state.countdown.seconds === 0) {
         clearInterval(action.payload);
+        if (state.type === 'pomodoro') state.wasCompleted = true;
         state.countdown.minutes = 0;
         state.countdown.seconds = 0;
         state.isActive = false;
@@ -35,6 +37,7 @@ const timerSlice = createSlice({
     },
     changeTimer(state, action) {
       const timerType = action.payload;
+      state.wasCompleted = false;
       state.isActive = false;
       switch (timerType) {
         case 'pomodoro':
@@ -66,11 +69,25 @@ const timerSlice = createSlice({
     },
     getTimerData(state) {
       const storedData = getData('timer');
+      if (storedData.wasCompleted) {
+        // wasCompleted can be true just for pomodoro (since we account for completed pomodoros only)
+        // => we perform a pomodoro reinitialization to avoid counting a pomodoro completion when unnecessary
+        state.wasCompleted = false;
+        state.isActive = false;
+        state.config = storedData.config;
+        state.countdown = { minutes: storedData.config.pomodoro, seconds: 0 };
+        state.type = 'pomodoro';
+        state.totalSeconds = storedData.config.pomodoro * 60;
+        return;
+      }
+
+      // usual behavior when timer not completed
       state.isActive = storedData.isActive;
       state.countdown = storedData.countdown;
       state.type = storedData.type;
       state.totalSeconds = storedData.totalSeconds;
       state.config = storedData.config;
+      state.wasCompleted = storedData.wasCompleted;
     },
     subtractOutsideSeconds(state, action) {
       const totalSeconds = action.payload;
@@ -84,6 +101,7 @@ const timerSlice = createSlice({
         state.countdown.minutes = 0;
         state.countdown.seconds = 0;
         state.isActive = false;
+        if (state.type === 'pomodoro') state.wasCompleted = true;
         persistData('timer', state);
         return;
       } else state.countdown.minutes = newMinutes;
@@ -94,6 +112,7 @@ const timerSlice = createSlice({
         state.countdown.minutes = 0;
         state.countdown.seconds = 0;
         state.isActive = false;
+        if (state.type === 'pomodoro') state.wasCompleted = true;
       } else state.countdown.seconds = newSeconds;
       persistData('timer', state);
     },

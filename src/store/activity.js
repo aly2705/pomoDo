@@ -24,10 +24,12 @@ const activitySlice = createSlice({
       { hour: 22, activeMinutes: 0 },
       { hour: 23, activeMinutes: 0 },
     ],
+    numberOfCompletedPomodoros: 0,
   },
   reducers: {
     addActiveTime(state, action) {
-      let { startingHour, hoursOfActivity, remainingMinutes } = action.payload;
+      let { startingHour, hoursOfActivity, remainingMinutes, safeToSave } =
+        action.payload;
       const indexStarting = state.hours.findIndex(
         hour => hour.hour === startingHour
       );
@@ -37,11 +39,11 @@ const activitySlice = createSlice({
       // If we computed hours we complete them in state
       // and increment the index to update minutes correctly when loop ends
       while (hoursOfActivity) {
-        if (!state.hours[index].activeMinutes)
+        if (!state.hours[index].activeMinutes || safeToSave)
           state.hours[index].activeMinutes = 60;
         else
           throw new Error(
-            'You have already logged time for an hour in your interval'
+            'You have already logged time for an hour in your interval. Do you want to override it?'
           );
         hoursOfActivity--;
         index++;
@@ -49,12 +51,16 @@ const activitySlice = createSlice({
 
       // loop entered => not updating the starting hour, but the one that the loop ended with
       // loop not entered => we update the starting hour
-      if (!state.hours[index].activeMinutes)
+      if (!state.hours[index].activeMinutes || safeToSave)
         state.hours[index].activeMinutes = remainingMinutes;
       else
         throw new Error(
-          'You have already logged time for an hour in your interval'
+          'You have already logged time for an hour in your interval. Do you want to override it?'
         );
+    },
+    addCompletedPomodoro(state) {
+      state.numberOfCompletedPomodoros++;
+      console.log('added pomodoro');
     },
   },
 });

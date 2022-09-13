@@ -15,6 +15,9 @@ const OverviewCard = ({ metric, label }) => {
 const Overview = () => {
   const tasks = useSelector(state => state.tasks.tasks);
   const hours = useSelector(state => state.activity.hours);
+  const numPomodoros = useSelector(
+    state => state.activity.numberOfCompletedPomodoros
+  );
   const numOfActiveTasks = tasks.filter(task => !task.completed).length;
   const numTasksDoneToday = tasks.filter(task =>
     dateIsToday(task.dateCompleted)
@@ -41,7 +44,10 @@ const Overview = () => {
           metric={numTasksDoneToday}
           label={`${numTasksDoneToday === 1 ? 'task' : 'tasks'} done`}
         />
-        <OverviewCard metric={5} label="pomodoros" />
+        <OverviewCard
+          metric={numPomodoros}
+          label={`${numPomodoros === 1 ? 'pomodoro' : 'pomodoros'}`}
+        />
         <OverviewCard metric={activeTime} label="of activity" />
       </ul>
     </Card>

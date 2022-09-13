@@ -54,8 +54,9 @@ const PomodoroTimer = () => {
   useEffect(() => {
     const secondsCompleted =
       totalSeconds - countdown.minutes * 60 - countdown.seconds;
-    setPercentage((secondsCompleted / totalSeconds) * 100);
-  }, [countdown, totalSeconds]);
+    const newPercentage = (secondsCompleted / totalSeconds) * 100;
+    setPercentage(newPercentage);
+  }, [countdown, totalSeconds, dispatch]);
 
   return (
     <div className={`${classes.timer} ${wasClicked ? 'clicked' : ''}`}>

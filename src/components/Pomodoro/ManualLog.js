@@ -1,4 +1,5 @@
 import Card from '../UI/Card';
+import ConfirmAction from '../UserFeedback/ConfirmAction';
 import classes from './ManualLog.module.scss';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,6 +10,7 @@ const ManualLog = () => {
   const startingHourRef = useRef();
   const activeMinutesRef = useRef();
   const [error, setError] = useState(null);
+  const [confirmationData, setConfirmationData] = useState(null);
 
   const submitTimeHandler = event => {
     event.preventDefault();
@@ -50,20 +52,43 @@ const ManualLog = () => {
       startingHour: enteredHour,
       hoursOfActivity: minutesInHours,
       remainingMinutes,
+      safeToSave: false,
     };
     try {
       dispatch(activityActions.addActiveTime(dataToStore));
     } catch (err) {
-      setError(err.message);
+      setConfirmationData({
+        warning: err.message,
+        savedData: { ...dataToStore, safeToSave: true },
+      });
       return;
     }
 
-    console.log(enteredHour, enteredMinutes);
     startingHourRef.current.value = '';
     activeMinutesRef.current.value = '';
   };
+
+  const confirmHandler = () => {
+    const { savedData } = confirmationData;
+    dispatch(activityActions.addActiveTime(savedData));
+    setConfirmationData(null);
+    startingHourRef.current.value = '';
+    activeMinutesRef.current.value = '';
+  };
+
+  const abortConfirmHandler = () => {
+    setConfirmationData(null);
+  };
+
   return (
     <Card className={classes.manual}>
+      {confirmationData ? (
+        <ConfirmAction onClose={abortConfirmHandler} onConfirm={confirmHandler}>
+          {confirmationData.warning}
+        </ConfirmAction>
+      ) : (
+        ''
+      )}
       <h3>Log productive time manually</h3>
       <form className={classes.form} onSubmit={submitTimeHandler}>
         <div className={classes.form__group}>

@@ -16,6 +16,7 @@ import { tasksActions } from './store/tasks';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
 import useUnload from './hooks/useUnload';
+import { activityActions } from './store/activity';
 
 let secondsOutsidePomodoro = 0;
 
@@ -23,6 +24,7 @@ function App() {
   const dispatch = useDispatch();
   const timerIsActive = useSelector(state => state.timer.isActive);
   const location = useLocation();
+  const pomodoroWasCompleted = useSelector(state => state.timer.wasCompleted);
 
   const match = matchPath(
     {
@@ -41,6 +43,10 @@ function App() {
       dispatch(tasksActions.getTasksData());
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (pomodoroWasCompleted) dispatch(activityActions.addCompletedPomodoro());
+  }, [pomodoroWasCompleted, dispatch]);
 
   useEffect(() => {
     if (!timerIsActive) return;
