@@ -78,7 +78,7 @@ const tasksSlice = createSlice({
     deleteTask(state, action) {
       const taskId = action.payload;
       state.tasks = state.tasks.filter(task => task.id !== taskId);
-      // persistData('tasks', state);
+      persistData('tasks', state);
     },
     setIsEditing(state, action) {
       state.isEditing = action.payload;

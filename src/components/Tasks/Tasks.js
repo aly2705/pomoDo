@@ -11,6 +11,7 @@ import ConfirmAction from '../UserFeedback/ConfirmAction';
 
 const Tasks = () => {
   const tasks = useSelector(state => state.tasks.tasks);
+  const isEditing = useSelector(state => state.tasks.isEditing);
   const [infoCardIsShown, setInfoCardIsShown] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const dispatch = useDispatch();
@@ -59,7 +60,9 @@ const Tasks = () => {
       computedTasks = tasks.filter(task => !task.completed);
     } else if (sortCriteria === 'Completed') {
       computedTasks = tasks.filter(task => task.completed);
-    } else computedTasks = tasks.filter(task => task.category === sortCriteria);
+    } else {
+      computedTasks = tasks.filter(task => task.category === sortCriteria);
+    }
     tasksList = computedTasks.map(task => (
       <Task
         key={task.id}
@@ -72,20 +75,33 @@ const Tasks = () => {
       </Task>
     ));
   } else {
-    tasksList = computedTasks.map((task, index) => (
-      <Task
-        key={task.id}
-        id={task.id}
-        completed={task.completed}
-        category={task.category}
-        draggable
-        onDragStart={e => dragStartHandler(e, index)}
-        onDragEnter={e => dragEnterHandler(e, index)}
-        onDragEnd={dropHandler}
-      >
-        {task.text}
-      </Task>
-    ));
+    if (isEditing) {
+      tasksList = computedTasks.map((task, index) => (
+        <Task
+          key={task.id}
+          id={task.id}
+          completed={task.completed}
+          category={task.category}
+          draggable
+          onDragStart={e => dragStartHandler(e, index)}
+          onDragEnter={e => dragEnterHandler(e, index)}
+          onDragEnd={dropHandler}
+        >
+          {task.text}
+        </Task>
+      ));
+    } else
+      tasksList = computedTasks.map(task => (
+        <Task
+          key={task.id}
+          id={task.id}
+          completed={task.completed}
+          category={task.category}
+          draggable={false}
+        >
+          {task.text}
+        </Task>
+      ));
   }
 
   return (
@@ -116,12 +132,14 @@ const Tasks = () => {
       )}
       {!sortCriteria && (
         <Fragment>
-          <button
-            onClick={toggleInfoCardHandler}
-            className={`${classes.info} ${classes.tasks__btn}`}
-          >
-            i
-          </button>
+          {isEditing && !sortCriteria && (
+            <button
+              onClick={toggleInfoCardHandler}
+              className={`${classes.info} ${classes.tasks__btn}`}
+            >
+              i
+            </button>
+          )}
           {infoCardIsShown && (
             <div className={classes.info__message}>
               <p>Drag and drop tasks to arrange by priority</p>

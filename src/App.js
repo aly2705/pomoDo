@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
 import useUnload from './hooks/useUnload';
 import { dateIsToday, getData } from './helpers/helpers';
+import { calendarActions } from './store/calendar';
 
 let secondsOutsidePomodoro = 0;
 
@@ -43,12 +44,15 @@ function App() {
     if (localStorage.getItem('tasks')) {
       dispatch(tasksActions.getTasksData());
     }
+    if (localStorage.getItem('calendar')) {
+      dispatch(calendarActions.getCalendarData());
+    }
     if (localStorage.getItem('activity')) {
       const storedActivity = getData('activity');
-      if (dateIsToday(storedActivity.date))
+      if (dateIsToday(storedActivity.date)) {
         dispatch(activityActions.getActivityData());
-      else {
-        console.log('Here we save the day that has passed');
+      } else {
+        dispatch(calendarActions.insertActivityData(storedActivity));
       }
     }
   }, [dispatch]);
