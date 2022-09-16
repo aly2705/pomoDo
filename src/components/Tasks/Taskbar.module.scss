@@ -29,4 +29,10 @@
     display: grid;
     row-gap: 1rem;
   }
+  p {
+    text-align: center;
+    font-weight: 600;
+    grid-column: 1 / -1;
+    margin: 1rem 0;
+  }
 }

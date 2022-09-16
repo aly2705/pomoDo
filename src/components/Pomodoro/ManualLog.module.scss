@@ -2,6 +2,7 @@
 
 .manual {
   grid-column: 2 / 3;
+  height: fit-content;
 
   @include respond(tab-port-large) {
     grid-column: 1 / 2;

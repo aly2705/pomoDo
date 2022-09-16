@@ -75,7 +75,6 @@ const activitySlice = createSlice({
     saveMinutesWhenPomodoroPaused(state, action) {
       const { totalSeconds, countdown, reinitMinutesPassed } = action.payload;
       const currentHour = new Date().getHours();
-      // const currentMinutes = new Date().getMinutes();
 
       if (currentHour > 4 && currentHour < 24) {
         const indexOfHour = state.hours.findIndex(

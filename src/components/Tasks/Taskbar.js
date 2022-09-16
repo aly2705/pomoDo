@@ -23,7 +23,7 @@ const Taskbar = () => {
       <Link to="/tasks" className="btn-link">
         View all
       </Link>
-      <ul>{tasksList}</ul>
+      {tasksList.length ? <ul>{tasksList}</ul> : <p>No tasks found</p>}
     </Card>
   );
 };
