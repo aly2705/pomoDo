@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getData, persistData } from '../helpers/helpers';
-import { dateIsToday } from '../helpers/helpers';
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -54,10 +53,10 @@ const tasksSlice = createSlice({
       const taskId = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
       const task = state.tasks.at(taskIndex);
-      if (dateIsToday(task.dateCompleted)) {
-        task.completed = false;
-        task.dateCompleted = null;
-      } else return;
+
+      task.completed = false;
+      task.dateCompleted = null;
+
       persistData('tasks', state);
     },
     getTasksData(state) {

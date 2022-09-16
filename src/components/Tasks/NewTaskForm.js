@@ -52,9 +52,9 @@ const NewTaskForm = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(tasksActions.setIsEditing(false));
+      if (isEditing) dispatch(tasksActions.setIsEditing(false));
     };
-  }, [dispatch]);
+  }, [dispatch, isEditing]);
 
   let content;
   if (!isEditing)

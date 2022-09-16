@@ -5,19 +5,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { tasksActions } from '../../store/tasks';
 import { useState } from 'react';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
+import { activityActions } from '../../store/activity';
+import { dateIsToday } from '../../helpers/helpers';
 
 const Task = props => {
   const dispatch = useDispatch();
   const isEditing = useSelector(state => state.tasks.isEditing);
   const [isConfirming, setIsConfirming] = useState(false);
+  const tasks = useSelector(state => state.tasks.tasks);
 
   const CSSclasses = props.completed
     ? `${classes.task} ${classes['task--done']}`
     : classes.task;
 
   const checkTaskHandler = () => {
-    if (!props.completed) dispatch(tasksActions.markAsCompleted(props.id));
-    else dispatch(tasksActions.cancelCompletion(props.id));
+    if (!props.completed) {
+      dispatch(tasksActions.markAsCompleted(props.id));
+      dispatch(activityActions.updateNumberOfCompletedTasks('add'));
+    } else {
+      const dateCompleted = tasks.find(
+        task => task.id === props.id
+      ).dateCompleted;
+
+      if (dateIsToday(dateCompleted)) {
+        dispatch(tasksActions.cancelCompletion(props.id));
+        dispatch(activityActions.updateNumberOfCompletedTasks('subtract'));
+      }
+    }
   };
   const abortDeletionHandler = () => {
     setIsConfirming(false);

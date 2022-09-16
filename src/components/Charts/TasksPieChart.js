@@ -95,7 +95,7 @@ const TasksPieChart = () => {
       <div
         className={classes.pie}
         style={{
-          background: `conic-gradient(${colors[0]} 0% ${workDistribution}%, ${colors[1]} ${workDistribution}% ${studyDistribution}%, ${colors[2]} ${studyDistribution}% ${exerciseDistribution}%, ${colors[3]} ${exerciseDistribution}% ${healthDistribution}%, ${colors[4]} ${healthDistribution}% ${wellnessDistribution}%, ${colors[5]} ${wellnessDistribution}% ${choresDistribution}%)`,
+          backgroundImage: `conic-gradient(${colors[0]} 0% ${workDistribution}%, ${colors[1]} ${workDistribution}% ${studyDistribution}%, ${colors[2]} ${studyDistribution}% ${exerciseDistribution}%, ${colors[3]} ${exerciseDistribution}% ${healthDistribution}%, ${colors[4]} ${healthDistribution}% ${wellnessDistribution}%, ${colors[5]} ${wellnessDistribution}% ${choresDistribution}%)`,
         }}
       ></div>
     </Fragment>

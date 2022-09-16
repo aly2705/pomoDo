@@ -14,7 +14,7 @@ const SidebarItem = props => {
     : classes.sidebar__item;
 
   const hideSidebarHandler = () => {
-    dispatch(mobileMenuActions.toggleMenu());
+    if (window.innerWidth < 600) dispatch(mobileMenuActions.toggleMenu());
   };
 
   return (

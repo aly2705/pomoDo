@@ -18,7 +18,6 @@ const Settings = props => {
     const enteredShortBreak = shortBreakInputRef.current.value || 5;
     const enteredLongBreak = longBreakInputRef.current.value || 10;
 
-    console.log(enteredPomodoro, enteredShortBreak, enteredLongBreak);
     const newConfig = {
       pomodoro: +enteredPomodoro,
       short: +enteredShortBreak,

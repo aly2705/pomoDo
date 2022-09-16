@@ -32,7 +32,6 @@ const ManualLog = () => {
     //COMPUTING THE FINALIZATION TIME
     const minutesInHours = Math.trunc(enteredMinutes / 60);
     const remainingMinutes = enteredMinutes % 60;
-    console.log(minutesInHours, remainingMinutes);
 
     const finalizationTime = new Date(
       now.getFullYear(),
@@ -107,7 +106,7 @@ const ManualLog = () => {
             required
             type="number"
             ref={activeMinutesRef}
-            min={1}
+            min={0}
             id="minutes-of-activity"
           />
         </div>

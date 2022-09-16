@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getData, persistData } from '../helpers/helpers';
 
 const activitySlice = createSlice({
   name: 'activity',
   initialState: {
+    date: new Date().toISOString(),
     hours: [
       { hour: 5, activeMinutes: 0 },
       { hour: 6, activeMinutes: 0 },
@@ -25,8 +27,18 @@ const activitySlice = createSlice({
       { hour: 23, activeMinutes: 0 },
     ],
     numberOfCompletedPomodoros: 0,
+    numberOfCompletedTasks: 0,
+    activeMinutesAlreadyAdded: 0,
   },
   reducers: {
+    getActivityData(state) {
+      const storedData = getData('activity');
+      state.hours = storedData.hours;
+      state.numberOfCompletedPomodoros = storedData.numberOfCompletedPomodoros;
+      state.numberOfCompletedTasks = storedData.numberOfCompletedTasks;
+      state.activeMinutesAlreadyAdded = storedData.activeMinutesAlreadyAdded;
+    },
+
     addActiveTime(state, action) {
       let { startingHour, hoursOfActivity, remainingMinutes, safeToSave } =
         action.payload;
@@ -57,10 +69,43 @@ const activitySlice = createSlice({
         throw new Error(
           'You have already logged time for an hour in your interval. Do you want to override it?'
         );
+      persistData('activity', state);
     },
+
+    saveMinutesWhenPomodoroPaused(state, action) {
+      const { totalSeconds, countdown, reinitMinutesPassed } = action.payload;
+      const currentHour = new Date().getHours();
+      // const currentMinutes = new Date().getMinutes();
+
+      if (currentHour > 4 && currentHour < 24) {
+        const indexOfHour = state.hours.findIndex(
+          hour => hour.hour === currentHour
+        );
+        const passedMinutes =
+          Math.trunc(
+            (totalSeconds - (countdown.minutes * 60 + countdown.seconds)) / 60
+          ) - state.activeMinutesAlreadyAdded;
+
+        const newActiveMinutes =
+          state.hours[indexOfHour].activeMinutes + passedMinutes;
+        state.hours[indexOfHour].activeMinutes = newActiveMinutes;
+        if (!reinitMinutesPassed)
+          state.activeMinutesAlreadyAdded += passedMinutes;
+        else state.activeMinutesAlreadyAdded = 0;
+      }
+      persistData('activity', state);
+    },
+
     addCompletedPomodoro(state) {
       state.numberOfCompletedPomodoros++;
-      console.log('added pomodoro');
+      persistData('activity', state);
+    },
+
+    updateNumberOfCompletedTasks(state, action) {
+      const operation = action.payload;
+      if (operation === 'add') state.numberOfCompletedTasks++;
+      if (operation === 'subtract') state.numberOfCompletedTasks--;
+      persistData('activity', state);
     },
   },
 });

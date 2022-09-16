@@ -1,6 +1,7 @@
 import classes from './PomodoroOptions.module.scss';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { timerActions } from '../../store/timer';
+import { activityActions } from '../../store/activity';
 import React, { useState } from 'react';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
 
@@ -32,6 +33,15 @@ const PomodoroOptions = () => {
   };
   const confirmActionHandler = () => {
     setConfirmModalIsActive(false);
+    if (activeTimer === 'pomodoro') {
+      dispatch(
+        activityActions.saveMinutesWhenPomodoroPaused({
+          totalSeconds,
+          countdown,
+          reinitMinutesPassed: true,
+        })
+      );
+    }
     dispatch(timerActions.changeTimer(timer));
   };
   const closeConfirmationHandler = () => {
@@ -54,7 +64,9 @@ const PomodoroOptions = () => {
           onClose={closeConfirmationHandler}
           onConfirm={confirmActionHandler}
         >
-          Current timer progress will be lost!
+          {activeTimer === 'pomodoro'
+            ? "Current timer progress will be lost and your pomodoro won't be marked as completed!"
+            : 'Current timer progress will be lost!'}
         </ConfirmAction>
       )}
       <ul className={classes.options} onClick={changeTimerHandler}>

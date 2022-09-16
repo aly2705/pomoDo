@@ -1,7 +1,6 @@
 import classes from './Overview.module.scss';
 import Card from '../UI/Card';
 import { useSelector } from 'react-redux';
-import { dateIsToday } from '../../helpers/helpers';
 
 const OverviewCard = ({ metric, label }) => {
   return (
@@ -14,14 +13,14 @@ const OverviewCard = ({ metric, label }) => {
 
 const Overview = () => {
   const tasks = useSelector(state => state.tasks.tasks);
+  const numTasksDoneToday = useSelector(
+    state => state.activity.numberOfCompletedTasks
+  );
   const hours = useSelector(state => state.activity.hours);
   const numPomodoros = useSelector(
     state => state.activity.numberOfCompletedPomodoros
   );
   const numOfActiveTasks = tasks.filter(task => !task.completed).length;
-  const numTasksDoneToday = tasks.filter(task =>
-    dateIsToday(task.dateCompleted)
-  ).length;
 
   const activityMinutes = hours.reduce(
     (acc, hour) => acc + hour.activeMinutes,

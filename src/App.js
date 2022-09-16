@@ -13,10 +13,11 @@ import RewardsPage from './pages/RewardsPage';
 import TasksPage from './pages/TasksPage';
 import { timerActions } from './store/timer';
 import { tasksActions } from './store/tasks';
+import { activityActions } from './store/activity';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
 import useUnload from './hooks/useUnload';
-import { activityActions } from './store/activity';
+import { dateIsToday, getData } from './helpers/helpers';
 
 let secondsOutsidePomodoro = 0;
 
@@ -25,7 +26,7 @@ function App() {
   const timerIsActive = useSelector(state => state.timer.isActive);
   const location = useLocation();
   const pomodoroWasCompleted = useSelector(state => state.timer.wasCompleted);
-
+  const pomodoroMinutes = useSelector(state => state.timer.config.pomodoro);
   const match = matchPath(
     {
       path: '/pomodoro',
@@ -42,11 +43,28 @@ function App() {
     if (localStorage.getItem('tasks')) {
       dispatch(tasksActions.getTasksData());
     }
+    if (localStorage.getItem('activity')) {
+      const storedActivity = getData('activity');
+      if (dateIsToday(storedActivity.date))
+        dispatch(activityActions.getActivityData());
+      else {
+        console.log('Here we save the day that has passed');
+      }
+    }
   }, [dispatch]);
 
   useEffect(() => {
-    if (pomodoroWasCompleted) dispatch(activityActions.addCompletedPomodoro());
-  }, [pomodoroWasCompleted, dispatch]);
+    if (pomodoroWasCompleted) {
+      dispatch(activityActions.addCompletedPomodoro());
+      dispatch(
+        activityActions.saveMinutesWhenPomodoroPaused({
+          totalSeconds: pomodoroMinutes * 60,
+          countdown: { minutes: 0, seconds: 0 },
+          reinitMinutesPassed: true,
+        })
+      );
+    }
+  }, [pomodoroWasCompleted, dispatch, pomodoroMinutes]);
 
   useEffect(() => {
     if (!timerIsActive) return;
