@@ -1,9 +1,9 @@
 import classes from './PomodoroOptions.module.scss';
+import ConfirmAction from '../UserFeedback/ConfirmAction';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { timerActions } from '../../store/timer';
 import { activityActions } from '../../store/activity';
 import React, { useState } from 'react';
-import ConfirmAction from '../UserFeedback/ConfirmAction';
 
 let timer;
 const PomodoroOptions = () => {

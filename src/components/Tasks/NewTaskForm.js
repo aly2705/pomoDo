@@ -47,7 +47,8 @@ const NewTaskForm = () => {
     };
 
     dispatch(tasksActions.addTask(task));
-    dispatch(tasksActions.setIsEditing(false));
+    categoryRef.current.value = 'Category';
+    taskRef.current.value = '';
   };
 
   useEffect(() => {

@@ -53,6 +53,7 @@ function App() {
         dispatch(activityActions.getActivityData());
       } else {
         dispatch(calendarActions.insertActivityData(storedActivity));
+        dispatch(timerActions.changeTimer('pomodoro'));
       }
     }
   }, [dispatch]);
