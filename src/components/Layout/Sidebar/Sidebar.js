@@ -24,7 +24,6 @@ const Sidebar = () => {
           route="/statistics"
           icon="#icon-bar-graph"
         />
-        <SidebarItem label="Rewards" route="/rewards" icon="#icon-trophy" />
       </ul>
     </nav>
   );

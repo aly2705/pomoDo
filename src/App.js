@@ -9,7 +9,6 @@ import {
 import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
-import RewardsPage from './pages/RewardsPage';
 import TasksPage from './pages/TasksPage';
 import { timerActions } from './store/timer';
 import { tasksActions } from './store/tasks';
@@ -102,7 +101,6 @@ function App() {
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
-        <Route path="/rewards" element={<RewardsPage />} />
       </Routes>
     </Layout>
   );
