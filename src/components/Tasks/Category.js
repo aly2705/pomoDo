@@ -1,5 +1,5 @@
 import classes from './Category.module.scss';
-import icons from '../../img/icons.svg';
+import icons from '../../assets/icons.svg';
 import { taskCategories as categories } from '../../helpers/config';
 import { Link } from 'react-router-dom';
 

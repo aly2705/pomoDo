@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import icons from '../../../img/icons.svg';
-import ProfileImg from '../../../img/profile.svg';
+import icons from '../../../assets/icons.svg';
+import ProfileImg from '../../../assets/profile.svg';
 import classes from './ProfileOptions.module.scss';
 import Settings from '../../UserConfig/Setttings';
 

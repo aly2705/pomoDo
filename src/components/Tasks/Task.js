@@ -1,5 +1,5 @@
 import classes from './Task.module.scss';
-import icons from '../../img/icons.svg';
+import icons from '../../assets/icons.svg';
 import { taskCategories as categories } from '../../helpers/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { tasksActions } from '../../store/tasks';

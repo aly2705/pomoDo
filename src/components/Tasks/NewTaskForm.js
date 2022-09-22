@@ -1,5 +1,5 @@
 import classes from './NewTaskForm.module.scss';
-import icons from '../../img/icons.svg';
+import icons from '../../assets/icons.svg';
 import { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';

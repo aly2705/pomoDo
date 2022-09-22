@@ -1,5 +1,5 @@
 import classes from './SidebarItem.module.scss';
-import icons from '../../../img/icons.svg';
+import icons from '../../../assets/icons.svg';
 import { NavLink, useLocation } from 'react-router-dom';
 import { mobileMenuActions } from '../../../store/mobile-menu';
 import { useDispatch } from 'react-redux';

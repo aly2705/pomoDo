@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getData, persistData } from '../helpers/helpers';
+// import audioFile from '../assets/completed.mp3';
+// const audio = new Audio(audioFile);
 
 const timerSlice = createSlice({
   name: 'timer',

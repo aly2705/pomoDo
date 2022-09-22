@@ -18,8 +18,11 @@ import { useEffect } from 'react';
 import useUnload from './hooks/useUnload';
 import { dateIsToday, getData } from './helpers/helpers';
 import { calendarActions } from './store/calendar';
+import audioFile from './assets/completed.mp3';
 
 let secondsOutsidePomodoro = 0;
+let audioPlayedOutside = false;
+const audio = new Audio(audioFile);
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +30,8 @@ function App() {
   const location = useLocation();
   const pomodoroWasCompleted = useSelector(state => state.timer.wasCompleted);
   const pomodoroMinutes = useSelector(state => state.timer.config.pomodoro);
+  const countdown = useSelector(state => state.timer.countdown);
+
   const match = matchPath(
     {
       path: '/pomodoro',
@@ -71,10 +76,22 @@ function App() {
   }, [pomodoroWasCompleted, dispatch, pomodoroMinutes]);
 
   useEffect(() => {
+    const remainingSeconds = countdown.minutes * 60 + countdown.seconds;
+    if (remainingSeconds > 0) audioPlayedOutside = false;
+    if (remainingSeconds === 0 && !audioPlayedOutside) audio.play();
+  }, [countdown]);
+
+  useEffect(() => {
     if (!timerIsActive) return;
     if (!match) {
+      const remainingSeconds = countdown.minutes * 60 + countdown.seconds;
       const interval = setInterval(() => {
         secondsOutsidePomodoro++;
+        if (secondsOutsidePomodoro > remainingSeconds) {
+          audio.play();
+          audioPlayedOutside = true;
+          clearInterval(interval);
+        }
       }, 1000);
 
       return () => {
@@ -85,7 +102,7 @@ function App() {
       dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
       secondsOutsidePomodoro = 0;
     }
-  }, [match, timerIsActive, dispatch]);
+  }, [match, timerIsActive, dispatch, countdown]);
 
   useUnload(event => {
     event.preventDefault();
