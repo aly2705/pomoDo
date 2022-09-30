@@ -83,7 +83,11 @@ const PomodoroTimer = () => {
                 : countdown.seconds}
             </span>
           </div>
-          <button className={classes.timer__btn} onClick={clickTimerHandler}>
+          <button
+            className={classes.timer__btn}
+            onClick={clickTimerHandler}
+            disabled={countdown.minutes === 0 && countdown.seconds === 0}
+          >
             {isActive ? 'Pause' : 'Start'}
           </button>
         </div>

@@ -1,0 +1,9 @@
+@import '../../styles/abstracts.scss';
+
+.report {
+  grid-column: 1 / 2;
+
+  @include respond(tab-port-large) {
+    grid-column: 1 / -1;
+  }
+}
