@@ -4,7 +4,7 @@ import classes from './Report.module.scss';
 const Report = () => {
   return (
     <Card className={classes.report}>
-      <h3>Report</h3>
+      <h3>Monthly Report</h3>
     </Card>
   );
 };

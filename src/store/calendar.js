@@ -9,13 +9,13 @@ const calendarSlice = createSlice({
   reducers: {
     insertActivityData(state, action) {
       const storedActivity = action.payload;
-      console.log(storedActivity);
+
       const date = new Date(storedActivity.date);
       const day = date.getDate();
       const month = date.getMonth();
 
       state.calendar[month][day] = storedActivity;
-      console.log(day, month);
+
       persistData('calendar', state);
     },
     getCalendarData(state) {

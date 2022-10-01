@@ -17,11 +17,11 @@ const PomodoroReset = () => {
   const [confirmModalIsActive, setConfirmModalIsActive] = useState(false);
   const confirmResetHandler = () => {
     if (totalSeconds === countdown.seconds + countdown.minutes * 60) {
-      resetPomodoroHandler();
+      dispatch(timerActions.changeTimer(activeTimer));
       return;
     }
     if (countdown.seconds + countdown.minutes * 60 === 0) {
-      resetPomodoroHandler();
+      dispatch(timerActions.changeTimer(activeTimer));
       return;
     }
     setConfirmModalIsActive(true);

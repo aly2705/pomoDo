@@ -13,6 +13,18 @@
     transparent 16%,
     #ddd 16.66%
   );
+
+  &__message {
+    position: absolute;
+    width: 70%;
+    font-size: 1.6rem;
+    font-weight: 600;
+    opacity: 1;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 .datagroup {
   transform: translateX(-3rem);
@@ -24,8 +36,8 @@
 .point {
   border-radius: 50%;
   position: absolute;
-  height: 12px;
-  width: 12px;
+  height: 10px;
+  width: 10px;
   z-index: 1;
   background-color: #e83822;
   //transform: translate(-50%, 50%);
@@ -44,6 +56,13 @@
   color: #aaa;
   font-size: 1.2rem;
   transform: translateX(-1.5rem);
+}
+.division {
+  position: absolute;
+  left: -2.6rem;
+  color: #aaa;
+  font-size: 1.2rem;
+  transform: translateY(1rem);
 }
 
 .value {
