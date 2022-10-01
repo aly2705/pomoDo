@@ -3,20 +3,20 @@ import { useEffect } from 'react';
 import classes from './LineChart.module.scss';
 
 const DataPoint = props => {
-  const { index, left, hasLine, bottom, nextPointData, base } = props;
-  const perpendicular = (nextPointData - bottom) * 15;
-  console.log(base, perpendicular);
-
-  //   useEffect(() => {
-  //     const point = document.getElementById(`group-${index}`).firstChild;
-  //     // console.log(point.getBoundingClientRect());
-  //   }, [index, left]);
+  const { left, hasLine, bottom, nextPointValue, base, label } = props;
+  const perpendicular = (nextPointValue - bottom) * 15;
 
   return (
-    <div id={`group-${index}`}>
+    <div className={classes.datagroup}>
       <div
         className={classes.point}
-        style={{ left: left, bottom: `${bottom * 1.5}rem` }}
+        style={{
+          left: left,
+          bottom: `${bottom * 15}px`,
+          transform: `${
+            bottom === 0 ? 'translate(-50%, 25%)' : 'translate(-50%, 50%)'
+          }`,
+        }}
       ></div>
       {hasLine && (
         <div
@@ -25,14 +25,17 @@ const DataPoint = props => {
             width: `${Math.sqrt(
               base * base + perpendicular * perpendicular
             )}px`,
-            left: left - 20,
-            bottom: `${bottom * 1.5}rem`,
+            left: left,
+            bottom: `${bottom * 15}px`,
             transform: `rotate(${perpendicular > 0 ? '-' : ''}${
               (Math.atan(Math.abs(perpendicular) / base) * 180) / Math.PI
             }deg)`,
           }}
         ></div>
       )}
+      <div className={classes.label} style={{ left: left }}>
+        {label}
+      </div>
     </div>
   );
 };
@@ -64,13 +67,14 @@ const LineChart = ({ data }) => {
         const hasLine = index + 1 !== data.length;
         return (
           <DataPoint
+            label={item.label}
             key={index}
             bottom={item.value}
             left={leftOffset}
             base={base}
             index={index}
             hasLine={hasLine}
-            nextPointData={hasLine ? data[index + 1].value : 0}
+            nextPointValue={hasLine ? data[index + 1].value : 0}
           />
         );
       })}
