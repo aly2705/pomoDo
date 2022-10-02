@@ -75,6 +75,7 @@ const activitySlice = createSlice({
     saveMinutesWhenPomodoroPaused(state, action) {
       const { totalSeconds, countdown, reinitMinutesPassed } = action.payload;
       const currentHour = new Date().getHours();
+      const currentMinutes = new Date().getMinutes();
 
       if (currentHour > 4 && currentHour < 24) {
         const indexOfHour = state.hours.findIndex(
@@ -85,9 +86,18 @@ const activitySlice = createSlice({
             (totalSeconds - (countdown.minutes * 60 + countdown.seconds)) / 60
           ) - state.activeMinutesAlreadyAdded;
 
-        const newActiveMinutes =
-          state.hours[indexOfHour].activeMinutes + passedMinutes;
-        state.hours[indexOfHour].activeMinutes = newActiveMinutes;
+        console.log(currentMinutes, passedMinutes);
+        if (passedMinutes > currentMinutes) {
+          const minutesToAddToCurrentHour = currentMinutes;
+          state.hours[indexOfHour].activeMinutes += minutesToAddToCurrentHour;
+          const minutesToAddToPassedHour = passedMinutes - currentMinutes;
+          state.hours[indexOfHour - 1].activeMinutes +=
+            minutesToAddToPassedHour;
+        } else {
+          const newActiveMinutes =
+            state.hours[indexOfHour].activeMinutes + passedMinutes;
+          state.hours[indexOfHour].activeMinutes = newActiveMinutes;
+        }
         if (!reinitMinutesPassed)
           state.activeMinutesAlreadyAdded += passedMinutes;
         else state.activeMinutesAlreadyAdded = 0;

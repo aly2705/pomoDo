@@ -85,11 +85,15 @@ const LineChart = ({ data, maxValue, unit }) => {
   const resizeChartHandler = () => {
     const width = document
       .querySelector(`.${classes.linechart}`)
-      .getBoundingClientRect().width;
+      ?.getBoundingClientRect().width;
     setChartWidth(width);
   };
 
-  if (data.reduce((acc, item) => acc + item.value, 0) === 0) {
+  if (
+    data.reduce((acc, item) => acc + item.value, 0) === 0 ||
+    !data ||
+    data.length === 0
+  ) {
     return (
       <div className={classes.linechart} style={{ opacity: 0.8 }}>
         <Divisions maxValue={maxValue} unit={unit} />

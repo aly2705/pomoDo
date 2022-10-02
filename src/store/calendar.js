@@ -14,7 +14,7 @@ const calendarSlice = createSlice({
       const day = date.getDate();
       const month = date.getMonth();
 
-      state.calendar[month][day] = storedActivity;
+      state.calendar[month][day - 1] = storedActivity;
 
       persistData('calendar', state);
     },
