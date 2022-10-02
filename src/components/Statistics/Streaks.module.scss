@@ -2,7 +2,8 @@
 
 .streaks {
   width: 100%;
-  grid-column: 3 / 4;
+  height: 20rem;
+  grid-column: 2 / 4;
 
   @include respond(tab-port-large) {
     grid-column: 1 / -1;

@@ -1,17 +1,31 @@
 import React, { Fragment } from 'react';
 import classes from './BarChart.module.scss';
 
-const findLabels = numLabels => {
-  const labelsArray = [];
-  for (let i = 1; i <= numLabels; i++) {
-    labelsArray.push(i * 10);
+const findLabels = (distanceBetweenLabels, maxValue) => {
+  // const labelsArray = [];
+  // for (let i = 1; i <= numLabels; i++) {
+  //   labelsArray.push(i * 10);
+  // }
+  // return labelsArray;
+
+  const labelsValues = [];
+  for (
+    let i = distanceBetweenLabels;
+    i <= maxValue;
+    i += distanceBetweenLabels
+  ) {
+    labelsValues.push(i);
   }
-  return labelsArray;
+  return labelsValues;
 };
 
 const Labels = React.memo(({ maxValue, unit }) => {
-  const numLabels = Math.trunc(maxValue / 10);
-  const labelsValues = findLabels(numLabels);
+  // const numLabels = Math.trunc(maxValue / 10);
+  // const labelsValues = findLabels(numLabels);
+
+  const distanceBetweenLabels = maxValue / 6;
+  const labelsValues = findLabels(distanceBetweenLabels, maxValue);
+
   return (
     <Fragment>
       {labelsValues.map((label, i) => (
@@ -44,8 +58,8 @@ const BarChart = ({ maxValue, barsArray, unit, opacity }) => {
         {barsArray.map((bar, i) => (
           <Bar
             key={i}
-            percentage={(bar.activeMinutes / maxValue) * 100}
-            label={bar.hour}
+            percentage={(bar.value / maxValue) * 100}
+            label={bar.label}
           />
         ))}
         <Labels maxValue={maxValue} unit={unit} />

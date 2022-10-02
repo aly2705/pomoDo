@@ -7,9 +7,9 @@ const StatisticsPage = () => {
   return (
     <div className="main-statistics">
       <Progress />
-      <Streaks />
-      <Report />
       <TasksStats />
+      <Report />
+      <Streaks />
     </div>
   );
 };

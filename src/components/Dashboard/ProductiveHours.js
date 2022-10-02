@@ -9,13 +9,18 @@ const ProductiveHours = () => {
     (acc, hour) => acc + hour.activeMinutes,
     0
   );
+
+  const chartData = hours.map(hour => ({
+    label: hour.hour,
+    value: hour.activeMinutes,
+  }));
   return (
     <Card className={classes.hours}>
       <h3>Your Productive Hours</h3>
       <BarChart
         maxValue={60}
         unit="min"
-        barsArray={hours}
+        barsArray={chartData}
         opacity={activityMinutes ? 1 : 0.6}
       />
       {!activityMinutes && (

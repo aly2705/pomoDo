@@ -1,10 +1,14 @@
 @import '../../styles/abstracts.scss';
 
 .tasks {
-  height: 30rem;
-  grid-column: 2 / 4;
+  // height: 30rem;
+  grid-column: 3 / 4;
 
   @include respond(tab-port-large) {
     grid-column: 1 / -1;
+  }
+
+  &__chart {
+    margin-right: 2rem;
   }
 }
