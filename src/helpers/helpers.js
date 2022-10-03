@@ -67,7 +67,7 @@ export const mapProgressData = (
  */
 export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
   const lastDayInArray = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  // const lastDayInArray = new Date('2022-09-03T14:55:07.121Z'); // test lastDayInArray
+  //const lastDayInArray = new Date('2022-09-03T14:55:07.121Z'); // test lastDayInArray
   // console.log(lastDayInArray);
   const dateOfMonth = lastDayInArray.getDate();
   /* We will use the calendar date of lastDayInArray to determine if we have all the data needed in the lastDayInArray month's array

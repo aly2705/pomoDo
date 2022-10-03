@@ -2,10 +2,77 @@
 
 .streaks {
   width: 100%;
-  height: 20rem;
-  grid-column: 2 / 4;
+  // height: 20rem;
+  grid-column: 1 / 2;
 
   @include respond(tab-port-large) {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+
+  @include respond(tab-port) {
     grid-column: 1 / -1;
+    grid-row: 3 / 4;
+  }
+
+  h3 {
+    margin-bottom: 0.8rem;
+  }
+
+  h4 {
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  &__chart {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }
+
+  &__grid {
+    padding: 2rem 0;
+    display: grid;
+    height: max-content;
+    grid-template-columns: repeat(7, 2.5rem);
+    grid-template-rows: repeat(5, 2.5rem);
+    gap: 1rem;
+    margin-right: 0;
+
+    //TEST FOR STREAKS
+    div {
+      background-color: var(--color-primary-tint);
+      width: 100%;
+      border-radius: 0.4rem;
+      opacity: 1;
+      transform: opacity 0.3s;
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+
+    &__streak {
+      background-color: var(--color-primary-tint);
+      width: 100%;
+      border-radius: 0.4rem;
+      opacity: 1;
+      transform: opacity 0.3s;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+
+      &--checked {
+        background-color: var(--color-primary);
+      }
+      &--omitted {
+        background-color: var(--color-white);
+      }
+    }
   }
 }

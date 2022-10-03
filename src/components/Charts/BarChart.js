@@ -51,9 +51,12 @@ const Bar = ({ percentage, label }) => {
   );
 };
 
-const BarChart = ({ maxValue, barsArray, unit, opacity }) => {
+const BarChart = ({ maxValue, barsArray, unit, opacity, height }) => {
   return (
-    <div className={classes['chart-wrap']} style={{ opacity: `${opacity}` }}>
+    <div
+      className={classes['chart-wrap']}
+      style={{ opacity: `${opacity}`, '--height': height || '20rem' }}
+    >
       <div className={classes.grid}>
         {barsArray.map((bar, i) => (
           <Bar

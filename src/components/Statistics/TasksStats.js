@@ -32,8 +32,10 @@ const TasksStats = () => {
           maxValue={6 - (maxValue % 6) + maxValue}
           unit="tsks"
           barsArray={chartData}
-          opacity={true ? 1 : 0.6}
+          opacity={maxValue ? 1 : 0.6}
+          height={'18rem'}
         />
+        {!maxValue && <p>You have no activity logged in this timeframe!</p>}
       </div>
     </Card>
   );

@@ -48,6 +48,11 @@
   align-content: start;
 
   @include respond(tab-port-large) {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+  }
+
+  @include respond(tab-port) {
     grid-template-columns: 1fr;
     column-gap: 0;
   }
