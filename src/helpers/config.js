@@ -7,4 +7,5 @@ export const taskCategories = [
   { name: 'Chores', icon: '#icon-broom' },
   { name: 'Completed', icon: '#icon-checkmark' },
   { name: 'Ongoing', icon: '#icon-hour-glass' },
+  { name: 'Show All', icon: '#icon-list' },
 ];

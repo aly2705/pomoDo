@@ -30,7 +30,7 @@ const TasksStats = () => {
       <div className={classes.tasks__chart}>
         <BarChart
           maxValue={6 - (maxValue % 6) + maxValue}
-          unit="tsks"
+          unit="tasks"
           barsArray={chartData}
           opacity={maxValue ? 1 : 0.6}
           height={'18rem'}

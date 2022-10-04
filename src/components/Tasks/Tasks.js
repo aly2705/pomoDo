@@ -56,8 +56,11 @@ const Tasks = () => {
   let computedTasks = tasks;
   let tasksList;
   if (sortCriteria) {
-    if (sortCriteria === 'Ongoing') {
-      computedTasks = tasks.filter(task => !task.completed);
+    if (sortCriteria === 'Show All') {
+      computedTasks = [
+        ...tasks.filter(task => !task.completed),
+        ...tasks.filter(task => task.completed),
+      ];
     } else if (sortCriteria === 'Completed') {
       computedTasks = tasks.filter(task => task.completed);
     } else {
@@ -75,6 +78,7 @@ const Tasks = () => {
       </Task>
     ));
   } else {
+    computedTasks = tasks.filter(task => !task.completed);
     if (isEditing) {
       tasksList = computedTasks.map((task, index) => (
         <Task
@@ -106,7 +110,13 @@ const Tasks = () => {
 
   return (
     <Card className={classes.tasks}>
-      <h2>Tasks</h2>
+      <h2>
+        {!sortCriteria
+          ? 'Active Tasks'
+          : sortCriteria === 'Show All'
+          ? 'All tasks'
+          : sortCriteria}
+      </h2>
       {sortCriteria === 'Completed' && tasksList.length !== 0 && (
         <Fragment>
           <button
@@ -127,7 +137,7 @@ const Tasks = () => {
       )}
       {sortCriteria && (
         <Link to="/tasks" className={`btn-link ${classes.tasks__btn}`}>
-          Show all
+          Back to active
         </Link>
       )}
       {!sortCriteria && (

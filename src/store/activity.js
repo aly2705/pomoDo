@@ -86,12 +86,21 @@ const activitySlice = createSlice({
             (totalSeconds - (countdown.minutes * 60 + countdown.seconds)) / 60
           ) - state.activeMinutesAlreadyAdded;
 
-        console.log(currentMinutes, passedMinutes);
+        //console.log(currentMinutes, passedMinutes);
         if (passedMinutes > currentMinutes) {
+          //Update current hour
           const minutesToAddToCurrentHour = currentMinutes;
           state.hours[indexOfHour].activeMinutes += minutesToAddToCurrentHour;
-          const minutesToAddToPassedHour = passedMinutes - currentMinutes;
-          state.hours[indexOfHour - 1].activeMinutes +=
+
+          //Update passed hour (or hours if minutes are more than 60)
+          let minutesToAddToPassedHour = passedMinutes - currentMinutes;
+          let indexOfHourToAddTo = indexOfHour - 1;
+          while (minutesToAddToPassedHour > 60) {
+            state.hours[indexOfHourToAddTo].activeMinutes += 60;
+            minutesToAddToPassedHour -= 60;
+            indexOfHourToAddTo--;
+          }
+          state.hours[indexOfHourToAddTo].activeMinutes +=
             minutesToAddToPassedHour;
         } else {
           const newActiveMinutes =

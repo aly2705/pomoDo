@@ -7,7 +7,7 @@ const Categories = () => {
     <Card className={classes.categories}>
       <h2>Filter by</h2>
       <ul>
-        <Category name="Ongoing" />
+        <Category name="Show All" />
         <Category name="Completed" />
       </ul>
       <ul>

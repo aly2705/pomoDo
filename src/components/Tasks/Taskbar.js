@@ -7,16 +7,19 @@ import { useSelector } from 'react-redux';
 const Taskbar = () => {
   const tasks = useSelector(state => state.tasks.tasks);
 
-  const tasksList = tasks.slice(0, 4).map(task => (
-    <Task
-      key={task.id}
-      id={task.id}
-      completed={task.completed}
-      category={task.category}
-    >
-      {task.text}
-    </Task>
-  ));
+  const tasksList = tasks
+    .filter(task => !task.completed)
+    .slice(0, 4)
+    .map(task => (
+      <Task
+        key={task.id}
+        id={task.id}
+        completed={task.completed}
+        category={task.category}
+      >
+        {task.text}
+      </Task>
+    ));
   return (
     <Card className={classes.taskbar}>
       <h3>My tasks</h3>
