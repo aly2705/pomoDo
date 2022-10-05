@@ -57,10 +57,7 @@ const Tasks = () => {
   let tasksList;
   if (sortCriteria) {
     if (sortCriteria === 'Show All') {
-      computedTasks = [
-        ...tasks.filter(task => !task.completed),
-        ...tasks.filter(task => task.completed),
-      ];
+      computedTasks = tasks;
     } else if (sortCriteria === 'Completed') {
       computedTasks = tasks.filter(task => task.completed);
     } else {

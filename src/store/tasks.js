@@ -39,7 +39,13 @@ const tasksSlice = createSlice({
   reducers: {
     addTask(state, action) {
       const task = action.payload;
-      state.tasks.push(task);
+      const firstCompletedTaskIndex = state.tasks.findIndex(
+        task => task.completed
+      );
+      if (firstCompletedTaskIndex === -1) {
+        state.tasks.push(task);
+      } else state.tasks.splice(firstCompletedTaskIndex, 0, task); //inserts at the end of uncompleted tasks
+
       persistData('tasks', state);
     },
     markAsCompleted(state, action) {
@@ -47,6 +53,10 @@ const tasksSlice = createSlice({
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
       state.tasks.at(taskIndex).completed = true;
       state.tasks.at(taskIndex).dateCompleted = new Date().toISOString();
+
+      const task = state.tasks.at(taskIndex);
+      state.tasks.splice(taskIndex, 1); //cuts from tasks the marked element
+      state.tasks.push(task); //inserts at the end the task
       persistData('tasks', state);
     },
     cancelCompletion(state, action) {
@@ -56,6 +66,21 @@ const tasksSlice = createSlice({
 
       task.completed = false;
       task.dateCompleted = null;
+
+      if (state.tasks.filter(task => task.completed).length === 0) {
+        persistData('tasks', state);
+        return;
+      }
+      state.tasks.splice(taskIndex, 1); //cuts from tasks the marked element
+      const firstCompletedTaskIndex = state.tasks.findIndex(
+        task => task.completed
+      );
+      const indexToInsertTo =
+        firstCompletedTaskIndex !== -1
+          ? firstCompletedTaskIndex
+          : state.tasks.length - 1;
+
+      state.tasks.splice(indexToInsertTo, 0, task); //inserts at the end of the uncompleted tasks list
 
       persistData('tasks', state);
     },
