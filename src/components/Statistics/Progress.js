@@ -14,6 +14,7 @@ const Progress = () => {
 
   useEffect(() => {
     const data = findWeeklyData(calendar);
+    console.log(data);
     setProgressData(data);
   }, [calendar]);
 

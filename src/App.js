@@ -16,7 +16,7 @@ import { activityActions } from './store/activity';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect } from 'react';
 import useUnload from './hooks/useUnload';
-import { dateIsToday, getData } from './helpers/helpers';
+import { dateIsYesterday, dateIsToday, getData } from './helpers/helpers';
 import { calendarActions } from './store/calendar';
 import audioFile from './assets/completed.mp3';
 
@@ -58,6 +58,9 @@ function App() {
       } else {
         dispatch(calendarActions.insertActivityData(storedActivity));
         dispatch(timerActions.changeTimer('pomodoro'));
+        if (!dateIsYesterday(storedActivity.date))
+          // insert null data for yesterday so the statistics will update with the correct data
+          dispatch(calendarActions.insertYesterdayData());
       }
     }
   }, [dispatch]);

@@ -18,6 +18,13 @@ const calendarSlice = createSlice({
 
       persistData('calendar', state);
     },
+    insertYesterdayData(state) {
+      const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+      const day = yesterday.getDate();
+      const month = yesterday.getMonth();
+
+      state.calendar[month][day - 1] = null;
+    },
     getCalendarData(state) {
       const storedData = getData('calendar');
       state.calendar = storedData.calendar;

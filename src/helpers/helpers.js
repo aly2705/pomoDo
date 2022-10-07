@@ -16,6 +16,12 @@ export const dateIsToday = date => {
   if (date.slice(0, 10) === today.slice(0, 10)) return true;
   return false;
 };
+export const dateIsYesterday = date => {
+  if (!date) return;
+  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  if (date.slice(0, 10) === yesterday.slice(0, 10)) return true;
+  return false;
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // HELPERS FOR CALENDAR OPERATIONS (more specific than the others, but kept here in order to have lean components and reuse them)
@@ -73,7 +79,7 @@ export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
   /* We will use the calendar date of lastDayInArray to determine if we have all the data needed in the lastDayInArray month's array
   or if we need to take data from the previous month's array too */
 
-  if (dateOfMonth < 6) {
+  if (dateOfMonth <= 6) {
     // 1) Find days from current month (will be placed right-side in the final array, hence the name)
     const daysToComputeFromRight = calendar[lastDayInArray.getMonth()].slice(
       0,
@@ -113,7 +119,7 @@ export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
     const data = [...leftData, ...rightData];
     return data;
   }
-  if (dateOfMonth >= 6) {
+  if (dateOfMonth > 6) {
     //1) Find data from last 7 days in current month's calendar
     const daysToCompute = calendar[lastDayInArray.getMonth()].slice(
       dateOfMonth - 6,
