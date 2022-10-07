@@ -22,7 +22,10 @@ const TasksStats = () => {
     setChartData(data);
   }, [calendar]);
 
-  const maxValue = Math.max(...chartData.map(data => data.value));
+  let maxValue;
+  if (chartData.filter(item => item).length === chartData.length) {
+    maxValue = Math.max(...chartData.map(data => data.value));
+  }
 
   return (
     <Card className={classes.tasks}>

@@ -23,16 +23,12 @@ const calendarSlice = createSlice({
       const day = yesterday.getDate();
       const month = yesterday.getMonth();
 
-      state.calendar[month][day - 1] = null;
+      state.calendar[month][day - 1] = undefined;
+      persistData('calendar', state);
     },
     getCalendarData(state) {
       const storedData = getData('calendar');
       state.calendar = storedData.calendar;
-    },
-    changeDayInCalendar(state, action) {
-      const { date, month } = action.payload;
-      state.calendar[month][date] = null;
-      persistData('calendar', state);
     },
   },
 });

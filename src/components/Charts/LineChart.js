@@ -90,7 +90,8 @@ const LineChart = ({ data, maxValue, unit }) => {
   };
 
   if (
-    data.reduce((acc, item) => acc + item.value, 0) === 0 ||
+    data.filter(item => item).length !== data.length ||
+    data.reduce((acc, item) => (item ? acc + item.value : acc + 0), 0) === 0 ||
     !data ||
     data.length === 0
   ) {

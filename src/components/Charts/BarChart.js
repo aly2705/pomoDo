@@ -58,13 +58,17 @@ const BarChart = ({ maxValue, barsArray, unit, opacity, height }) => {
       style={{ opacity: `${opacity}`, '--height': height || '20rem' }}
     >
       <div className={classes.grid}>
-        {barsArray.map((bar, i) => (
-          <Bar
-            key={i}
-            percentage={(bar.value / maxValue) * 100}
-            label={bar.label}
-          />
-        ))}
+        {barsArray.map((bar, i) => {
+          if (bar) {
+            return (
+              <Bar
+                key={i}
+                percentage={(bar.value / maxValue) * 100}
+                label={bar.label}
+              />
+            );
+          } else return <Bar key={i} percentage={0} label="" />;
+        })}
         <Labels maxValue={maxValue} unit={unit} />
       </div>
     </div>
