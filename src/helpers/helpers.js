@@ -31,7 +31,9 @@ export const dateIsYesterday = date => {
  * @returns - the total of activeMinutes converted in decimal hours
  */
 export const addHours = hours => {
-  return hours.reduce((acc, hour) => acc + hour.activeMinutes, 0) / 60;
+  const totalMinutes = hours.reduce((acc, hour) => acc + hour.activeMinutes, 0);
+  const decimalHours = +(totalMinutes / 60).toFixed(2);
+  return decimalHours;
 };
 
 /**

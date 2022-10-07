@@ -34,45 +34,61 @@
   }
 
   &__grid {
-    padding: 2rem 0;
+    padding: 1rem 0 2rem 0;
     display: grid;
     height: max-content;
-    grid-template-columns: repeat(7, 2.5rem);
-    grid-template-rows: repeat(5, 2.5rem);
+    grid-template-columns: repeat(7, 2rem);
     gap: 1rem;
     margin-right: 0;
+    position: relative;
+  }
+}
 
-    //TEST FOR STREAKS
-    div {
-      background-color: var(--color-primary-tint);
-      width: 100%;
-      border-radius: 0.4rem;
-      opacity: 1;
-      transform: opacity 0.3s;
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
-      }
-    }
+.streak {
+  background-color: var(--color-grey-3);
+  width: 100%;
+  border-radius: 0.4rem;
+  opacity: 1;
+  transition: opacity 0.3s;
+  width: 2rem;
+  height: 2rem;
 
-    &__streak {
-      background-color: var(--color-primary-tint);
-      width: 100%;
-      border-radius: 0.4rem;
-      opacity: 1;
-      transition: opacity 0.3s;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
 
-      &:hover {
-        cursor: pointer;
-        opacity: 0.8;
-      }
+  &--checked {
+    background-color: var(--color-primary);
+  }
+  &--omitted {
+    background-color: var(--color-white);
+  }
+}
+.day {
+  height: 0.8rem;
+  line-height: 1;
+  font-size: 1.1rem;
+  font-weight: 600;
+  justify-self: center;
+}
+.arrow {
+  @include default-button-reset;
+  background-color: transparent;
+  position: absolute;
+  top: -1.4rem;
+  transform: translateY(-50%);
 
-      &--checked {
-        background-color: var(--color-primary);
-      }
-      &--omitted {
-        background-color: var(--color-white);
-      }
-    }
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: var(--color-text-secondary);
+  }
+
+  &--left {
+    left: -2.5rem;
+  }
+  &--right {
+    right: -2.5rem;
   }
 }

@@ -128,6 +128,37 @@ function App() {
 
 export default App;
 
+// localStorage.setItem(
+//   'activity',
+//   JSON.stringify({
+//     activeMinutesAlreadyAdded: 0,
+//     date: '2022-09-27T17:33:59.338Z',
+//     hours: [
+//       { hour: 5, activeMinutes: 0 },
+//       { hour: 6, activeMinutes: 0 },
+//       { hour: 7, activeMinutes: 0 },
+//       { hour: 8, activeMinutes: 0 },
+//       { hour: 9, activeMinutes: 0 },
+//       { hour: 10, activeMinutes: 0 },
+//       { hour: 11, activeMinutes: 0 },
+//       { hour: 12, activeMinutes: 60 },
+//       { hour: 13, activeMinutes: 60 },
+//       { hour: 14, activeMinutes: 60 },
+//       { hour: 15, activeMinutes: 60 },
+//       { hour: 16, activeMinutes: 60 },
+//       { hour: 17, activeMinutes: 0 },
+//       { hour: 18, activeMinutes: 30 },
+//       { hour: 19, activeMinutes: 60 },
+//       { hour: 20, activeMinutes: 30 },
+//       { hour: 21, activeMinutes: 60 },
+//       { hour: 22, activeMinutes: 0 },
+//       { hour: 23, activeMinutes: 0 },
+//     ],
+//     numberOfCompletedPomodoros: 1,
+//     numberOfCompletedTasks: 5,
+//   })
+// );
+
 //DUMMY DATA FOR CALENDAR
 // localStorage.setItem(
 //   'calendar',

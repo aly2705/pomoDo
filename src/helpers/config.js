@@ -9,3 +9,5 @@ export const taskCategories = [
   { name: 'Ongoing', icon: '#icon-hour-glass' },
   { name: 'Show All', icon: '#icon-list' },
 ];
+
+export const numDaysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

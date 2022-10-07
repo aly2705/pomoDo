@@ -2,7 +2,7 @@ import Card from '../UI/Card';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
 import classes from './ManualLog.module.scss';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { activityActions } from '../../store/activity';
 
 const ManualLog = () => {
@@ -11,11 +11,18 @@ const ManualLog = () => {
   const activeMinutesRef = useRef();
   const [error, setError] = useState(null);
   const [confirmationData, setConfirmationData] = useState(null);
+  const timerIsActive = useSelector(state => state.timer.isActive);
 
   const submitTimeHandler = event => {
     event.preventDefault();
 
     setError(null);
+
+    // By not allowing the user to submit when timer is active we avoid overlapping data
+    if (timerIsActive) {
+      setError(`Pause your pomodoro before adding time manually!`);
+      return;
+    }
 
     const enteredHour = +startingHourRef.current.value;
     const enteredMinutes = +activeMinutesRef.current.value;
