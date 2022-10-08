@@ -10,6 +10,9 @@
   @include respond(laptop-small) {
     margin-left: -1rem;
   }
+  @include respond(phone) {
+    margin-left: 0.5rem;
+  }
 
   img {
     height: 7.5rem;

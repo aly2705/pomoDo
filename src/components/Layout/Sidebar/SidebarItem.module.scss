@@ -2,10 +2,15 @@
 
 .sidebar__item {
   position: relative;
+  margin-bottom: 0.5rem;
 
-  &:not(:last-child) {
-    margin-bottom: 0.5rem;
+  @include respond(phone) {
+    width: fit-content;
   }
+
+  // &:not(:last-child) {
+
+  // }
 
   &::before {
     content: '';
@@ -17,12 +22,25 @@
     width: 1rem;
     transition: all 0.3s;
     transform: scaleY(0);
+
+    @include respond(phone) {
+      height: 1rem;
+      width: 100%;
+      transform: scaleX(0);
+      top: auto;
+      bottom: 0;
+      left: 0;
+    }
   }
 
   &--active {
     &::before {
       background-color: var(--color-primary);
       transform: scaleY(1);
+
+      @include respond(phone) {
+        transform: scaleX(1);
+      }
     }
 
     & > a:link,
@@ -55,13 +73,18 @@
     padding: 1.4rem 4rem;
     transition: all 0.3s;
 
+    @include respond(phone) {
+      width: fit-content;
+      padding: 1.8rem 2rem;
+    }
+
     span {
       @include respond(laptop-small) {
         display: none;
       }
-      @include respond(phone) {
-        display: initial;
-      }
+      // @include respond(phone) {
+      //   display: initial;
+      // }
     }
 
     svg {
@@ -72,9 +95,6 @@
 
       @include respond(laptop-small) {
         margin-right: 0;
-      }
-      @include respond(phone) {
-        margin-right: 1.5rem;
       }
     }
   }

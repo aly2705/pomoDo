@@ -85,9 +85,9 @@
     margin: 0 1rem 0 1.5rem;
   }
 
-  @include respond(phone-small) {
-    display: none;
-  }
+  // @include respond(phone-small) {
+  //   display: none;
+  // }
 
   img {
     height: 5.5rem;

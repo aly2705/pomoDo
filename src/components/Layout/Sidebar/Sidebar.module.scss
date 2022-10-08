@@ -12,24 +12,49 @@
     margin-top: 3.5rem;
     width: 100%;
 
+    // @include respond(phone) {
+    //   margin-top: 11.5rem;
+    // }
+
     @include respond(phone) {
-      margin-top: 11.5rem;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0;
     }
   }
 
+  // @include respond(phone) {
+  //   position: fixed;
+  //   z-index: 500;
+  //   background-color: var(--color-grey-2);
+  //   height: 100%;
+  //   width: 65%;
+  //   box-shadow: 2rem 0 3rem rgba(#000, 0.2);
+  //   transition: all 0.5s ease;
+  //   left: -100%;
+  //   // left: 0; -> animation
+  // }
+  // @include respond(phone-small) {
+  //   width: 75%;
+  // }
   @include respond(phone) {
     position: fixed;
     z-index: 500;
-    background-color: var(--color-grey-2);
-    height: 100%;
-    width: 65%;
-    box-shadow: 2rem 0 3rem rgba(#000, 0.2);
+    background-color: var(--color-white);
+    height: 8rem;
+    width: 100%;
+    padding: 0.5rem 6rem;
+    // box-shadow: 2rem 0 3rem rgba(#000, 0.2);
     transition: all 0.5s ease;
-    left: -100%;
+    left: 0;
+    bottom: 0;
     // left: 0; -> animation
   }
   @include respond(phone-small) {
-    width: 75%;
+    padding: 0.5rem 4rem;
+  }
+  @include respond(phone-v-small) {
+    padding: 0.5rem 2rem;
   }
 }
 

@@ -1,4 +1,4 @@
-@import "../../../styles/abstracts.scss";
+@import '../../../styles/abstracts.scss';
 
 .mobile-menu {
   display: none;
@@ -13,7 +13,7 @@
   @include default-button-reset;
 
   @include respond(phone) {
-    display: initial;
+    display: none;
   }
   @include respond(phone) {
     transform: scale(0.8);

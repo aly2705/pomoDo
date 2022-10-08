@@ -21,7 +21,7 @@ const SidebarItem = props => {
     <li className={CSSclasses}>
       <NavLink
         to={props.route}
-        className={classes.sidebar__link}
+        className={`${classes.sidebar__link} `}
         onClick={hideSidebarHandler}
       >
         <svg>
