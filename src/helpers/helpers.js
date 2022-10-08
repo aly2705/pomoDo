@@ -10,16 +10,28 @@ export const getVariableFromRoot = varName => {
   return getComputedStyle(document.documentElement).getPropertyValue(varName);
 };
 
-export const dateIsToday = date => {
-  if (!date) return;
-  const today = new Date().toISOString();
-  if (date.slice(0, 10) === today.slice(0, 10)) return true;
+export const dateIsToday = dateToBeChecked => {
+  if (!dateToBeChecked) return;
+  const today = new Date();
+  const date = new Date(dateToBeChecked);
+  if (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  )
+    return true;
   return false;
 };
-export const dateIsYesterday = date => {
-  if (!date) return;
-  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  if (date.slice(0, 10) === yesterday.slice(0, 10)) return true;
+export const dateIsYesterday = dateToBeChecked => {
+  if (!dateToBeChecked) return;
+  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  const date = new Date(dateToBeChecked);
+  if (
+    date.getDate() === yesterday.getDate() &&
+    date.getMonth() === yesterday.getMonth() &&
+    date.getFullYear() === yesterday.getFullYear()
+  )
+    return true;
   return false;
 };
 
@@ -81,7 +93,7 @@ export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
   /* We will use the calendar date of lastDayInArray to determine if we have all the data needed in the lastDayInArray month's array
   or if we need to take data from the previous month's array too */
 
-  if (dateOfMonth <= 6) {
+  if (dateOfMonth <= 7) {
     // 1) Find days from current month (will be placed right-side in the final array, hence the name)
     const daysToComputeFromRight = calendar[lastDayInArray.getMonth()].slice(
       0,
@@ -121,7 +133,7 @@ export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
     const data = [...leftData, ...rightData];
     return data;
   }
-  if (dateOfMonth > 6) {
+  if (dateOfMonth > 7) {
     //1) Find data from last 7 days in current month's calendar
     const daysToCompute = calendar[lastDayInArray.getMonth()].slice(
       dateOfMonth - 6,

@@ -4,7 +4,7 @@ import { getData, persistData } from '../helpers/helpers';
 const activitySlice = createSlice({
   name: 'activity',
   initialState: {
-    date: new Date().toISOString(),
+    date: new Date().toLocaleDateString(),
     hours: [
       { hour: 5, activeMinutes: 0 },
       { hour: 6, activeMinutes: 0 },
