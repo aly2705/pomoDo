@@ -1,15 +1,9 @@
 import classes from './Sidebar.module.scss';
-import { useSelector } from 'react-redux/es/exports';
 import SidebarItem from './SidebarItem';
 
 const Sidebar = () => {
-  const isOpened = useSelector(state => state.mobileMenu.isOpened);
-  const CSSclasses = isOpened
-    ? `${classes.sidebar} ${classes.shown}`
-    : classes.sidebar;
-
   return (
-    <nav className={CSSclasses}>
+    <nav className={classes.sidebar}>
       <ul className={classes.sidebar__list}>
         <SidebarItem label="Dashboard" route="/dashboard" icon="#icon-home" />
         <SidebarItem
