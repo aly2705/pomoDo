@@ -23,6 +23,7 @@ import audioFile from './assets/completed.mp3';
 let secondsOutsidePomodoro = 0;
 let audioPlayedOutside = false;
 const audio = new Audio(audioFile);
+// console.log(new Date(new Date().toDateString()));
 
 function App() {
   const dispatch = useDispatch();
