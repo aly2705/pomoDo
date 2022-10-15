@@ -14,8 +14,9 @@ import { timerActions } from './store/timer';
 import { tasksActions } from './store/tasks';
 import { activityActions } from './store/activity';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useUnload from './hooks/useUnload';
+import usePageVisibilty from './hooks/usePageVisibility';
 import { dateIsYesterday, dateIsToday, getData } from './helpers/helpers';
 import { calendarActions } from './store/calendar';
 import audioFile from './assets/completed.mp3';
@@ -23,7 +24,6 @@ import audioFile from './assets/completed.mp3';
 let secondsOutsidePomodoro = 0;
 let audioPlayedOutside = false;
 const audio = new Audio(audioFile);
-// console.log(new Date(new Date().toDateString()));
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +32,9 @@ function App() {
   const pomodoroWasCompleted = useSelector(state => state.timer.wasCompleted);
   const pomodoroMinutes = useSelector(state => state.timer.config.pomodoro);
   const countdown = useSelector(state => state.timer.countdown);
+  const [pageVisibility, setPageVisibility] = useState(
+    document.visibilityState
+  );
 
   const match = matchPath(
     {
@@ -102,11 +105,42 @@ function App() {
         clearInterval(interval);
       };
     }
-    if (match) {
+    if (match && secondsOutsidePomodoro > 0) {
       dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
       secondsOutsidePomodoro = 0;
     }
   }, [match, timerIsActive, dispatch, countdown]);
+
+  useEffect(() => {
+    if (document.visibilityState === 'hidden' && timerIsActive) {
+      dispatch(timerActions.toggleIsActive());
+      localStorage.setItem('startOfInactive', JSON.stringify(Date.now()));
+    }
+    if (
+      document.visibilityState === 'visible' &&
+      localStorage.getItem('startOfInactive')
+    ) {
+      const storedTimestamp = JSON.parse(
+        localStorage.getItem('startOfInactive')
+      );
+      const secondsPassed = Math.trunc((Date.now() - storedTimestamp) / 1000);
+
+      if (dateIsToday(storedTimestamp)) {
+        dispatch(timerActions.toggleIsActive());
+        dispatch(
+          timerActions.subtractOutsideSeconds(
+            secondsPassed + secondsOutsidePomodoro
+          )
+        );
+        secondsOutsidePomodoro = 0;
+      }
+      localStorage.removeItem('startOfInactive');
+    }
+  }, [pageVisibility, dispatch, timerIsActive]);
+
+  usePageVisibilty(() => {
+    setPageVisibility(document.visibilityState);
+  });
 
   useUnload(event => {
     event.preventDefault();
@@ -128,193 +162,3 @@ function App() {
 }
 
 export default App;
-
-// localStorage.setItem(
-//   'activity',
-//   JSON.stringify({
-//     activeMinutesAlreadyAdded: 0,
-//     date: '2022-09-27T17:33:59.338Z',
-//     hours: [
-//       { hour: 5, activeMinutes: 0 },
-//       { hour: 6, activeMinutes: 0 },
-//       { hour: 7, activeMinutes: 0 },
-//       { hour: 8, activeMinutes: 0 },
-//       { hour: 9, activeMinutes: 0 },
-//       { hour: 10, activeMinutes: 0 },
-//       { hour: 11, activeMinutes: 0 },
-//       { hour: 12, activeMinutes: 60 },
-//       { hour: 13, activeMinutes: 60 },
-//       { hour: 14, activeMinutes: 60 },
-//       { hour: 15, activeMinutes: 60 },
-//       { hour: 16, activeMinutes: 60 },
-//       { hour: 17, activeMinutes: 0 },
-//       { hour: 18, activeMinutes: 30 },
-//       { hour: 19, activeMinutes: 60 },
-//       { hour: 20, activeMinutes: 30 },
-//       { hour: 21, activeMinutes: 60 },
-//       { hour: 22, activeMinutes: 0 },
-//       { hour: 23, activeMinutes: 0 },
-//     ],
-//     numberOfCompletedPomodoros: 1,
-//     numberOfCompletedTasks: 5,
-//   })
-// );
-
-//DUMMY DATA FOR CALENDAR
-// localStorage.setItem(
-//   'calendar',
-//   JSON.stringify({
-//     calendar: [
-//       [],
-//       [],
-//       [],
-//       [],
-//       [],
-//       [],
-//       [],
-//       [],
-//       [
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-//         null,
-
-//         {
-//           activeMinutesAlreadyAdded: 0,
-//           date: '2022-09-27T17:33:59.338Z',
-//           hours: [
-//             { hour: 5, activeMinutes: 0 },
-//             { hour: 6, activeMinutes: 0 },
-//             { hour: 7, activeMinutes: 0 },
-//             { hour: 8, activeMinutes: 0 },
-//             { hour: 9, activeMinutes: 0 },
-//             { hour: 10, activeMinutes: 0 },
-//             { hour: 11, activeMinutes: 0 },
-//             { hour: 12, activeMinutes: 60 },
-//             { hour: 13, activeMinutes: 60 },
-//             { hour: 14, activeMinutes: 60 },
-//             { hour: 15, activeMinutes: 60 },
-//             { hour: 16, activeMinutes: 60 },
-//             { hour: 17, activeMinutes: 0 },
-//             { hour: 18, activeMinutes: 30 },
-//             { hour: 19, activeMinutes: 60 },
-//             { hour: 20, activeMinutes: 30 },
-//             { hour: 21, activeMinutes: 60 },
-//             { hour: 22, activeMinutes: 0 },
-//             { hour: 23, activeMinutes: 0 },
-//           ],
-//           numberOfCompletedPomodoros: 1,
-//           numberOfCompletedTasks: 5,
-//         },
-//         null,
-//         {
-//           activeMinutesAlreadyAdded: 0,
-//           date: '2022-09-29T17:33:59.338Z',
-//           hours: [
-//             { hour: 5, activeMinutes: 0 },
-//             { hour: 6, activeMinutes: 0 },
-//             { hour: 7, activeMinutes: 0 },
-//             { hour: 8, activeMinutes: 0 },
-//             { hour: 9, activeMinutes: 0 },
-//             { hour: 10, activeMinutes: 0 },
-//             { hour: 11, activeMinutes: 0 },
-//             { hour: 12, activeMinutes: 60 },
-//             { hour: 13, activeMinutes: 0 },
-//             { hour: 14, activeMinutes: 0 },
-//             { hour: 15, activeMinutes: 0 },
-//             { hour: 16, activeMinutes: 0 },
-//             { hour: 17, activeMinutes: 0 },
-//             { hour: 18, activeMinutes: 0 },
-//             { hour: 19, activeMinutes: 0 },
-//             { hour: 20, activeMinutes: 30 },
-//             { hour: 21, activeMinutes: 60 },
-//             { hour: 22, activeMinutes: 0 },
-//             { hour: 23, activeMinutes: 0 },
-//           ],
-//           numberOfCompletedPomodoros: 1,
-//           numberOfCompletedTasks: 10,
-//         },
-//         {
-//           activeMinutesAlreadyAdded: 0,
-//           date: '2022-09-30T17:33:59.338Z',
-//           hours: [
-//             { hour: 5, activeMinutes: 0 },
-//             { hour: 6, activeMinutes: 0 },
-//             { hour: 7, activeMinutes: 0 },
-//             { hour: 8, activeMinutes: 30 },
-//             { hour: 9, activeMinutes: 0 },
-//             { hour: 10, activeMinutes: 0 },
-//             { hour: 11, activeMinutes: 0 },
-//             { hour: 12, activeMinutes: 60 },
-//             { hour: 13, activeMinutes: 0 },
-//             { hour: 14, activeMinutes: 50 },
-//             { hour: 15, activeMinutes: 0 },
-//             { hour: 16, activeMinutes: 60 },
-//             { hour: 17, activeMinutes: 0 },
-//             { hour: 18, activeMinutes: 30 },
-//             { hour: 19, activeMinutes: 60 },
-//             { hour: 20, activeMinutes: 30 },
-//             { hour: 21, activeMinutes: 60 },
-//             { hour: 22, activeMinutes: 0 },
-//             { hour: 23, activeMinutes: 0 },
-//           ],
-//           numberOfCompletedPomodoros: 1,
-//           numberOfCompletedTasks: 15,
-//         },
-//       ],
-//       [
-//         {
-//           activeMinutesAlreadyAdded: 0,
-//           date: '2022-10-01T17:33:59.338Z',
-//           hours: [
-//             { hour: 5, activeMinutes: 0 },
-//             { hour: 6, activeMinutes: 0 },
-//             { hour: 7, activeMinutes: 0 },
-//             { hour: 8, activeMinutes: 0 },
-//             { hour: 9, activeMinutes: 0 },
-//             { hour: 10, activeMinutes: 0 },
-//             { hour: 11, activeMinutes: 0 },
-//             { hour: 12, activeMinutes: 60 },
-//             { hour: 13, activeMinutes: 0 },
-//             { hour: 14, activeMinutes: 0 },
-//             { hour: 15, activeMinutes: 0 },
-//             { hour: 16, activeMinutes: 0 },
-//             { hour: 17, activeMinutes: 0 },
-//             { hour: 18, activeMinutes: 30 },
-//             { hour: 19, activeMinutes: 60 },
-//             { hour: 20, activeMinutes: 30 },
-//             { hour: 21, activeMinutes: 60 },
-//             { hour: 22, activeMinutes: 0 },
-//             { hour: 23, activeMinutes: 0 },
-//           ],
-//           numberOfCompletedPomodoros: 1,
-//           numberOfCompletedTasks: 3,
-//         },
-//       ],
-//       [],
-//       [],
-//     ],
-//   })
-// );
