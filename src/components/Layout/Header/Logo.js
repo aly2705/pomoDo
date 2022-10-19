@@ -1,12 +1,15 @@
+import { NavLink } from 'react-router-dom';
 import LogoImg from '../../../assets/logo.png';
 import classes from './Logo.module.scss';
 
 const Logo = () => {
   return (
-    <figure className={classes.logo}>
-      <img src={LogoImg} alt="Logo" />
-      <figcaption>pomoDo</figcaption>
-    </figure>
+    <NavLink to="/dashboard">
+      <figure className={classes.logo}>
+        <img src={LogoImg} alt="Logo" />
+        <figcaption>pomoDo</figcaption>
+      </figure>
+    </NavLink>
   );
 };
 export default Logo;

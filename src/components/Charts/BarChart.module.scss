@@ -1,5 +1,7 @@
 @import '../../styles/abstracts.scss';
 
+$bar-background-color: var(--color-primary);
+
 .chart-wrap {
   --width: 90%;
   --height: 20rem;
@@ -35,16 +37,21 @@
   );
 
   .bar {
-    background-color: var(--color-primary);
+    background-color: rgba(#e83822, 1);
     width: var(--bar-size);
     height: var(--bar-value);
     align-self: flex-end;
     margin: 0 auto;
     border-radius: var(--bar-rounded) var(--bar-rounded) 0 0;
     position: relative;
+    transition: all 0.2s;
 
     &:hover {
-      opacity: 0.7;
+      background-color: rgba(#e83822, 0.7);
+
+      &:before {
+        opacity: 1;
+      }
     }
 
     &::after {
@@ -57,6 +64,24 @@
       display: inline-block;
       white-space: nowrap;
       position: absolute;
+    }
+
+    &::before {
+      opacity: 0;
+      content: attr(data-value);
+      position: absolute;
+      top: -2rem;
+      text-align: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 0.4rem;
+      transition: all 0.2s;
+      left: 50%;
+      transform: translateX(-50%);
+
+      @include respond(phone) {
+        font-size: 1rem;
+      }
     }
   }
 

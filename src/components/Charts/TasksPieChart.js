@@ -44,7 +44,7 @@ const TasksPieChart = () => {
 
     const index = hoveredEl.dataset.index;
     const copy = [...initialColors];
-    copy[index] = getVariableFromRoot('--color-grey-3');
+    copy[index] = getVariableFromRoot('--color-accent');
     setColors(copy);
   };
   const leaveHoverHandler = () => {

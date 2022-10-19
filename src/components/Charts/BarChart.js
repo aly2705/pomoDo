@@ -41,11 +41,12 @@ const Labels = React.memo(({ maxValue, unit }) => {
   );
 });
 
-const Bar = ({ percentage, label }) => {
+const Bar = ({ percentage, label, value }) => {
   return (
     <div
       className={classes.bar}
       style={{ '--bar-value': `${percentage}%` }}
+      data-value={value}
       data-name={label}
     ></div>
   );
@@ -64,6 +65,7 @@ const BarChart = ({ maxValue, barsArray, unit, opacity, height }) => {
               <Bar
                 key={i}
                 percentage={(bar.value / maxValue) * 100}
+                value={bar.value}
                 label={bar.label}
               />
             );

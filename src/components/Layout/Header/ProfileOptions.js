@@ -23,7 +23,7 @@ const ProfileOptions = () => {
         </button>
         {settingsAreShown && <Settings onClose={closeSettingsModal} />}
       </li>
-      <li className={classes.option}>
+      {/* <li className={classes.option}>
         <button className={classes.option__btn}>
           <svg>
             <use href={`${icons}#icon-bell`}></use>
@@ -31,7 +31,7 @@ const ProfileOptions = () => {
           <span className={classes.notifications}>2</span>
           <span> Notifications </span>
         </button>
-      </li>
+      </li> // postponed notifications system */}
       <li className={classes.profile_label}>
         <img src={ProfileImg} alt="Profile" />
         <span>Guest</span>
