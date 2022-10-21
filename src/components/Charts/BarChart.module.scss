@@ -37,7 +37,7 @@ $bar-background-color: var(--color-primary);
   );
 
   .bar {
-    background-color: rgba(#e83822, 1);
+    background-color: var(--color-primary);
     width: var(--bar-size);
     height: var(--bar-value);
     align-self: flex-end;
@@ -47,7 +47,7 @@ $bar-background-color: var(--color-primary);
     transition: all 0.2s;
 
     &:hover {
-      background-color: rgba(#e83822, 0.7);
+      background-color: var(--color-primary-shade-2);
 
       &:before {
         opacity: 1;

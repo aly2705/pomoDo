@@ -5,14 +5,6 @@ import { findWeeklyData } from '../../helpers/helpers';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-// const DUMMY__TASKS = [
-//   { label: '1-7 oct', value: 60 },
-//   { label: '8-14 oct', value: 25 },
-//   { label: '15-21 oct', value: 40 },
-//   { label: '22-28 oct', value: 10 },
-//   { label: '29-31 oct', value: 20 },
-// ];
-
 const TasksStats = () => {
   const calendar = useSelector(state => state.calendar.calendar);
   const [chartData, setChartData] = useState([]); //formatted data
@@ -38,7 +30,7 @@ const TasksStats = () => {
           opacity={maxValue ? 1 : 0.6}
           height={'18rem'}
         />
-        {!maxValue && <p>You have no activity logged in this timeframe!</p>}
+        {!maxValue && <p>You have no tasks completed in this timeframe!</p>}
       </div>
     </Card>
   );

@@ -43,8 +43,26 @@
   //transform: translate(-50%, 50%);
   transition: background-color 0.2s;
 
+  &::before {
+    position: absolute;
+    display: block;
+    opacity: 0;
+    content: attr(data-value);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1;
+    top: -1.5rem;
+    left: 0;
+    transform: translateX(-1.5rem);
+    transition: all 0.3s;
+  }
+
   &:hover {
     background-color: var(--color-primary-shade-2);
+
+    &::before {
+      opacity: 1;
+    }
   }
 
   @include respond(phone) {

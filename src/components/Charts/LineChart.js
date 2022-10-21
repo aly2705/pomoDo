@@ -7,10 +7,13 @@ const DataPoint = props => {
   const { left, hasLine, bottom, nextPointValue, base, label } = props;
   const perpendicular = (nextPointValue - bottom) * 10; //height of the imaginary right triangle built to help calculate the hypotenuse
   //the base is received via props as the distance between two points on x axis
+  const hours = Math.trunc(bottom);
+  const minutes = Math.round((bottom * 60) % 60);
   return (
     <div className={classes.datagroup}>
       <div
         className={classes.point}
+        data-value={`${hours}h${minutes}m`}
         style={{
           left: left,
           bottom: `${bottom * 10}px`,
