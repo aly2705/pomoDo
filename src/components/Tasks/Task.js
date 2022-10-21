@@ -14,7 +14,7 @@ const Task = props => {
   const [isConfirming, setIsConfirming] = useState(false);
   const tasks = useSelector(state => state.tasks.tasks);
 
-  const CSSclasses = props.completed
+  const CSSclasses = props.dateCompleted
     ? `${classes.task} ${classes['task--done']}`
     : classes.task;
 
@@ -22,6 +22,9 @@ const Task = props => {
     if (!props.completed) {
       dispatch(tasksActions.markAsCompleted(props.id));
       dispatch(activityActions.updateNumberOfCompletedTasks('add'));
+      setTimeout(() => {
+        dispatch(tasksActions.removeCompletedFromActive(props.id));
+      }, 500);
     } else {
       const dateCompleted = tasks.find(
         task => task.id === props.id

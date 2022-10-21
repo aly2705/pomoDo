@@ -70,6 +70,7 @@ const Tasks = () => {
         completed={task.completed}
         category={task.category}
         draggable={false}
+        dateCompleted={task.dateCompleted}
       >
         {task.text}
       </Task>
@@ -83,6 +84,7 @@ const Tasks = () => {
           id={task.id}
           completed={task.completed}
           category={task.category}
+          dateCompleted={task.dateCompleted}
           draggable
           onDragStart={e => dragStartHandler(e, index)}
           onDragEnter={e => dragEnterHandler(e, index)}
@@ -97,6 +99,7 @@ const Tasks = () => {
           key={task.id}
           id={task.id}
           completed={task.completed}
+          dateCompleted={task.dateCompleted}
           category={task.category}
           draggable={false}
         >

@@ -51,9 +51,13 @@ const tasksSlice = createSlice({
     markAsCompleted(state, action) {
       const taskId = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
-      state.tasks.at(taskIndex).completed = true;
-      state.tasks.at(taskIndex).dateCompleted = new Date().toISOString();
 
+      state.tasks.at(taskIndex).dateCompleted = new Date().toISOString();
+    },
+    removeCompletedFromActive(state, action) {
+      const taskId = action.payload;
+      const taskIndex = state.tasks.findIndex(task => task.id === taskId);
+      state.tasks.at(taskIndex).completed = true;
       const task = state.tasks.at(taskIndex);
       state.tasks.splice(taskIndex, 1); //cuts from tasks the marked element
       state.tasks.push(task); //inserts at the end the task
