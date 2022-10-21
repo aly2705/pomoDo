@@ -3,7 +3,7 @@ import classes from './LineChart.module.scss';
 
 /* Secondary component for the chart, returns a dot and a corresponding line
 and performs calculations to find out the length and the angle of the line*/
-const DataPoint = props => {
+const DataPoint = React.memo(props => {
   const { left, hasLine, bottom, nextPointValue, base, label } = props;
   const perpendicular = (nextPointValue - bottom) * 10; //height of the imaginary right triangle built to help calculate the hypotenuse
   //the base is received via props as the distance between two points on x axis
@@ -42,7 +42,7 @@ const DataPoint = props => {
       </div>
     </div>
   );
-};
+});
 
 // Secondary component that renders the y-axis values
 const Divisions = React.memo(({ maxValue, unit }) => {
@@ -133,4 +133,4 @@ const LineChart = ({ data, maxValue, unit }) => {
   );
 };
 
-export default LineChart;
+export default React.memo(LineChart);

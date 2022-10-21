@@ -14,6 +14,7 @@ const Taskbar = () => {
       <Task
         key={task.id}
         id={task.id}
+        dateCompleted={task.dateCompleted}
         completed={task.completed}
         category={task.category}
       >

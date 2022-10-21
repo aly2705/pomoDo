@@ -1,6 +1,7 @@
 import classes from './SidebarItem.module.scss';
 import icons from '../../../assets/icons.svg';
 import { NavLink, useLocation } from 'react-router-dom';
+import React from 'react';
 
 const SidebarItem = props => {
   const location = useLocation();
@@ -22,4 +23,4 @@ const SidebarItem = props => {
   );
 };
 
-export default SidebarItem;
+export default React.memo(SidebarItem);

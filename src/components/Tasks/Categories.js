@@ -1,6 +1,7 @@
 import Card from '../UI/Card';
 import classes from './Categories.module.scss';
 import Category from './Category';
+import React from 'react';
 
 const Categories = () => {
   return (
@@ -22,4 +23,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default React.memo(Categories);

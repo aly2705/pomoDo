@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import icons from '../../../assets/icons.svg';
 import ProfileImg from '../../../assets/profile.svg';
 import classes from './ProfileOptions.module.scss';
@@ -40,4 +40,4 @@ const ProfileOptions = () => {
   );
 };
 
-export default ProfileOptions;
+export default React.memo(ProfileOptions);
