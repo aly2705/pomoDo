@@ -1,5 +1,6 @@
 import Task from './Task';
 import classes from './Tasks.module.scss';
+import icons from '../../assets/icons.svg';
 import Card from '../UI/Card';
 import NewTaskForm from './NewTaskForm';
 import { useSelector, useDispatch } from 'react-redux';
@@ -123,7 +124,14 @@ const Tasks = () => {
             onClick={deleteCompletedHandler}
             className={`btn-link ${classes['tasks__btn--delete']}`}
           >
-            Delete all
+            <span className={classes['tasks__btn-text--regular']}>
+              Delete all
+            </span>
+            <span className={classes['tasks__btn-text--small']}>
+              <svg>
+                <use href={`${icons}#icon-bin`}></use>
+              </svg>
+            </span>
           </button>
           {isConfirming && (
             <ConfirmAction
@@ -137,7 +145,10 @@ const Tasks = () => {
       )}
       {sortCriteria && (
         <Link to="/tasks" className={`btn-link ${classes.tasks__btn}`}>
-          Back to active
+          <span className={classes['tasks__btn-text--regular']}>
+            Back to active
+          </span>
+          <span className={classes['tasks__btn-text--small']}>To Active</span>
         </Link>
       )}
       {!sortCriteria && (

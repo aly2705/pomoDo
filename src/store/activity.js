@@ -63,9 +63,10 @@ const activitySlice = createSlice({
 
       // loop entered => not updating the starting hour, but the one that the loop ended with
       // loop not entered => we update the starting hour
-      if (!state.hours[index].activeMinutes || safeToSave)
-        state.hours[index].activeMinutes = remainingMinutes;
-      else
+      if (!state.hours[index].activeMinutes || safeToSave) {
+        if (index === indexStarting || remainingMinutes > 0)
+          state.hours[index].activeMinutes = remainingMinutes;
+      } else
         throw new Error(
           'You have already logged time for an hour in your interval. Do you want to override it?'
         );

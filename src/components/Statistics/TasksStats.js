@@ -15,8 +15,14 @@ const TasksStats = () => {
   }, [calendar]);
 
   let maxValue;
-  if (chartData.filter(item => item).length === chartData.length) {
+  if (
+    chartData.length !== 0 &&
+    chartData.filter(item => item).length === chartData.length
+  ) {
     maxValue = Math.max(...chartData.map(data => data.value));
+  }
+  if (!chartData || chartData.length === 0) {
+    maxValue = 0;
   }
 
   return (
@@ -24,7 +30,7 @@ const TasksStats = () => {
       <h3>Tasks Done</h3>
       <div className={classes.tasks__chart}>
         <BarChart
-          maxValue={6 - (maxValue % 6) + maxValue}
+          maxValue={maxValue !== 0 ? 6 - (maxValue % 6) + maxValue : 6}
           unit="tasks"
           barsArray={chartData}
           opacity={maxValue ? 1 : 0.6}
