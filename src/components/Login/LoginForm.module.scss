@@ -3,18 +3,58 @@
   top: -1rem;
   right: 3rem;
   width: 50rem;
-  height: 60rem;
+  // height: 60rem;
   background-color: var(--color-white);
 
   form {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 2rem;
+    padding: 2rem 5rem;
   }
 
   h2 {
     width: fit-content;
+    align-self: center;
+    margin-bottom: 1.5rem;
+  }
+
+  &__group {
+    align-self: flex-start;
+    display: grid;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  &__label {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    font-size: 1.9rem;
+  }
+  &__input {
+    font-family: inherit;
+    font-size: 1.6rem;
+    padding: 1.25rem 1.75rem;
+    border-radius: 0.5rem;
+    outline: none;
+    border: 2px solid var(--color-grey-3);
+    transition: all 0.3s;
+
+    &:focus {
+      border: 2px solid var(--color-primary-shade);
+    }
+  }
+
+  button {
+    align-self: center;
+    margin: 1.5rem 0;
+  }
+
+  &__note {
+    align-self: center;
+
+    a {
+      font-weight: 600;
+      color: var(--color-primary-shade-2);
+    }
   }
 }
