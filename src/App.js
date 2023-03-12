@@ -20,6 +20,7 @@ import usePageVisibilty from './hooks/usePageVisibility';
 import { dateIsYesterday, dateIsToday, getData } from './helpers/helpers';
 import { calendarActions } from './store/calendar';
 import audioFile from './assets/completed.mp3';
+import LoginPage from './pages/LoginPage';
 
 let secondsOutsidePomodoro = 0;
 let audioPlayedOutside = false;
@@ -156,6 +157,7 @@ function App() {
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Layout>
   );

@@ -26,6 +26,14 @@
   @include respond(phone-small) {
     height: 100vh;
   }
+
+  &--simple {
+    grid-template-columns: [main-start] 28rem 1fr[main-end];
+    grid-template-areas:
+      'header header'
+      'main main';
+    background-color: var(--color-grey-1);
+  }
 }
 
 .main {
