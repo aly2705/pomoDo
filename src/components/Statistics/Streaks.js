@@ -22,7 +22,6 @@ const formatSquares = (length, type) => {
   }
   return squares;
 };
-console.log(formatSquares(-1, 'omitted'));
 
 const Streaks = () => {
   const calendar = useSelector(state => state.calendar.calendar);

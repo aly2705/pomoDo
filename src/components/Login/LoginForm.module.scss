@@ -1,22 +1,46 @@
+@import '../../styles/abstracts.scss';
+
 .login {
   position: absolute;
   top: -1rem;
   right: 3rem;
   width: 50rem;
-  // height: 60rem;
   background-color: var(--color-white);
 
+  @include respond(tab-port-large) {
+    position: initial;
+    height: fit-content;
+    justify-self: center;
+    align-self: center;
+  }
+
+  @include respond(phone-small) {
+    width: 95%;
+  }
   form {
     width: 100%;
     display: flex;
     flex-direction: column;
     padding: 2rem 5rem;
+
+    @include respond(phone-small) {
+      padding: 2rem 4rem;
+    }
+
+    @include respond(phone-v-small) {
+      padding: 2rem 2rem;
+    }
   }
 
   h2 {
     width: fit-content;
+    text-align: center;
     align-self: center;
     margin-bottom: 1.5rem;
+
+    @include respond(phone-v-small) {
+      font-size: 2.8rem;
+    }
   }
 
   &__group {
@@ -51,6 +75,7 @@
 
   &__note {
     align-self: center;
+    text-align: center;
 
     a {
       font-weight: 600;

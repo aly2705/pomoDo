@@ -1,10 +1,88 @@
 import classes from './LoginForm.module.scss';
 import Card from '../UI/Card';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useRef } from 'react';
+import { API_URL } from '../../helpers/config';
+import useAJAX from '../../hooks/useAJAX';
 
 const LoginForm = () => {
   const location = useLocation();
   const isLogin = new URLSearchParams(location.search).get('mode') === 'login';
+  const nameInputRef = useRef();
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const passwordConfirmInputRef = useRef();
+  const { sendRequest, isLoading, error } = useAJAX();
+
+  const processTasks = data => {
+    console.log(data);
+  };
+
+  const processLoginData = async data => {
+    console.log(data);
+
+    const reqConfig = {
+      url: `${API_URL}/tasks`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${data.data.token}`,
+      },
+    };
+
+    await sendRequest(reqConfig, processTasks);
+  };
+
+  const submitHandler = async event => {
+    event.preventDefault();
+    let enteredName, enteredPasswordConfirm;
+
+    const enteredEmail = emailInputRef.current.value;
+    const enteredPassword = passwordInputRef.current.value;
+
+    if (!isLogin) {
+      enteredName = nameInputRef.current.value;
+      enteredPasswordConfirm = passwordConfirmInputRef.current.value;
+    }
+
+    console.log(
+      enteredName,
+      enteredEmail,
+      enteredPassword,
+      enteredPasswordConfirm
+    );
+
+    const accountData = isLogin
+      ? { email: enteredEmail, password: enteredPassword }
+      : {
+          name: enteredName,
+          email: enteredEmail,
+          password: enteredPassword,
+          passwordConfirm: enteredPasswordConfirm,
+        };
+    const reqConfig = {
+      url: `${API_URL}/users/${isLogin ? 'login' : 'signup'}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(accountData),
+    };
+
+    await sendRequest(reqConfig, processLoginData);
+
+    // const response = await fetch(
+    //   `${API_URL}/users/${isLogin ? 'login' : 'signup'}`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(accountData),
+    //   }
+    // );
+    // const data = await response.json();
+    // console.log(data);
+  };
 
   const noteContent = isLogin ? (
     <>
@@ -20,7 +98,7 @@ const LoginForm = () => {
 
   return (
     <Card className={classes.login}>
-      <form>
+      <form onSubmit={submitHandler}>
         <h2>{isLogin ? 'Log into your account!' : 'Create your account!'}</h2>
         {!isLogin && (
           <div className={classes.login__group}>
@@ -33,6 +111,7 @@ const LoginForm = () => {
               className={classes.login__input}
               required
               placeholder="John Doe"
+              ref={nameInputRef}
             />
           </div>
         )}
@@ -46,6 +125,7 @@ const LoginForm = () => {
             className={classes.login__input}
             required
             placeholder="you@email.com"
+            ref={emailInputRef}
           />
         </div>
         <div className={classes.login__group}>
@@ -59,6 +139,7 @@ const LoginForm = () => {
             required
             placeholder="••••••••"
             minLength="8"
+            ref={passwordInputRef}
           />
         </div>
         {!isLogin && (
@@ -73,12 +154,29 @@ const LoginForm = () => {
               required
               placeholder="••••••••"
               minLength="8"
+              ref={passwordConfirmInputRef}
             />
           </div>
         )}
-        <button className="btn">{isLogin ? 'Log in' : 'Sign up'}</button>
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}
+        <button type="submit" className="btn">
+          {isLogin ? 'Log in' : 'Sign up'}
+        </button>
         <p className={classes.login__note}>{noteContent}</p>
       </form>
+      {isLoading && (
+        <div
+          style={{
+            backgroundColor: '#fff',
+            position: 'fixed',
+            top: '3rem',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <p>Loading...</p>
+        </div>
+      )}
     </Card>
   );
 };

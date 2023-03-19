@@ -1,7 +1,13 @@
+@import '../../styles/abstracts.scss';
+
 .background {
   margin-left: 5rem;
   margin-top: 4rem;
   width: 70%;
   align-self: flex-start;
   justify-self: start;
+
+  @include respond(tab-port-large) {
+    display: none;
+  }
 }
