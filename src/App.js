@@ -10,9 +10,11 @@ import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
 import TasksPage from './pages/TasksPage';
+import AccountPage from './pages/AccountPage';
 import { timerActions } from './store/timer';
 import { tasksActions } from './store/tasks';
 import { activityActions } from './store/activity';
+import { userActions } from './store/user';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { useEffect, useState } from 'react';
 import useUnload from './hooks/useUnload';
@@ -55,6 +57,9 @@ function App() {
     }
     if (localStorage.getItem('calendar')) {
       dispatch(calendarActions.getCalendarData());
+    }
+    if (localStorage.getItem('userData')) {
+      dispatch(userActions.getUserData());
     }
     if (localStorage.getItem('activity')) {
       const storedActivity = getData('activity');
@@ -158,6 +163,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
     </Layout>
   );

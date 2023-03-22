@@ -39,6 +39,9 @@
     @include respond(phone) {
       display: initial;
     }
+    @include respond(phone-small) {
+      display: none;
+    }
   }
 }
 

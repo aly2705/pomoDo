@@ -112,6 +112,15 @@ const tasksSlice = createSlice({
     setIsEditing(state, action) {
       state.isEditing = action.payload;
     },
+    setUserTasks(state, action) {
+      if (action.payload.length > 0) {
+        state.tasks = action.payload;
+        persistData('tasks', state);
+      } else {
+        state.tasks = [];
+        persistData('tasks', state);
+      }
+    },
   },
 });
 

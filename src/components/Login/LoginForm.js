@@ -4,9 +4,15 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useRef } from 'react';
 import { API_URL } from '../../helpers/config';
 import useAJAX from '../../hooks/useAJAX';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../store/user';
+import { useNavigate } from 'react-router-dom';
+import { tasksActions } from '../../store/tasks';
 
 const LoginForm = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isLogin = new URLSearchParams(location.search).get('mode') === 'login';
   const nameInputRef = useRef();
   const emailInputRef = useRef();
@@ -15,11 +21,22 @@ const LoginForm = () => {
   const { sendRequest, isLoading, error } = useAJAX();
 
   const processTasks = data => {
-    console.log(data);
+    const fetchedTasks = data.documents;
+
+    const tasks = fetchedTasks.map(task => {
+      const id = task._id;
+      task._id = undefined;
+      return { id, ...task };
+    });
+    dispatch(tasksActions.setUserTasks(tasks));
   };
 
   const processLoginData = async data => {
-    console.log(data);
+    const token = data.data.token;
+    const user = data.data.user;
+
+    dispatch(userActions.addUserData({ token, user }));
+    navigate('/dashboard');
 
     const reqConfig = {
       url: `${API_URL}/tasks`,
@@ -44,13 +61,6 @@ const LoginForm = () => {
       enteredPasswordConfirm = passwordConfirmInputRef.current.value;
     }
 
-    console.log(
-      enteredName,
-      enteredEmail,
-      enteredPassword,
-      enteredPasswordConfirm
-    );
-
     const accountData = isLogin
       ? { email: enteredEmail, password: enteredPassword }
       : {
@@ -69,19 +79,6 @@ const LoginForm = () => {
     };
 
     await sendRequest(reqConfig, processLoginData);
-
-    // const response = await fetch(
-    //   `${API_URL}/users/${isLogin ? 'login' : 'signup'}`,
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(accountData),
-    //   }
-    // );
-    // const data = await response.json();
-    // console.log(data);
   };
 
   const noteContent = isLogin ? (

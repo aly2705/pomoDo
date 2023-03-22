@@ -29,6 +29,12 @@
     }
   }
 
+  &--hidden {
+    @include respond(phone-small) {
+      display: none;
+    }
+  }
+
   &--active {
     &::before {
       background-color: var(--color-primary);
@@ -72,6 +78,9 @@
     @include respond(phone) {
       width: fit-content;
       padding: 1.8rem 2rem;
+    }
+    @include respond(phone-v-small) {
+      padding: 1.8rem 1.5rem;
     }
 
     span {

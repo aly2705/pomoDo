@@ -1,3 +1,5 @@
+@import '../../../styles/abstracts.scss';
+
 .profile__settings {
   position: absolute;
   top: 10rem;
@@ -8,12 +10,17 @@
   box-shadow: 0 0.2rem 1.5rem rgba(#000, 0.1);
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  overflow: hidden;
   align-items: center;
 
   &--guest {
     min-width: 35rem;
     gap: 0.8rem;
+    padding: 3rem;
+  }
+
+  &--loggedIn {
+    padding: 0;
   }
 }
 
@@ -54,5 +61,41 @@
     &:hover {
       background-color: var(--color-primary-shade);
     }
+  }
+}
+
+.profile__account-link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1.4rem 3rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+
+  @include respond(tab-port) {
+    span {
+      display: initial;
+    }
+  }
+  svg {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &:hover {
+    background-color: var(--color-grey-2);
+  }
+}
+
+button.profile__account-link {
+  @include default-button-reset;
+  background-color: inherit;
+
+  font-family: inherit;
+  color: var(--color-primary-shade-2);
+  width: 100%;
+
+  svg {
+    fill: var(--color-primary-shade-2);
   }
 }

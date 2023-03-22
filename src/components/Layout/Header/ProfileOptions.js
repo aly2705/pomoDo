@@ -5,13 +5,25 @@ import classes from './ProfileOptions.module.scss';
 import Settings from '../../UserConfig/Setttings';
 import ProfileSettingsList from './ProfileSettingsList';
 import TransparentOverlay from '../../UI/TransparentOverlay';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { userActions } from '../../../store/user';
 
 const ProfileOptions = () => {
   const [settingsAreShown, setSettingsAreShown] = useState(false);
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
   const [profileSettingsAreShown, setProfileSettingsAreShown] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isLoginPage = location.pathname === '/login';
+
+  const isLoggedIn = !!user;
+
+  const logoutUser = () => {
+    dispatch(userActions.removeUserData());
+    navigate('/login?mode=login');
+  };
 
   useEffect(() => {
     if (isLoginPage) setProfileSettingsAreShown(false);
@@ -59,18 +71,27 @@ const ProfileOptions = () => {
       </li> // postponed notifications system */}
       <li className={`${classes.option} ${classes.profile_label}`}>
         <button
-          disabled={isLoginPage}
-          className={classes.option__btn}
+          disabled={isLoginPage || isLoggedIn}
+          className={`${classes.option__btn} ${
+            isLoginPage || isLoggedIn ? classes['option__btn--inactive'] : ''
+          }`}
           onClick={toggleProfileList}
         >
           <img src={ProfileImg} alt="Profile" />
-          <span>Guest</span>
+          <span>{isLoggedIn ? user.name.split(' ').at(0) : 'Guest'}</span>
         </button>
         {profileSettingsAreShown && (
           <TransparentOverlay onClick={toggleProfileList} />
         )}
         {profileSettingsAreShown && <ProfileSettingsList />}
       </li>
+      {isLoggedIn && (
+        <li className={`${classes.option} ${classes.logout_btn}`}>
+          <button className="btn" onClick={logoutUser}>
+            Logout
+          </button>
+        </li>
+      )}
     </ul>
   );
 };

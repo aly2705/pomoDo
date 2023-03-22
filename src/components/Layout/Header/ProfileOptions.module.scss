@@ -55,6 +55,11 @@
         display: none;
       }
     }
+    &--inactive {
+      &:hover {
+        background-color: inherit;
+      }
+    }
   }
 }
 
@@ -101,6 +106,19 @@
 
     @include respond(tab-port) {
       display: none;
+    }
+  }
+}
+
+.logout_btn {
+  display: none;
+  @include respond(phone-small) {
+    display: flex;
+    align-items: center;
+
+    button {
+      padding: 1.2rem 2.2rem;
+      font-size: 1.6rem;
     }
   }
 }

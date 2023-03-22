@@ -12,8 +12,16 @@ const SidebarItem = props => {
     : classes.sidebar__item;
 
   return (
-    <li className={CSSclasses}>
-      <NavLink to={props.route} className={`${classes.sidebar__link} `}>
+    <li
+      className={`${CSSclasses} ${
+        props.isPhoneHidden ? classes['sidebar__item--hidden'] : ''
+      }`}
+    >
+      <NavLink
+        to={props.route}
+        className={`${classes.sidebar__link} `}
+        onClick={props.onClick}
+      >
         <svg>
           <use href={`${icons}${props.icon}`}></use>
         </svg>
