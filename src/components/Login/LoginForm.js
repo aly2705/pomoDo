@@ -7,7 +7,7 @@ import useAJAX from '../../hooks/useAJAX';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
-import { tasksActions } from '../../store/tasks';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const LoginForm = () => {
   const location = useLocation();
@@ -20,33 +20,12 @@ const LoginForm = () => {
   const passwordConfirmInputRef = useRef();
   const { sendRequest, isLoading, error } = useAJAX();
 
-  const processTasks = data => {
-    const fetchedTasks = data.documents;
-
-    const tasks = fetchedTasks.map(task => {
-      const id = task._id;
-      task._id = undefined;
-      return { id, ...task };
-    });
-    dispatch(tasksActions.setUserTasks(tasks));
-  };
-
   const processLoginData = async data => {
     const token = data.data.token;
     const user = data.data.user;
 
     dispatch(userActions.addUserData({ token, user }));
     navigate('/dashboard');
-
-    const reqConfig = {
-      url: `${API_URL}/tasks`,
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${data.data.token}`,
-      },
-    };
-
-    await sendRequest(reqConfig, processTasks);
   };
 
   const submitHandler = async event => {
@@ -161,19 +140,7 @@ const LoginForm = () => {
         </button>
         <p className={classes.login__note}>{noteContent}</p>
       </form>
-      {isLoading && (
-        <div
-          style={{
-            backgroundColor: '#fff',
-            position: 'fixed',
-            top: '3rem',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <p>Loading...</p>
-        </div>
-      )}
+      {isLoading && <LoadingSpinner />}
     </Card>
   );
 };

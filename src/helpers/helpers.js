@@ -14,6 +14,7 @@ export const dateIsToday = dateToBeChecked => {
   if (!dateToBeChecked) return;
   const today = new Date();
   const date = new Date(dateToBeChecked);
+
   if (
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
@@ -68,11 +69,12 @@ export const mapProgressData = (
       .toDateString()
       .slice(0, 3);
     if (!day) return { label: weekday, value: 0 };
+
     return {
       label: weekday,
       value:
         typeOfValues === 'hours'
-          ? addHours(day.hours)
+          ? day.totalActiveHours ?? addHours(day.hours)
           : day.numberOfCompletedTasks,
     };
   });

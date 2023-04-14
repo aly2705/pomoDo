@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getData, persistData } from '../helpers/helpers';
+import { API_URL } from '../helpers/config';
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -115,14 +116,35 @@ const tasksSlice = createSlice({
     setUserTasks(state, action) {
       if (action.payload.length > 0) {
         state.tasks = action.payload;
-        persistData('tasks', state);
       } else {
         state.tasks = [];
-        persistData('tasks', state);
       }
     },
   },
 });
 
 export const tasksActions = tasksSlice.actions;
+
+export const fetchTasksData = sendRequest => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    const reqConfig = {
+      url: `${API_URL}/tasks`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    sendRequest(reqConfig, data => {
+      //console.log(data);
+      const fetchedTasks = data.documents;
+      const tasks = fetchedTasks.map(task => {
+        const id = task._id;
+        task._id = undefined;
+        return { id, ...task };
+      });
+      dispatch(tasksActions.setUserTasks(tasks));
+    });
+  };
+};
 export default tasksSlice.reducer;

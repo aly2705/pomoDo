@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getData, persistData } from '../helpers/helpers';
+import { dateIsToday, getData, persistData } from '../helpers/helpers';
+import { API_URL } from '../helpers/config';
+import { timerActions } from './timer';
+import { sendNewReportAndUpdateCalendar } from './calendar';
 
 const activitySlice = createSlice({
   name: 'activity',
@@ -37,6 +40,34 @@ const activitySlice = createSlice({
       state.numberOfCompletedPomodoros = storedData.numberOfCompletedPomodoros;
       state.numberOfCompletedTasks = storedData.numberOfCompletedTasks;
       state.activeMinutesAlreadyAdded = storedData.activeMinutesAlreadyAdded;
+    },
+
+    initializeActivity(state) {
+      state.date = new Date().toDateString();
+      state.hours = [
+        { hour: 5, activeMinutes: 0 },
+        { hour: 6, activeMinutes: 0 },
+        { hour: 7, activeMinutes: 0 },
+        { hour: 8, activeMinutes: 0 },
+        { hour: 9, activeMinutes: 0 },
+        { hour: 10, activeMinutes: 0 },
+        { hour: 11, activeMinutes: 0 },
+        { hour: 12, activeMinutes: 0 },
+        { hour: 13, activeMinutes: 0 },
+        { hour: 14, activeMinutes: 0 },
+        { hour: 15, activeMinutes: 0 },
+        { hour: 16, activeMinutes: 0 },
+        { hour: 17, activeMinutes: 0 },
+        { hour: 18, activeMinutes: 0 },
+        { hour: 19, activeMinutes: 0 },
+        { hour: 20, activeMinutes: 0 },
+        { hour: 21, activeMinutes: 0 },
+        { hour: 22, activeMinutes: 0 },
+        { hour: 23, activeMinutes: 0 },
+      ];
+      state.numberOfCompletedPomodoros = 0;
+      state.numberOfCompletedTasks = 0;
+      state.activeMinutesAlreadyAdded = 0;
     },
 
     addActiveTime(state, action) {
@@ -126,8 +157,77 @@ const activitySlice = createSlice({
       if (operation === 'subtract') state.numberOfCompletedTasks--;
       persistData('activity', state);
     },
+
+    addUserOverview(state, action) {
+      const overview = action.payload;
+      state.date = new Date(overview.date).toDateString();
+      state.hours = overview.hours;
+      state.numberOfCompletedPomodoros = overview.numberOfCompletedPomodoros;
+      state.numberOfCompletedTasks = overview.numberOfCompletedTasks;
+    },
   },
 });
 
 export const activityActions = activitySlice.actions;
+
+// THUNK ACTION CREATOR
+export const updateActivityData = (sendRequest, overviewId = null) => {
+  return async (dispatch, getState) => {
+    dispatch(activityActions.initializeActivity());
+    const state = getState();
+    const reqConfig = {
+      url: `${API_URL}/overviews/${overviewId || ''}`,
+      method: overviewId ? 'PATCH' : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${state.user.token}`,
+      },
+      body: JSON.stringify(state.activity),
+    };
+    const processNewData = data => {
+      console.log(data);
+    };
+    sendRequest(reqConfig, processNewData);
+  };
+};
+
+export const fetchAndInitActivity = sendRequest => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    const reqConfig = {
+      url: `${API_URL}/overviews/myOverview`,
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    sendRequest(reqConfig, data => {
+      if (!data.overview) {
+        // CREATE DATA IN STORE AND IN DATABASE
+        try {
+          dispatch(updateActivityData(sendRequest));
+        } catch (err) {
+          console.log(err);
+        }
+      } else if (dateIsToday(data.overview.date)) {
+        // Date is today => add in store
+        dispatch(activityActions.addUserOverview(data.overview));
+      } else {
+        // Fetched data not today
+        // Re-init timer
+        dispatch(timerActions.changeTimer('pomodoro'));
+
+        try {
+          // Create report and insert in calendar
+          dispatch(sendNewReportAndUpdateCalendar(sendRequest, data.overview));
+          // Reinitialize activity in store & update in db
+          dispatch(updateActivityData(sendRequest, data.overview._id));
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    });
+  };
+};
+
 export default activitySlice.reducer;

@@ -1,157 +1,39 @@
 import Layout from './components/Layout/Layout';
-import {
-  Routes,
-  Route,
-  Navigate,
-  matchPath,
-  useLocation,
-} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import PomodoroPage from './pages/PomodoroPage';
 import DashboardPage from './pages/DashboardPage';
 import StatisticsPage from './pages/StatisticsPage';
 import TasksPage from './pages/TasksPage';
 import AccountPage from './pages/AccountPage';
-import { timerActions } from './store/timer';
-import { tasksActions } from './store/tasks';
-import { activityActions } from './store/activity';
-import { userActions } from './store/user';
-import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { useEffect, useState } from 'react';
-import useUnload from './hooks/useUnload';
+import { useSelector } from 'react-redux/es/exports';
+import { useState } from 'react';
 import usePageVisibilty from './hooks/usePageVisibility';
-import { dateIsYesterday, dateIsToday, getData } from './helpers/helpers';
-import { calendarActions } from './store/calendar';
-import audioFile from './assets/completed.mp3';
 import LoginPage from './pages/LoginPage';
+import useTimerVisibility from './hooks/useTimerVisibility';
+import useCountOutsidePomodoro from './hooks/useCountOutsidePomodoro';
+import useSavePomodoroMinutes from './hooks/useSavePomodoroMinutes';
+import useInit from './hooks/useInit';
+import LoadingSpinner from './components/UI/LoadingSpinner';
 
 let secondsOutsidePomodoro = 0;
-let audioPlayedOutside = false;
-const audio = new Audio(audioFile);
 
 function App() {
-  const dispatch = useDispatch();
   const timerIsActive = useSelector(state => state.timer.isActive);
-  const location = useLocation();
   const pomodoroWasCompleted = useSelector(state => state.timer.wasCompleted);
-  const pomodoroMinutes = useSelector(state => state.timer.config.pomodoro);
+
   const countdown = useSelector(state => state.timer.countdown);
   const [pageVisibility, setPageVisibility] = useState(
     document.visibilityState
   );
 
-  const match = matchPath(
-    {
-      path: '/pomodoro',
-      exact: true,
-      strict: false,
-    },
-    location.pathname
-  );
+  const { isLoading } = useInit();
 
-  useEffect(() => {
-    if (localStorage.getItem('timer')) {
-      dispatch(timerActions.getTimerData());
-    }
-    if (localStorage.getItem('tasks')) {
-      dispatch(tasksActions.getTasksData());
-    }
-    if (localStorage.getItem('calendar')) {
-      dispatch(calendarActions.getCalendarData());
-    }
-    if (localStorage.getItem('userData')) {
-      dispatch(userActions.getUserData());
-    }
-    if (localStorage.getItem('activity')) {
-      const storedActivity = getData('activity');
-      if (dateIsToday(storedActivity.date)) {
-        dispatch(activityActions.getActivityData());
-      } else {
-        dispatch(calendarActions.insertActivityData(storedActivity));
-        dispatch(timerActions.changeTimer('pomodoro'));
-        if (!dateIsYesterday(storedActivity.date))
-          // insert null data for yesterday so the statistics will update with the correct data
-          dispatch(calendarActions.insertYesterdayData());
-      }
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (pomodoroWasCompleted) {
-      dispatch(activityActions.addCompletedPomodoro());
-      dispatch(
-        activityActions.saveMinutesWhenPomodoroPaused({
-          totalSeconds: pomodoroMinutes * 60,
-          countdown: { minutes: 0, seconds: 0 },
-          reinitMinutesPassed: true,
-        })
-      );
-    }
-  }, [pomodoroWasCompleted, dispatch, pomodoroMinutes]);
-
-  useEffect(() => {
-    const remainingSeconds = countdown.minutes * 60 + countdown.seconds;
-    if (remainingSeconds > 0) audioPlayedOutside = false;
-    if (remainingSeconds === 0 && !audioPlayedOutside) audio.play();
-  }, [countdown]);
-
-  useEffect(() => {
-    if (!timerIsActive) return;
-    if (!match) {
-      const remainingSeconds = countdown.minutes * 60 + countdown.seconds;
-      const interval = setInterval(() => {
-        secondsOutsidePomodoro++;
-        if (secondsOutsidePomodoro > remainingSeconds) {
-          audio.play();
-          audioPlayedOutside = true;
-          clearInterval(interval);
-        }
-      }, 1000);
-
-      return () => {
-        clearInterval(interval);
-      };
-    }
-    if (match && secondsOutsidePomodoro > 0) {
-      dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
-      secondsOutsidePomodoro = 0;
-    }
-  }, [match, timerIsActive, dispatch, countdown]);
-
-  useEffect(() => {
-    if (document.visibilityState === 'hidden' && timerIsActive) {
-      dispatch(timerActions.toggleIsActive());
-      localStorage.setItem('startOfInactive', JSON.stringify(Date.now()));
-    }
-    if (
-      document.visibilityState === 'visible' &&
-      localStorage.getItem('startOfInactive')
-    ) {
-      const storedTimestamp = JSON.parse(
-        localStorage.getItem('startOfInactive')
-      );
-      const secondsPassed = Math.trunc((Date.now() - storedTimestamp) / 1000);
-
-      if (dateIsToday(storedTimestamp)) {
-        dispatch(timerActions.toggleIsActive());
-        dispatch(
-          timerActions.subtractOutsideSeconds(
-            secondsPassed + secondsOutsidePomodoro
-          )
-        );
-        secondsOutsidePomodoro = 0;
-      }
-      localStorage.removeItem('startOfInactive');
-    }
-  }, [pageVisibility, dispatch, timerIsActive]);
+  useSavePomodoroMinutes(pomodoroWasCompleted);
+  useCountOutsidePomodoro(timerIsActive, countdown, secondsOutsidePomodoro);
+  useTimerVisibility(timerIsActive, pageVisibility, secondsOutsidePomodoro);
 
   usePageVisibilty(() => {
     setPageVisibility(document.visibilityState);
-  });
-
-  useUnload(event => {
-    event.preventDefault();
-    dispatch(timerActions.subtractOutsideSeconds(secondsOutsidePomodoro));
-    secondsOutsidePomodoro = 0;
   });
 
   return (
@@ -165,6 +47,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/account" element={<AccountPage />} />
       </Routes>
+      {isLoading && <LoadingSpinner />}
     </Layout>
   );
 }

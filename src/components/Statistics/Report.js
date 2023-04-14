@@ -44,10 +44,11 @@ const Report = () => {
     (acc, day) => acc + day.numberOfCompletedPomodoros,
     0
   );
-  const totalActiveTime = activeDays.reduce(
-    (acc, day) => acc + addHours(day.hours),
-    0
-  );
+
+  const totalActiveTime = activeDays.reduce((acc, day) => {
+    if (day.totalActiveHours) return acc + day.totalActiveHours;
+    else return acc + addHours(day.hours);
+  }, 0);
 
   return (
     <Card className={classes.report}>

@@ -33,6 +33,7 @@ const useAJAX = () => {
       processData(data);
     } catch (err) {
       setError(err);
+      console.error(err);
     }
     setIsLoading(false);
   }, []);
