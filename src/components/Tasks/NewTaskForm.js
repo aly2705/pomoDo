@@ -4,13 +4,17 @@ import { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { tasksActions } from '../../store/tasks';
+import { postNewTask, tasksActions } from '../../store/tasks';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const NewTaskForm = () => {
   const isEditing = useSelector(state => state.tasks.isEditing);
+  const isLoggedIn = !!useSelector(state => state.user.token);
   const categoryRef = useRef();
   const taskRef = useRef();
   const dispatch = useDispatch();
+  const { sendRequest, isLoading } = useAJAX();
 
   const enterFormHandler = () => {
     dispatch(tasksActions.setIsEditing(true));
@@ -19,7 +23,7 @@ const NewTaskForm = () => {
     dispatch(tasksActions.setIsEditing(false));
   };
 
-  const submitTaskHandler = event => {
+  const submitTaskHandler = async event => {
     event.preventDefault();
 
     const selectedCategory = categoryRef.current.value;
@@ -46,7 +50,11 @@ const NewTaskForm = () => {
       dateCompleted: null,
     };
 
-    dispatch(tasksActions.addTask(task));
+    if (!isLoggedIn) {
+      dispatch(tasksActions.addTask({ task, isLoggedIn }));
+    } else {
+      dispatch(postNewTask(sendRequest, task));
+    }
     categoryRef.current.value = 'Category';
     taskRef.current.value = '';
   };
@@ -112,6 +120,7 @@ const NewTaskForm = () => {
   return (
     <form onSubmit={submitTaskHandler} className={classes['new-task']}>
       {content}
+      {isLoading && <LoadingSpinner />}
     </form>
   );
 };

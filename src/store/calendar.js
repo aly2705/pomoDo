@@ -8,6 +8,20 @@ const calendarSlice = createSlice({
     calendar: [[], [], [], [], [], [], [], [], [], [], [], []],
   },
   reducers: {
+    getCalendarData(state) {
+      const storedData = getData('calendar');
+      state.calendar = storedData.calendar;
+    },
+    setUserCalendar(state, action) {
+      const calendar = action.payload;
+      const month = new Date().getMonth();
+      const yesterdayIndex = new Date().getDate() - 2;
+
+      if (!calendar[month][yesterdayIndex]) {
+        calendar[month][yesterdayIndex] = null;
+      }
+      state.calendar = calendar;
+    },
     insertActivityData(state, action) {
       const storedActivity = action.payload;
 
@@ -26,20 +40,6 @@ const calendarSlice = createSlice({
 
       state.calendar[month][day - 1] = undefined;
       persistData('calendar', state);
-    },
-    getCalendarData(state) {
-      const storedData = getData('calendar');
-      state.calendar = storedData.calendar;
-    },
-    setUserCalendar(state, action) {
-      const calendar = action.payload;
-      const month = new Date().getMonth();
-      const yesterdayIndex = new Date().getDate() - 2;
-
-      if (!calendar[month][yesterdayIndex]) {
-        calendar[month][yesterdayIndex] = null;
-      }
-      state.calendar = calendar;
     },
   },
 });
@@ -65,7 +65,15 @@ export const fetchCalendarData = sendRequest => {
 export const sendNewReportAndUpdateCalendar = (sendRequest, report) => {
   return async (dispatch, getState) => {
     const state = getState();
-    console.log(report);
+    // Report won't be added to database if there is no activity
+    if (
+      !(
+        report.numberOfCompletedPomodoros ||
+        report.totalActiveHours ||
+        report.numberOfCompletedTasks
+      )
+    )
+      return;
 
     const APIreport = {
       date: report.date,

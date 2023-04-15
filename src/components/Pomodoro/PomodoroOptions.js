@@ -2,8 +2,9 @@ import classes from './PomodoroOptions.module.scss';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import { timerActions } from '../../store/timer';
-import { activityActions } from '../../store/activity';
+import { activityActions, updateOverviewHours } from '../../store/activity';
 import React, { useState } from 'react';
+import useAJAX from '../../hooks/useAJAX';
 
 let timer;
 const PomodoroOptions = () => {
@@ -12,6 +13,8 @@ const PomodoroOptions = () => {
     countdown,
     totalSeconds,
   } = useSelector(state => state.timer);
+  const { sendRequest } = useAJAX();
+  const isLoggedIn = !!useSelector(state => state.user.token);
 
   const dispatch = useDispatch();
   const [confirmModalIsActive, setConfirmModalIsActive] = useState(false);
@@ -34,13 +37,17 @@ const PomodoroOptions = () => {
   const confirmActionHandler = () => {
     setConfirmModalIsActive(false);
     if (activeTimer === 'pomodoro') {
-      dispatch(
-        activityActions.saveMinutesWhenPomodoroPaused({
-          totalSeconds,
-          countdown,
-          reinitMinutesPassed: true,
-        })
-      );
+      const dataUsedInStore = {
+        totalSeconds,
+        countdown,
+        reinitMinutesPassed: true,
+        isLoggedIn,
+      };
+      !isLoggedIn
+        ? dispatch(
+            activityActions.saveMinutesWhenPomodoroPaused(dataUsedInStore)
+          )
+        : dispatch(updateOverviewHours(sendRequest, dataUsedInStore));
     }
     dispatch(timerActions.changeTimer(timer));
   };

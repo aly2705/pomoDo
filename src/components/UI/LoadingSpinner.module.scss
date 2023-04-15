@@ -9,6 +9,7 @@
   height: 46px;
   border-radius: 50%;
   box-shadow: 0 0.5rem 1.5rem rgba(#000, 0.1);
+  z-index: 100;
 }
 .loading:after {
   content: ' ';

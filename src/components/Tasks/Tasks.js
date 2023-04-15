@@ -7,18 +7,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Fragment, useRef, useState } from 'react';
-import { tasksActions } from '../../store/tasks';
+import { deleteAllCompletedTasks, tasksActions } from '../../store/tasks';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const Tasks = () => {
   const tasks = useSelector(state => state.tasks.tasks);
   const isEditing = useSelector(state => state.tasks.isEditing);
+  const isLoggedIn = !!useSelector(state => state.user.token);
   const [infoCardIsShown, setInfoCardIsShown] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
   const dragItem = useRef();
   const dragOverItem = useRef();
+  const { sendRequest, isLoading } = useAJAX();
 
   const dragStartHandler = (event, index) => {
     //We use index to identify the position of dragged in list
@@ -34,6 +38,7 @@ const Tasks = () => {
     const draggedAndDraggedOverIndexes = {
       dragItemIndex: dragItem.current,
       dragOverIndex: dragOverItem.current,
+      isLoggedIn,
     };
     dispatch(tasksActions.replaceListOnDrop(draggedAndDraggedOverIndexes));
   };
@@ -48,7 +53,8 @@ const Tasks = () => {
     setIsConfirming(true);
   };
   const confirmDeletionHandler = () => {
-    dispatch(tasksActions.deleteAllCompleted());
+    if (!isLoggedIn) dispatch(tasksActions.deleteAllCompleted(isLoggedIn));
+    else dispatch(deleteAllCompletedTasks(sendRequest));
   };
 
   const queryParams = new URLSearchParams(location.search);
@@ -170,6 +176,7 @@ const Tasks = () => {
       )}
       <ul>{tasksList.length === 0 ? <p>No tasks found</p> : tasksList}</ul>
       <NewTaskForm />
+      {isLoading && <LoadingSpinner />}
     </Card>
   );
 };

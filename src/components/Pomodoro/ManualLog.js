@@ -3,7 +3,9 @@ import ConfirmAction from '../UserFeedback/ConfirmAction';
 import classes from './ManualLog.module.scss';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { activityActions } from '../../store/activity';
+import { activityActions, updateOverviewHours } from '../../store/activity';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const ManualLog = () => {
   const dispatch = useDispatch();
@@ -12,6 +14,8 @@ const ManualLog = () => {
   const [error, setError] = useState(null);
   const [confirmationData, setConfirmationData] = useState(null);
   const timerIsActive = useSelector(state => state.timer.isActive);
+  const isLoggedIn = !!useSelector(state => state.user.token);
+  const { sendRequest, isLoading } = useAJAX();
 
   const submitTimeHandler = event => {
     event.preventDefault();
@@ -59,9 +63,14 @@ const ManualLog = () => {
       hoursOfActivity: minutesInHours,
       remainingMinutes,
       safeToSave: false,
+      isLoggedIn,
     };
     try {
-      dispatch(activityActions.addActiveTime(dataToStore));
+      if (!isLoggedIn) dispatch(activityActions.addActiveTime(dataToStore));
+      else
+        dispatch(
+          updateOverviewHours(sendRequest, dataToStore, setConfirmationData)
+        );
     } catch (err) {
       setConfirmationData({
         warning: err.message,
@@ -76,7 +85,11 @@ const ManualLog = () => {
 
   const confirmHandler = () => {
     const { savedData } = confirmationData;
-    dispatch(activityActions.addActiveTime(savedData));
+    if (!isLoggedIn) dispatch(activityActions.addActiveTime(savedData));
+    else
+      dispatch(
+        updateOverviewHours(sendRequest, savedData, setConfirmationData)
+      );
     setConfirmationData(null);
     startingHourRef.current.value = '';
     activeMinutesRef.current.value = '';
@@ -126,6 +139,7 @@ const ManualLog = () => {
           </p>
         )}
       </form>
+      {isLoading && <LoadingSpinner />}
     </Card>
   );
 };

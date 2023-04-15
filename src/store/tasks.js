@@ -39,7 +39,7 @@ const tasksSlice = createSlice({
   },
   reducers: {
     addTask(state, action) {
-      const task = action.payload;
+      const { task, isLoggedIn } = action.payload;
       const firstCompletedTaskIndex = state.tasks.findIndex(
         task => task.completed
       );
@@ -47,7 +47,7 @@ const tasksSlice = createSlice({
         state.tasks.push(task);
       } else state.tasks.splice(firstCompletedTaskIndex, 0, task); //inserts at the end of uncompleted tasks
 
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
     markAsCompleted(state, action) {
       const taskId = action.payload;
@@ -56,23 +56,26 @@ const tasksSlice = createSlice({
       state.tasks.at(taskIndex).dateCompleted = new Date().toISOString();
     },
     removeCompletedFromActive(state, action) {
-      const taskId = action.payload;
+      const { taskId, isLoggedIn } = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
       state.tasks.at(taskIndex).completed = true;
       const task = state.tasks.at(taskIndex);
       state.tasks.splice(taskIndex, 1); //cuts from tasks the marked element
       state.tasks.push(task); //inserts at the end the task
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
     cancelCompletion(state, action) {
-      const taskId = action.payload;
+      const { taskId, isLoggedIn } = action.payload;
       const taskIndex = state.tasks.findIndex(task => task.id === taskId);
       const task = state.tasks.at(taskIndex);
 
       task.completed = false;
       task.dateCompleted = null;
 
-      if (state.tasks.filter(task => task.completed).length === 0) {
+      if (
+        state.tasks.filter(task => task.completed).length === 0 &&
+        !isLoggedIn
+      ) {
         persistData('tasks', state);
         return;
       }
@@ -87,35 +90,40 @@ const tasksSlice = createSlice({
 
       state.tasks.splice(indexToInsertTo, 0, task); //inserts at the end of the uncompleted tasks list
 
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
     getTasksData(state) {
       const storedData = getData('tasks');
       state.tasks = storedData.tasks;
     },
     replaceListOnDrop(state, action) {
-      const { dragItemIndex, dragOverIndex } = action.payload;
+      const { dragItemIndex, dragOverIndex, isLoggedIn } = action.payload;
       const dragItemContent = state.tasks[dragItemIndex]; //saves content of draggedItem
       state.tasks.splice(dragItemIndex, 1); //cuts from tasks the dragged element
       state.tasks.splice(dragOverIndex, 0, dragItemContent); //inserts at dragOverIndex the content of dragged item
 
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
-    deleteAllCompleted(state) {
+    deleteAllCompleted(state, action) {
+      const isLoggedIn = action.payload;
       state.tasks = state.tasks.filter(task => !task.completed);
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
     deleteTask(state, action) {
-      const taskId = action.payload;
+      const { taskId, isLoggedIn } = action.payload;
       state.tasks = state.tasks.filter(task => task.id !== taskId);
-      persistData('tasks', state);
+      if (!isLoggedIn) persistData('tasks', state);
     },
     setIsEditing(state, action) {
       state.isEditing = action.payload;
     },
     setUserTasks(state, action) {
+      let tasks = action.payload;
       if (action.payload.length > 0) {
-        state.tasks = action.payload;
+        const completed = tasks.filter(task => task.completed);
+        const notCompleted = tasks.filter(task => !task.completed);
+        tasks = [...notCompleted, ...completed];
+        state.tasks = tasks;
       } else {
         state.tasks = [];
       }
@@ -144,6 +152,93 @@ export const fetchTasksData = sendRequest => {
         return { id, ...task };
       });
       dispatch(tasksActions.setUserTasks(tasks));
+    });
+  };
+};
+
+export const postNewTask = (sendRequest, task) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    const reqConfig = {
+      url: `${API_URL}/tasks`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(task),
+    };
+    sendRequest(reqConfig, data => {
+      const task = data.document;
+      task.id = task._id;
+      task._id = undefined;
+
+      dispatch(tasksActions.addTask({ task, isLoggedIn: !!token }));
+    });
+  };
+};
+
+export const updateStateOfTask = (sendRequest, taskId, complete = true) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    let body;
+
+    if (complete) {
+      body = { completed: true, dateCompleted: new Date().toISOString() };
+      dispatch(tasksActions.markAsCompleted(taskId));
+      setTimeout(() => {
+        dispatch(
+          tasksActions.removeCompletedFromActive({
+            taskId,
+            isLoggedIn: !!token,
+          })
+        );
+      }, 500);
+    } else {
+      body = { completed: false, dateCompleted: null };
+      dispatch(tasksActions.cancelCompletion({ taskId, isLoggedIn: !!token }));
+    }
+    const reqConfig = {
+      url: `${API_URL}/tasks/${taskId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    };
+    sendRequest(reqConfig);
+  };
+};
+export const deleteTask = (sendRequest, taskId) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+
+    const reqConfig = {
+      url: `${API_URL}/tasks/${taskId}`,
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    sendRequest(reqConfig, data => {
+      dispatch(tasksActions.deleteTask({ taskId, isLoggedIn: !!token }));
+    });
+  };
+};
+export const deleteAllCompletedTasks = sendRequest => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+
+    const reqConfig = {
+      url: `${API_URL}/tasks/removeCompleted`,
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    sendRequest(reqConfig, data => {
+      dispatch(tasksActions.deleteAllCompleted(!!token));
     });
   };
 };

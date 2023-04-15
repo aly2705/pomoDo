@@ -2,17 +2,24 @@ import classes from './Task.module.scss';
 import icons from '../../assets/icons.svg';
 import { taskCategories as categories } from '../../helpers/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { tasksActions } from '../../store/tasks';
+import { deleteTask, tasksActions, updateStateOfTask } from '../../store/tasks';
 import { useState } from 'react';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
-import { activityActions } from '../../store/activity';
+import {
+  activityActions,
+  updateOverviewTasksAndPomodoros,
+} from '../../store/activity';
 import { dateIsToday } from '../../helpers/helpers';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const Task = props => {
   const dispatch = useDispatch();
   const isEditing = useSelector(state => state.tasks.isEditing);
+  const isLoggedIn = !!useSelector(state => state.user.token);
   const [isConfirming, setIsConfirming] = useState(false);
   const tasks = useSelector(state => state.tasks.tasks);
+  const { sendRequest, isLoading } = useAJAX();
 
   const CSSclasses = props.dateCompleted
     ? `${classes.task} ${classes['task--done']}`
@@ -20,19 +27,46 @@ const Task = props => {
 
   const checkTaskHandler = () => {
     if (!props.completed) {
-      dispatch(tasksActions.markAsCompleted(props.id));
-      dispatch(activityActions.updateNumberOfCompletedTasks('add'));
-      setTimeout(() => {
-        dispatch(tasksActions.removeCompletedFromActive(props.id));
-      }, 500);
+      if (!isLoggedIn) {
+        dispatch(tasksActions.markAsCompleted(props.id));
+        dispatch(
+          activityActions.updateNumberOfCompletedTasks({
+            operation: 'add',
+            isLoggedIn,
+          })
+        );
+        setTimeout(() => {
+          dispatch(
+            tasksActions.removeCompletedFromActive({
+              taskId: props.id,
+              isLoggedIn,
+            })
+          );
+        }, 500);
+      } else {
+        dispatch(updateStateOfTask(sendRequest, props.id, true));
+        dispatch(updateOverviewTasksAndPomodoros(sendRequest, 'add'));
+      }
     } else {
       const dateCompleted = tasks.find(
         task => task.id === props.id
       ).dateCompleted;
 
       if (dateIsToday(dateCompleted)) {
-        dispatch(tasksActions.cancelCompletion(props.id));
-        dispatch(activityActions.updateNumberOfCompletedTasks('subtract'));
+        if (!isLoggedIn) {
+          dispatch(
+            tasksActions.cancelCompletion({ taskId: props.id, isLoggedIn })
+          );
+          dispatch(
+            activityActions.updateNumberOfCompletedTasks({
+              operation: 'subtract',
+              isLoggedIn,
+            })
+          );
+        } else {
+          dispatch(updateStateOfTask(sendRequest, props.id, false));
+          dispatch(updateOverviewTasksAndPomodoros(sendRequest, 'subtract'));
+        }
       }
     }
   };
@@ -44,7 +78,10 @@ const Task = props => {
   };
 
   const confirmDeletionHandler = () => {
-    dispatch(tasksActions.deleteTask(props.id));
+    if (!isLoggedIn)
+      dispatch(tasksActions.deleteTask({ taskId: props.id, isLoggedIn }));
+    else dispatch(deleteTask(sendRequest, props.id));
+
     setIsConfirming(false);
   };
 
@@ -93,6 +130,7 @@ const Task = props => {
           &#10003;
         </button>
       )}
+      {isLoading && <LoadingSpinner />}
     </li>
   );
 };

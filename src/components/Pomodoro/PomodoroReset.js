@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import ConfirmAction from '../UserFeedback/ConfirmAction';
 import { timerActions } from '../../store/timer';
-import { activityActions } from '../../store/activity';
+import { activityActions, updateOverviewHours } from '../../store/activity';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const PomodoroReset = () => {
   const {
@@ -12,6 +14,8 @@ const PomodoroReset = () => {
     countdown,
     totalSeconds,
   } = useSelector(state => state.timer);
+  const { sendRequest, isLoading } = useAJAX();
+  const isLoggedIn = !!useSelector(state => state.user.token);
 
   const dispatch = useDispatch();
   const [confirmModalIsActive, setConfirmModalIsActive] = useState(false);
@@ -30,13 +34,17 @@ const PomodoroReset = () => {
   const resetPomodoroHandler = () => {
     if (confirmModalIsActive) setConfirmModalIsActive(false);
     if (activeTimer === 'pomodoro') {
-      dispatch(
-        activityActions.saveMinutesWhenPomodoroPaused({
-          totalSeconds,
-          countdown,
-          reinitMinutesPassed: true,
-        })
-      );
+      const usedDataInStore = {
+        totalSeconds,
+        countdown,
+        reinitMinutesPassed: true,
+        isLoggedIn,
+      };
+      !isLoggedIn
+        ? dispatch(
+            activityActions.saveMinutesWhenPomodoroPaused(usedDataInStore)
+          )
+        : dispatch(updateOverviewHours(sendRequest, usedDataInStore));
     }
     dispatch(timerActions.changeTimer(activeTimer));
   };
@@ -58,6 +66,7 @@ const PomodoroReset = () => {
       <button onClick={confirmResetHandler} className={classes.reset}>
         Reset timer
       </button>
+      {isLoading && <LoadingSpinner />}
     </Fragment>
   );
 };

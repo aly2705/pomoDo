@@ -3,7 +3,9 @@ import '../../styles/abstracts.scss';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { timerActions } from '../../store/timer';
-import { activityActions } from '../../store/activity';
+import { activityActions, updateOverviewHours } from '../../store/activity';
+import useAJAX from '../../hooks/useAJAX';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const PomodoroTimer = () => {
   const dispatch = useDispatch();
@@ -11,8 +13,10 @@ const PomodoroTimer = () => {
   const countdown = useSelector(state => state.timer.countdown);
   const totalSeconds = useSelector(state => state.timer.totalSeconds);
   const timerType = useSelector(state => state.timer.type);
+  const isLoggedIn = !!useSelector(state => state.user.token);
   const [wasClicked, setWasClicked] = useState(false);
   const [percentage, setPercentage] = useState(0);
+  const { sendRequest, isLoading } = useAJAX();
 
   const clickTimerHandler = () => {
     // Animation
@@ -21,13 +25,17 @@ const PomodoroTimer = () => {
       setWasClicked(false);
     }, 300);
     if (timerType === 'pomodoro' && isActive) {
-      dispatch(
-        activityActions.saveMinutesWhenPomodoroPaused({
-          totalSeconds,
-          countdown,
-          reinitMinutesPassed: false,
-        })
-      );
+      const usedDataInStore = {
+        totalSeconds,
+        countdown,
+        reinitMinutesPassed: false,
+        isLoggedIn,
+      };
+      !isLoggedIn
+        ? dispatch(
+            activityActions.saveMinutesWhenPomodoroPaused(usedDataInStore)
+          )
+        : dispatch(updateOverviewHours(sendRequest, usedDataInStore));
     }
     dispatch(timerActions.toggleIsActive());
   };
@@ -92,6 +100,7 @@ const PomodoroTimer = () => {
           </button>
         </div>
       </div>
+      {isLoading && <LoadingSpinner />}
     </div>
   );
 };

@@ -25,7 +25,7 @@ const useInit = () => {
   useEffect(() => {
     const isLoggedIn = !!token;
     if (isLoggedIn) {
-      console.log('User logged in. Fetching data...');
+      // console.log('User logged in. Fetching data...');
       // Fetch tasks
       dispatch(fetchTasksData(sendRequest));
       //Fetch calendar
@@ -33,7 +33,7 @@ const useInit = () => {
       // Fetch activity
       dispatch(fetchAndInitActivity(sendRequest));
     } else {
-      console.log('Guest mode. Using local storage');
+      // console.log('Guest mode. Using local storage');
       if (localStorage.getItem('tasks')) {
         dispatch(tasksActions.getTasksData());
       }

@@ -4,7 +4,7 @@ const useAJAX = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendRequest = useCallback(async (reqConfig, processData) => {
+  const sendRequest = useCallback(async (reqConfig, processData = () => {}) => {
     try {
       setError(null);
       setIsLoading(true);

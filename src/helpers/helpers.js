@@ -96,7 +96,7 @@ export const findWeeklyData = (calendar, typeOfValues = 'hours') => {
   or if we need to take data from the previous month's array too */
 
   if (dateOfMonth <= 7) {
-    console.log(dateOfMonth);
+    //console.log(dateOfMonth);
     // 1) Find days from current month (will be placed right-side in the final array, hence the name)
     const daysToComputeFromRight = calendar[lastDayInArray.getMonth()].slice(
       0,

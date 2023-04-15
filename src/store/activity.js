@@ -71,8 +71,13 @@ const activitySlice = createSlice({
     },
 
     addActiveTime(state, action) {
-      let { startingHour, hoursOfActivity, remainingMinutes, safeToSave } =
-        action.payload;
+      let {
+        startingHour,
+        hoursOfActivity,
+        remainingMinutes,
+        safeToSave,
+        isLoggedIn,
+      } = action.payload;
       const indexStarting = state.hours.findIndex(
         hour => hour.hour === startingHour
       );
@@ -101,11 +106,12 @@ const activitySlice = createSlice({
         throw new Error(
           'You have already logged time for an hour in your interval. Do you want to override it?'
         );
-      persistData('activity', state);
+      if (!isLoggedIn) persistData('activity', state);
     },
 
     saveMinutesWhenPomodoroPaused(state, action) {
-      const { totalSeconds, countdown, reinitMinutesPassed } = action.payload;
+      const { totalSeconds, countdown, reinitMinutesPassed, isLoggedIn } =
+        action.payload;
       const currentHour = new Date().getHours();
       const currentMinutes = new Date().getMinutes();
 
@@ -143,19 +149,20 @@ const activitySlice = createSlice({
           state.activeMinutesAlreadyAdded += passedMinutes;
         else state.activeMinutesAlreadyAdded = 0;
       }
-      persistData('activity', state);
+      if (!isLoggedIn) persistData('activity', state);
     },
 
-    addCompletedPomodoro(state) {
+    addCompletedPomodoro(state, action) {
+      const isLoggedIn = action.payload;
       state.numberOfCompletedPomodoros++;
-      persistData('activity', state);
+      if (!isLoggedIn) persistData('activity', state);
     },
 
     updateNumberOfCompletedTasks(state, action) {
-      const operation = action.payload;
+      const { operation, isLoggedIn } = action.payload;
       if (operation === 'add') state.numberOfCompletedTasks++;
       if (operation === 'subtract') state.numberOfCompletedTasks--;
-      persistData('activity', state);
+      if (!isLoggedIn) persistData('activity', state);
     },
 
     addUserOverview(state, action) {
@@ -184,10 +191,8 @@ export const updateActivityData = (sendRequest, overviewId = null) => {
       },
       body: JSON.stringify(state.activity),
     };
-    const processNewData = data => {
-      console.log(data);
-    };
-    sendRequest(reqConfig, processNewData);
+
+    sendRequest(reqConfig);
   };
 };
 
@@ -218,7 +223,7 @@ export const fetchAndInitActivity = sendRequest => {
         dispatch(timerActions.changeTimer('pomodoro'));
 
         try {
-          // Create report and insert in calendar
+          // Create report and insert in calendar if report has active time
           dispatch(sendNewReportAndUpdateCalendar(sendRequest, data.overview));
           // Reinitialize activity in store & update in db
           dispatch(updateActivityData(sendRequest, data.overview._id));
@@ -227,6 +232,77 @@ export const fetchAndInitActivity = sendRequest => {
         }
       }
     });
+  };
+};
+
+export const updateOverviewHours = (
+  sendRequest,
+  dataToBeComputed,
+  setConfirmationData = undefined
+) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    const onHourManualLog = !!setConfirmationData;
+
+    // Used to check if we update on pomodoro completion or on manual log
+    if (onHourManualLog) {
+      try {
+        dispatch(activityActions.addActiveTime(dataToBeComputed));
+      } catch (err) {
+        setConfirmationData({
+          warning: err.message,
+          savedData: { ...dataToBeComputed, safeToSave: true },
+        });
+        return;
+      }
+    } else {
+      dispatch(activityActions.saveMinutesWhenPomodoroPaused(dataToBeComputed));
+    }
+    const { hours, activeMinutesAlreadyAdded } = getState().activity;
+    const reqConfig = {
+      url: `${API_URL}/overviews/myOverview`,
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ hours, activeMinutesAlreadyAdded }),
+    };
+    sendRequest(reqConfig);
+  };
+};
+
+export const updateOverviewTasksAndPomodoros = (
+  sendRequest,
+  operation = null
+) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    if (!operation) {
+      dispatch(activityActions.addCompletedPomodoro(!!token));
+    } else {
+      dispatch(
+        activityActions.updateNumberOfCompletedTasks({
+          isLoggedIn: !!token,
+          operation,
+        })
+      );
+    }
+    const state = getState().activity;
+    const reqConfig = {
+      url: `${API_URL}/overviews/myOverview`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        numberOfCompletedPomodoros: state.numberOfCompletedPomodoros,
+        numberOfCompletedTasks: state.numberOfCompletedTasks,
+      }),
+    };
+
+    sendRequest(reqConfig);
   };
 };
 
