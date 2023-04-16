@@ -102,7 +102,8 @@
 
   span {
     display: inline-block;
-    font-weight: 500;
+    font-weight: 600;
+    color: var(--color-text-secondary);
 
     @include respond(tab-port) {
       display: none;

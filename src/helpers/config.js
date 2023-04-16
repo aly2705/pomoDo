@@ -11,4 +11,10 @@ export const taskCategories = [
 ];
 
 export const numDaysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-export const API_URL = 'http://127.0.0.1:4000/api/v1';
+
+// LOCALHOST
+//export const API_URL = 'http://127.0.0.1:4000/api/v1';
+
+// PRODUCTION
+export const API_URL = 'https://pomodo-api-production.up.railway.app/api/v1';
+//export const API_DOMAIN = 'https://pomodo-api-production.up.railway.app/';

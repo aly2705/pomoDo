@@ -57,3 +57,32 @@
 input[type='number']::-webkit-inner-spin-button {
   opacity: 1;
 }
+
+.error-message {
+  color: var(--color-primary);
+  font-weight: 600;
+  // margin: 1rem 0;
+  font-size: 1.6rem;
+
+  &--alert {
+    position: fixed;
+    padding: 1.2rem 3rem;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 50rem;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    text-align: center;
+    font-weight: 400;
+    box-shadow: 0 1rem 3rem rgba(#000, 0.15);
+
+    @include respond(phone-small) {
+      width: 40rem;
+    }
+    @include respond(phone-v-small) {
+      width: 30rem;
+    }
+    z-index: 100;
+  }
+}

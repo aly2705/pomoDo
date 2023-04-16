@@ -14,6 +14,7 @@ import useCountOutsidePomodoro from './hooks/useCountOutsidePomodoro';
 import useSavePomodoroMinutes from './hooks/useSavePomodoroMinutes';
 import useInit from './hooks/useInit';
 import LoadingSpinner from './components/UI/LoadingSpinner';
+import ErrorAlert from './components/UI/ErrorAlert';
 
 let secondsOutsidePomodoro = 0;
 
@@ -26,7 +27,8 @@ function App() {
     document.visibilityState
   );
 
-  const { isLoading } = useInit();
+  const { isLoading, error } = useInit();
+  const isLoggedIn = !!useSelector(state => state.user.token);
 
   useSavePomodoroMinutes(pomodoroWasCompleted);
   useCountOutsidePomodoro(timerIsActive, countdown, secondsOutsidePomodoro);
@@ -45,9 +47,10 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/statistics" element={<StatisticsPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/account" element={<AccountPage />} />
+        {isLoggedIn && <Route path="/account" element={<AccountPage />} />}
       </Routes>
       {isLoading && <LoadingSpinner />}
+      {error && <ErrorAlert error={error} />}
     </Layout>
   );
 }

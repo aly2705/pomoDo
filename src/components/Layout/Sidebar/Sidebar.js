@@ -3,16 +3,19 @@ import SidebarItem from './SidebarItem';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../../../store/user';
+import useAJAX from '../../../hooks/useAJAX';
 
 const Sidebar = () => {
   const location = useLocation();
   const token = useSelector(state => state.user.token);
   const dispatch = useDispatch();
   const isLoggedIn = !!token;
+  const { setError } = useAJAX();
   if (location.pathname === '/login') return;
 
   const logoutUser = () => {
     dispatch(userActions.removeUserData());
+    setError(null);
   };
 
   return (

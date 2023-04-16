@@ -78,7 +78,7 @@ const ProfileOptions = () => {
           onClick={toggleProfileList}
         >
           <img src={ProfileImg} alt="Profile" />
-          <span>{isLoggedIn ? user.name.split(' ').at(0) : 'Guest'}</span>
+          <span>{isLoggedIn ? user.name : 'Guest Mode'}</span>
         </button>
         {profileSettingsAreShown && (
           <TransparentOverlay onClick={toggleProfileList} />
