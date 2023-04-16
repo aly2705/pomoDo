@@ -66,7 +66,6 @@
 .main-account {
   @extend %grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 11rem auto;
   gap: 4rem;
 
   @include respond(tab-port-large) {

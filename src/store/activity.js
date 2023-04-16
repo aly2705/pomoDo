@@ -215,10 +215,15 @@ export const fetchAndInitActivity = sendRequest => {
           console.log(err);
         }
       } else if (dateIsToday(data.overview.date)) {
+        console.log(data.overview);
+
+        console.log('Date is today');
+
         // Date is today => add in store
         dispatch(activityActions.addUserOverview(data.overview));
       } else {
         // Fetched data not today
+        console.log('Fetched data not today');
         // Re-init timer
         dispatch(timerActions.changeTimer('pomodoro'));
 
