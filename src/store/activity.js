@@ -171,6 +171,7 @@ const activitySlice = createSlice({
       state.hours = overview.hours;
       state.numberOfCompletedPomodoros = overview.numberOfCompletedPomodoros;
       state.numberOfCompletedTasks = overview.numberOfCompletedTasks;
+      state.activeMinutesAlreadyAdded = overview.activeMinutesAlreadyAdded;
     },
   },
 });
