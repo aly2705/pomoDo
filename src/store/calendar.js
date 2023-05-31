@@ -69,7 +69,7 @@ export const sendNewReportAndUpdateCalendar = (sendRequest, report) => {
     if (
       !(
         report.numberOfCompletedPomodoros ||
-        report.totalActiveHours ||
+        addHours(report.hours) ||
         report.numberOfCompletedTasks
       )
     )
