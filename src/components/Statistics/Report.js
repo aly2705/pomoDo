@@ -46,7 +46,7 @@ const Report = () => {
   );
 
   const totalActiveTime = activeDays.reduce((acc, day) => {
-    if (day.totalActiveHours) return acc + day.totalActiveHours;
+    if (day.totalActiveHours || !day.hours) return acc + day.totalActiveHours;
     else return acc + addHours(day.hours);
   }, 0);
 

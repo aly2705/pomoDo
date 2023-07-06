@@ -1,19 +1,9 @@
-# pomoDo | your productivity app
+# pomoDo | your productivity app @2.0.0-beta
 
-## About the app
+## About the update
 
-pomoDo is a react app that aims to help users increase their productivity by offering features as:
+pomoDo got an update in the spring of 2023, that features the possibility to create and manage an account, with database persisting data. However, the update is not yet stable, as some options are not working, such as a persistent order in task list or photo upload. Calendar and statistics metrics may also cause issues while using the app.
 
-- configurable pomodoro timers for active time, short breaks and long breaks
-- the option to track daily active time by logging it manually
-- task system with filters to plan and achieve different goals
-- dashboard to track daily progress
-- a special page with extended statistics on weekly and monthly progress
+## Test the fullstack app
 
-## Usage
-
-The app is available at https://pomodo.alexandrasimion.com and it is a PWA that can be installed on your device (desktop, tablet and phone compatible). For now, the app cannot be sync across devices, but the data persists over time. Enjoy!
-
-### Found an issue or having feedback?
-
-Don't hesitate to leave me a message [here](https://alexandrasimion.com/#section-contact)
+If you are interested in exploring the update, you can find a demo of the fullstack app [here](https://pomodo-v2.netlify.app).
