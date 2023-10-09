@@ -10,7 +10,24 @@ const calendarSlice = createSlice({
   reducers: {
     getCalendarData(state) {
       const storedData = getData('calendar');
-      state.calendar = storedData.calendar;
+
+      // Delete reports older than one year
+      let cleanCalendar = storedData.calendar.map(month =>
+        month.map(day => {
+          if (day) {
+            const date = new Date(day.date);
+            const currentMonth = new Date().getMonth();
+            console.log(date);
+            if (
+              date.getMonth() <= currentMonth &&
+              date.getFullYear() <= new Date().getFullYear() - 1
+            )
+              return null;
+            else return day;
+          } else return null;
+        })
+      );
+      state.calendar = cleanCalendar;
     },
     setUserCalendar(state, action) {
       const calendar = action.payload;
