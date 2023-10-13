@@ -15,6 +15,7 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 const Tasks = () => {
   const tasks = useSelector(state => state.tasks.tasks);
   const isEditing = useSelector(state => state.tasks.isEditing);
+  const editedTaskId = useSelector(state => state.tasks.editedTaskId);
   const isLoggedIn = !!useSelector(state => state.user.token);
   const [infoCardIsShown, setInfoCardIsShown] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
@@ -175,7 +176,7 @@ const Tasks = () => {
         </Fragment>
       )}
       <ul>{tasksList.length === 0 ? <p>No tasks found</p> : tasksList}</ul>
-      <NewTaskForm />
+      <NewTaskForm editedTask={tasks.find(task => task.id === editedTaskId)} />
       {isLoading && <LoadingSpinner />}
     </Card>
   );

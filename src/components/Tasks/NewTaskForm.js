@@ -4,11 +4,11 @@ import { Fragment } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postNewTask, tasksActions } from '../../store/tasks';
+import { postNewTask, tasksActions, updateTaskData } from '../../store/tasks';
 import useAJAX from '../../hooks/useAJAX';
 import LoadingSpinner from '../UI/LoadingSpinner';
 
-const NewTaskForm = () => {
+const NewTaskForm = ({ editedTask }) => {
   const isEditing = useSelector(state => state.tasks.isEditing);
   const isLoggedIn = !!useSelector(state => state.user.token);
   const categoryRef = useRef();
@@ -16,11 +16,19 @@ const NewTaskForm = () => {
   const dispatch = useDispatch();
   const { sendRequest, isLoading } = useAJAX();
 
+  useEffect(() => {
+    if (editedTask) {
+      taskRef.current.value = editedTask.text;
+      categoryRef.current.value = editedTask.category;
+    }
+  }, [editedTask]);
+
   const enterFormHandler = () => {
     dispatch(tasksActions.setIsEditing(true));
   };
   const exitFormHandler = () => {
     dispatch(tasksActions.setIsEditing(false));
+    dispatch(tasksActions.setEditedTask(null));
   };
 
   const submitTaskHandler = async event => {
@@ -42,18 +50,33 @@ const NewTaskForm = () => {
       return;
     }
 
-    const task = {
-      id: Date.now(),
-      text: enteredTaskText,
-      category: selectedCategory,
-      completed: false,
-      dateCompleted: null,
-    };
+    if (!editedTask) {
+      const task = {
+        id: Date.now(),
+        text: enteredTaskText,
+        category: selectedCategory,
+        completed: false,
+        dateCompleted: null,
+      };
 
-    if (!isLoggedIn) {
-      dispatch(tasksActions.addTask({ task, isLoggedIn }));
+      if (!isLoggedIn) {
+        dispatch(tasksActions.addTask({ task, isLoggedIn }));
+      } else {
+        dispatch(postNewTask(sendRequest, task));
+      }
     } else {
-      dispatch(postNewTask(sendRequest, task));
+      const updatedTask = {
+        id: editedTask.id,
+        text: enteredTaskText,
+        category: selectedCategory,
+        completed: editedTask.completed,
+        dateCompleted: editedTask.dateCompleted,
+      };
+
+      if (!isLoggedIn) {
+        dispatch(tasksActions.updateTask({ updatedTask, isLoggedIn }));
+      } else dispatch(updateTaskData(sendRequest, updatedTask));
+      dispatch(tasksActions.setEditedTask(null));
     }
     categoryRef.current.value = 'Category';
     taskRef.current.value = '';

@@ -85,6 +85,10 @@ const Task = props => {
     setIsConfirming(false);
   };
 
+  const initEditTaskHandler = () => {
+    dispatch(tasksActions.setEditedTask(props.id));
+  };
+
   const category = categories.find(
     category => category.name === props.category
   );
@@ -108,14 +112,24 @@ const Task = props => {
         <span className={classes.task__category}>{category.name}</span>
       </div>
       {isEditing && (
-        <button
-          className={classes['task__delete-btn']}
-          onClick={deleteTaskHandler}
-        >
-          <svg>
-            <use href={`${icons}#icon-bin`}></use>
-          </svg>
-        </button>
+        <div className={classes.task__options}>
+          <button
+            className={classes['task__edit-btn']}
+            onClick={initEditTaskHandler}
+          >
+            <svg>
+              <use href={`${icons}#icon-pencil`}></use>
+            </svg>
+          </button>
+          <button
+            className={classes['task__delete-btn']}
+            onClick={deleteTaskHandler}
+          >
+            <svg>
+              <use href={`${icons}#icon-bin`}></use>
+            </svg>
+          </button>
+        </div>
       )}
       {isConfirming && (
         <ConfirmAction

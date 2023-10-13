@@ -17,7 +17,6 @@ const calendarSlice = createSlice({
           if (day) {
             const date = new Date(day.date);
             const currentMonth = new Date().getMonth();
-            console.log(date);
             if (
               date.getMonth() <= currentMonth &&
               date.getFullYear() <= new Date().getFullYear() - 1

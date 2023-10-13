@@ -6,6 +6,7 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
     isEditing: false,
+    editedTaskId: null,
     tasks: [
       {
         id: 'task1',
@@ -46,6 +47,15 @@ const tasksSlice = createSlice({
       if (firstCompletedTaskIndex === -1) {
         state.tasks.push(task);
       } else state.tasks.splice(firstCompletedTaskIndex, 0, task); //inserts at the end of uncompleted tasks
+
+      if (!isLoggedIn) persistData('tasks', state);
+    },
+    updateTask(state, action) {
+      const { updatedTask, isLoggedIn } = action.payload;
+      const taskIndex = state.tasks.findIndex(
+        task => task.id === updatedTask.id
+      );
+      state.tasks[taskIndex] = updatedTask;
 
       if (!isLoggedIn) persistData('tasks', state);
     },
@@ -116,6 +126,9 @@ const tasksSlice = createSlice({
     },
     setIsEditing(state, action) {
       state.isEditing = action.payload;
+    },
+    setEditedTask(state, action) {
+      state.editedTaskId = action.payload;
     },
     setUserTasks(state, action) {
       let tasks = action.payload;
@@ -208,6 +221,27 @@ export const updateStateOfTask = (sendRequest, taskId, complete = true) => {
       body: JSON.stringify(body),
     };
     sendRequest(reqConfig);
+  };
+};
+export const updateTaskData = (sendRequest, task) => {
+  return async (dispatch, getState) => {
+    const token = getState().user.token;
+    let body = { text: task.text, category: task.category };
+
+    const reqConfig = {
+      url: `${API_URL}/tasks/${task.id}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    };
+    sendRequest(reqConfig, () => {
+      dispatch(
+        tasksActions.updateTask({ updatedTask: task, isLoggedIn: !!token })
+      );
+    });
   };
 };
 export const deleteTask = (sendRequest, taskId) => {
