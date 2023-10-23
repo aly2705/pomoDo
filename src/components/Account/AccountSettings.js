@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import classes from './AccountForms.module.scss';
 import Card from '../UI/Card';
-import profile from '../../assets/profile.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import useAJAX from '../../hooks/useAJAX';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import { updateUserDetails } from '../../store/user';
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 
 const AccountSettings = () => {
   const nameInputRef = useRef();
@@ -52,8 +53,8 @@ const AccountSettings = () => {
         <div
           className={`${classes.form__group} ${classes['form__photo-upload']}`}
         >
-          <img src={profile} alt="Profile" />
-          <input type="file" accept="image/*" id="photo" name="photo" />
+          <InitialsAvatar name={userData.name} />
+          {/* <input type="file" accept="image/*" id="photo" name="photo" /> */}
           <label htmlFor="photo">Choose new photo</label>
         </div>
         <button type="submit" className="btn">

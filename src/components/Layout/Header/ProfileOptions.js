@@ -8,6 +8,8 @@ import TransparentOverlay from '../../UI/TransparentOverlay';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { userActions } from '../../../store/user';
+import InitialsAvatar from 'react-initials-avatar';
+import 'react-initials-avatar/lib/ReactInitialsAvatar.css';
 
 const ProfileOptions = () => {
   const [settingsAreShown, setSettingsAreShown] = useState(false);
@@ -77,7 +79,12 @@ const ProfileOptions = () => {
           }`}
           onClick={toggleProfileList}
         >
-          <img src={ProfileImg} alt="Profile" />
+          {isLoggedIn ? (
+            <InitialsAvatar name={user.name} />
+          ) : (
+            <img src={ProfileImg} alt="Profile" />
+          )}
+
           <span>{isLoggedIn ? user.name : 'Guest Mode'}</span>
         </button>
         {profileSettingsAreShown && (
